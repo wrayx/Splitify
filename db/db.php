@@ -35,7 +35,7 @@ class DB extends SQLite3
         return $authenticated;
     }
 
-    protected function userExists($usernameOrEmail)
+    public function userExists($usernameOrEmail)
     {
         $sql = 'SELECT COUNT(*) AS count
                 FROM   users
@@ -99,6 +99,20 @@ class DB extends SQLite3
         return $userPwd;
     }
 
+    public function getUserId($userInfo){
+        $sql = 'SELECT id
+                FROM users
+                WHERE username = :userInfo
+                OR email = :userInfo';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':userInfo', $userInfo);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $userId = $row['id'];
+        $statement->close();
+        return $userId;
+    }
+
     public function createUser($username, $email, $pwd)
     {
         $sql = 'INSERT INTO users(username, email, pwd)
@@ -116,5 +130,39 @@ class DB extends SQLite3
 
         $statement->close();
         return true;
+    }
+
+    public function createGroup($name){
+        $sql = 'INSERT INTO groups(name)
+                VALUES (:name)';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':name', $name);
+        $statement->execute();
+
+        $statement->close();
+    }
+
+    public function addGroupMember($userid, $groupid){
+        $sql = 'INSERT INTO groupMembers(member, groupid)
+                VALUES (:member, :groupid)';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':member', $userid);
+        $statement->bindValue(':groupid', $groupid);
+        $statement->execute();
+
+        $statement->close();
+    }
+
+    public function getGroupId($name){
+        $sql = 'SELECT id
+                FROM groups
+                WHERE name = :name';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':name', $name);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $userId = $row['id'];
+        $statement->close();
+        return $userId;
     }
 }

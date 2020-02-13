@@ -11,18 +11,18 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
             </div>
             <div class="face face2">
                 <div class="content">
-                    <form action="includes/groups.inc.php" method="POST">
+                    <form action="includes/groups.inc.php" method="POST" id="group-form">
                         <div class="group">
-                            <input type="text" name="name" required>
+                            <input type="text" name="name" id="group-name" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Name</label>
                         </div>
                         <div class="group">
-                            <input type="text" name="member-email" class="member-email" required>
+                            <input type="text" name="member-email[]" class="member-email" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
-                            <label>Member E-mail</label>
+                            <label>Member's E-mail</label>
                         </div>
                         <div class="group">
                             <span id="add-member-input"><i class="fas fa-user-plus"></i></span>
@@ -75,7 +75,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
             </div>
         </div>
     </div>
-
+    <script src="js/groups.js"></script>
     <?php
 }
 else {
