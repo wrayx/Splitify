@@ -55,37 +55,8 @@ class DB extends SQLite3
         return $exists;
     }
 
-//    protected function getUserResource($type, $userInfo)
-//    {
-//        if ($type == 'userid') {
-//            $sql = 'SELECT userid
-//                    FROM   users
-//                    WHERE  username = :userInfo
-//                    OR useremail = :userInfo';
-//        } else if ($type == 'userPwd') {
-//            $sql = 'SELECT userpwd
-//                FROM   users
-//                WHERE  username = :userInfo
-//                OR useremail = :userInfo';
-//        }
-//
-//        $statement = $this->prepare($sql);
-//        $statement->bindValue(':userInfo', $userInfo);
-//
-//        $result = $statement->execute();
-//        $row = $result->fetchArray();
-//
-//        if ($type == 'userid') {
-//            $userResource = $row['userid'];
-//        } else if ($type == 'userPwd') {
-//            $userResource = $row['userpwd'];
-//        }
-//
-//        $statement->close();
-//        return $userResource;
-//    }
-
-    protected function getUserPwd($userInfo){
+    protected function getUserPwd($userInfo)
+    {
         $sql = 'SELECT pwd
                 FROM users
                 WHERE username = :userInfo
@@ -99,7 +70,8 @@ class DB extends SQLite3
         return $userPwd;
     }
 
-    public function getUserId($userInfo){
+    public function getUserId($userInfo)
+    {
         $sql = 'SELECT id
                 FROM users
                 WHERE username = :userInfo
@@ -111,6 +83,34 @@ class DB extends SQLite3
         $userId = $row['id'];
         $statement->close();
         return $userId;
+    }
+
+    public function getUserEmail($id)
+    {
+        $sql = 'SELECT email
+                FROM users
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $email = $row['email'];
+        $statement->close();
+        return $email;
+    }
+
+    public function getUsername($id)
+    {
+        $sql = 'SELECT username
+                FROM users
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $username = $row['username'];
+        $statement->close();
+        return $username;
     }
 
     public function createUser($username, $email, $pwd)
@@ -132,7 +132,8 @@ class DB extends SQLite3
         return true;
     }
 
-    public function createGroup($name){
+    public function createGroup($name)
+    {
         $sql = 'INSERT INTO groups(name)
                 VALUES (:name)';
         $statement = $this->prepare($sql);
@@ -142,7 +143,8 @@ class DB extends SQLite3
         $statement->close();
     }
 
-    public function addGroupMember($userid, $groupid){
+    public function addGroupMember($userid, $groupid)
+    {
         $sql = 'INSERT INTO groupMembers(member, groupid)
                 VALUES (:member, :groupid)';
         $statement = $this->prepare($sql);
@@ -153,7 +155,8 @@ class DB extends SQLite3
         $statement->close();
     }
 
-    public function getGroupId($name){
+    public function getGroupId($name)
+    {
         $sql = 'SELECT id
                 FROM groups
                 WHERE name = :name';
@@ -164,5 +167,92 @@ class DB extends SQLite3
         $userId = $row['id'];
         $statement->close();
         return $userId;
+    }
+
+    public function getGroupName($id)
+    {
+        $sql = 'SELECT name
+                FROM groups
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $name = $row['name'];
+        $statement->close();
+        return $name;
+    }
+
+    public function getGroups($userid)
+    {
+        $sql = 'SELECT groupid
+                FROM groupMembers
+                WHERE member = :userid';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':userid', $userid);
+        $result = $statement->execute();
+        $res = array();
+        while ($row = $result->fetchArray()) {
+            array_push($res, $row['groupId']);
+        }
+        $statement->close();
+        return $res;
+    }
+
+    /**
+     * @param $groupid
+     * @return array of members id in given group
+     */
+    public function getGroupMembers($groupId)
+    {
+        $sql = 'SELECT member
+                FROM groupMembers
+                WHERE groupId = :groupId';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':groupId', $groupId);
+        $result = $statement->execute();
+        $res = array();
+        while ($row = $result->fetchArray()) {
+            array_push($res, $row['member']);
+        }
+        $statement->close();
+        return $res;
+    }
+
+    public function getGroupMemberNum($groupId)
+    {
+        $sql = 'SELECT member
+                FROM groupMembers
+                WHERE groupId = :groupId';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':groupId', $groupId);
+        $result = $statement->execute();
+        $i = 0;
+        while ($row = $result->fetchArray()) {
+            $i++;
+        }
+        $statement->close();
+        return $i;
+    }
+
+    public function createBill($userid, $name, $amount, $groupid)
+    {
+        $sql = 'INSERT INTO bills(name, amount, date, payee, numberOfPayers)
+                VALUES (:name, :amount, :date, :userid, :numPayers)';
+
+        $numPayers = getGroupMemberNum($groupid);
+        $date = date('Y-m-d H:i:s');
+
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':name', $name);
+        $statement->bindValue(':amount', $amount);
+        $statement->bindValue(':date', $date);
+        $statement->bindValue(':numPayers', $numPayers);
+        $statement->bindValue(':payee', $userid);
+
+        $statement->execute();
+
+        $statement->close();
+        return true;
     }
 }

@@ -1,6 +1,11 @@
 <?php
+require_once "inc.php";
 session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 $userInfo = $_SESSION["userInfo"];
+$userid = $db->getUserId($userInfo);
 $filename = basename($_SERVER['PHP_SELF'], ".php");
 if ($filename == "index")
     $title = "Home";

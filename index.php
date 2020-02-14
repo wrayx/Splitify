@@ -3,7 +3,7 @@ include "header.php";
 if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == true) {
 ?>
 <div class="container">
-    <h1 class="index-title">Pending Bills</h1>
+    <h1 class="index-title">Overview</h1>
     <div class="pending-bills">
         <div class="bill-name">Bill Name<a href="bills.php"><i class="fas fa-expand-arrows-alt"></i></a></div>
         <div class="progress progress-moved">

@@ -7,7 +7,7 @@ function checkParams($parameters) {
     foreach ($parameters as $parameter) {
         // some field is empty
         if (empty($_POST[$parameter])){
-            echo 'failed';
+            header('Location: ../groups.php?create=failed&error=miss-'.$parameter.'-param');
             exit;
         }// end if statemente
     }// end foreach loop
@@ -36,11 +36,3 @@ else {
 
     header('Location: ../groups.php?create=success');
 }
-
-//if ($db->getTodoId($todoContent, $todoSpace, $userInfo)){
-//    echo "failed";
-//}
-//else {
-//    $db->createTodo($todoContent, $todoSpace, $userInfo);
-//    echo "success";
-//}

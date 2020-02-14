@@ -1,8 +1,9 @@
 $prim-color: #4dd599;
 $sec-color: #00918e;
 $third-color: #113a5d;
-$grey-black: #222326;
-$grey-light: #313236;
+$grey-black: #12171b;
+$grey-light: #2d3840;
+$red: #e74c3c;
 $prim-font: "Montserrat", sans-serif;
 
 body {
@@ -40,7 +41,7 @@ body {
         align-items: center;
         justify-content: center;
       }
-      &.purple {
+      &.blue {
         //background:linear-gradient(90deg, #4e54c8 0%,#8f94fb 100% );
         background-image: linear-gradient(to left bottom, $sec-color,$third-color, );
       }
@@ -366,22 +367,49 @@ input:focus ~ .bar:after {
   position: relative;
   margin-left: 40px;
   border-radius: 4px;
-  color: $prim-color;
-  border: 2px solid $prim-color;
+  border: 1px solid $prim-color;
   font-family: $prim-font;
   transition: 0.25s;
   font-size: 14px;
+  color: $prim-color;
+  outline: none;
+  float: right;
 
   &:hover,
   &:focus {
     background-color: $prim-color;
-    box-shadow: inset 0 0 0 2em $prim-color;
-    outline: none;
     color: $grey-black;
   }
+
   &.del{
     //margin-top: 20px;
     margin-left: 0;
+    color: white;
+    background: $red;
+    border: none;
+    float: left;
+    &:before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: width 0.2s;
+      z-index: 0;
+    }
+
+    &:hover,
+    &:focus {
+      &:before{
+        width: 100%;
+      }
+    }
+    &.del-right{
+      margin-left: 40px;
+      float: right;
+    }
   }
 }
 
@@ -397,21 +425,11 @@ input:focus ~ .bar:after {
   font-family: $prim-font;
   transition: 0.25s;
 
-  //.text {
-  //  font-size: 18px;
-  //  font-family: $prim-font, sans-serif;
-  //  color: $prim-color;
-  //  margin: 10px;
-  //}
-
   &:hover,
   &:focus {
     //background-color: $sec-color;
     box-shadow: inset 150px 0 0 0 $prim-color;
     color: $grey-black;
-    //.text {
-    //  color: #fff;
-    //}
   }
 }
 
@@ -664,7 +682,7 @@ footer {
 }
 
 /* The Modal (background) */
-.pay-modal, .confirm-modal, .delete-modal{
+.pay-modal, .confirm-modal, .delete-modal, .group-delete-modal{
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -685,10 +703,64 @@ footer {
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 0px solid #888;
-  width: 50%; /* Could be more or less, depending on screen size */
+  width: 650px; /* Could be more or less, depending on screen size */
   -webkit-animation: movedown 0.3s;
   animation: movedown 0.3s;
   border-radius: 10px;
+
+  .modal-header {
+    //border-bottom: 2px solid $grey-light;
+    margin: 20px 20px 40px 0;
+    font-size: 30px;
+    font-weight: 700;
+  }
+
+  .action {
+    position: relative;
+    margin-right: 0.625rem;
+    margin-top: 20px;
+    padding: 0.625rem 1.25rem;
+    border: none;
+    background-color: $prim-color;
+    border-radius: 0.25rem;
+    color: white;
+    font-size: 0.87rem;
+    //font-weight: 600;
+    overflow: hidden;
+    z-index: 1;
+    font-family: $prim-font;
+    outline: none;
+
+    &:before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: width 0.3s;
+      z-index: 0;
+    }
+
+    &.red {
+      background-color: $red;
+    }
+
+    &.green {
+      background-color: $prim-color;
+    }
+
+    &.blue {
+      background-color: $third-color;
+    }
+
+    &:hover {
+      &:before {
+        width: 100%;
+      }
+    }
+  }
 }
 
 /* The Close Button */
@@ -697,13 +769,12 @@ footer {
   float: right;
   font-size: 28px;
   font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: $prim-color;
-  text-decoration: none;
-  cursor: pointer;
+  &:hover,
+  &:focus {
+    color: $red;
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
 
 @-webkit-keyframes movedown {
