@@ -86,12 +86,12 @@ function sendInputGroup(e) {
     let groupname = document.querySelector("#input-group").textContent;
     let amount = document.querySelector("#amount").value;
     let name = document.querySelector("#name").value;
-    // if (trim(name) === "" || trim(groupname) === "" || trim(amount) === "") {
-    //     return;
-    // }
-    let params = "group=" + groupname +"&name="+name+"&amount="+amount;
+    if (groupname === "Choose a Group") {
+        return;
+    }
+    let params = "group=" + groupname + "&name=" + name + "&amount=" + amount;
     let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             console.log(this.responseText);
         }
@@ -99,7 +99,7 @@ function sendInputGroup(e) {
     xhttp.open("POST", "includes/bills.inc.php");
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(params);
-    // window.location.reload();
+    window.location.reload();
 }
 
 function trim(str) {

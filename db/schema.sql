@@ -4,32 +4,35 @@ CREATE TABLE users (
   	email NVARCHAR(40) NOT NULL,
   	pwd NVARCHAR(45) NOT NULL
 );
-CREATE TABLE bills (
-	id INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
-	name NVARCHAR(50) NOT NULL,
-	amount REAL NOT NULL,
-	date TEXT NOT NULL,
-	payee INTEGER NOT NULL,
-	numOfPayers INTEGER NOT NULL,
-	status INTEGER NOT NULL DEFAULT 0,
-  	FOREIGN KEY (payee) REFERENCES users (id)
+CREATE TABLE bills
+(
+    id     INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name   NVARCHAR(50) NOT NULL,
+    amount REAL         NOT NULL,
+    date   TEXT         NOT NULL,
+    payee  INTEGER      NOT NULL,
+    num    INTEGER      NOT NULL,
+    status INTEGER      NOT NULL DEFAULT 0,
+    FOREIGN KEY (payee) REFERENCES users (id)
 );
-CREATE TABLE splittedBills (
-	id INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
-	parentBill INTEGER NOT NULL,
-	payer INTEGER NOT NULL,
-	amount REAL NOT NULL,
-	status INTEGER NOT NULL DEFAULT 0,
-	FOREIGN KEY (payer) REFERENCES users (id),
-	FOREIGN KEY (parentBill) REFERENCES bills (id)
+CREATE TABLE splitbills
+(
+    id     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    parent INTEGER NOT NULL,
+    payer  INTEGER NOT NULL,
+    amount REAL    NOT NULL,
+    status INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (payer) REFERENCES users (id),
+    FOREIGN KEY (parent) REFERENCES bills (id)
 );
 CREATE TABLE groups (
 	id INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
 	name NVARCHAR(20) NOT NULL
 
 );
-CREATE TABLE groupMembers (
-    member INTEGER NOT NULL,
+CREATE TABLE members
+(
+    member  INTEGER NOT NULL,
     groupId INTEGER NOT NULL,
     FOREIGN KEY (member) REFERENCES users (id),
     FOREIGN KEY (groupId) REFERENCES groups (id)

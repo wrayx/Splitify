@@ -20,14 +20,22 @@ if ($db->getGroupId($name) != null) {
     exit;
 }
 else {
+    $i = 0;
+    while ($_POST['member-email'][$i] != null) {
+        $email = h($_POST['member-email'][$i]);
+        if (!$db->userExists($email)) {
+            header('Location: ../groups.php?create=failed&error=usernotexist');
+            exit;
+        }
+        $i++;
+    }
     $db->createGroup($name);
     $i = 0;
     while ($_POST['member-email'][$i] != null) {
         $email = h($_POST['member-email'][$i]);
         var_dump($email);
-        if (!$db->userExists($email)){
-            header('Location: ../groups.php?create=failed&error=usernotexist');
-            exit;
+        if ($db->getUserId($userInfo) == $db->getUserId($email)) {
+            continue;
         }
         $db->addGroupMember($db->getUserId($email), $db->getGroupId($name));
         $i++;

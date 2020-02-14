@@ -7,8 +7,6 @@ require_once("password.php");
  */
 class DB extends SQLite3
 {
-
-    // const DATABASE_NAME = 'todo.db';
     private $filename;
     const BCRYPT_COST = 14;
 
@@ -145,7 +143,7 @@ class DB extends SQLite3
 
     public function addGroupMember($userid, $groupid)
     {
-        $sql = 'INSERT INTO groupMembers(member, groupid)
+        $sql = 'INSERT INTO members(member, groupid)
                 VALUES (:member, :groupid)';
         $statement = $this->prepare($sql);
         $statement->bindValue(':member', $userid);
@@ -186,7 +184,7 @@ class DB extends SQLite3
     public function getGroups($userid)
     {
         $sql = 'SELECT groupid
-                FROM groupMembers
+                FROM members
                 WHERE member = :userid';
         $statement = $this->prepare($sql);
         $statement->bindValue(':userid', $userid);
@@ -206,7 +204,7 @@ class DB extends SQLite3
     public function getGroupMembers($groupId)
     {
         $sql = 'SELECT member
-                FROM groupMembers
+                FROM members
                 WHERE groupId = :groupId';
         $statement = $this->prepare($sql);
         $statement->bindValue(':groupId', $groupId);
@@ -221,38 +219,226 @@ class DB extends SQLite3
 
     public function getGroupMemberNum($groupId)
     {
-        $sql = 'SELECT member
-                FROM groupMembers
+        $sql = 'SELECT COUNT(*) AS count
+                FROM members
                 WHERE groupId = :groupId';
         $statement = $this->prepare($sql);
         $statement->bindValue(':groupId', $groupId);
         $result = $statement->execute();
-        $i = 0;
-        while ($row = $result->fetchArray()) {
-            $i++;
-        }
+        $row = $result->fetchArray();
+        $res = $row['count'];
         $statement->close();
-        return $i;
+        return $res;
     }
 
     public function createBill($userid, $name, $amount, $groupid)
     {
-        $sql = 'INSERT INTO bills(name, amount, date, payee, numberOfPayers)
-                VALUES (:name, :amount, :date, :userid, :numPayers)';
+        $sql = 'INSERT INTO bills(name, amount, createdate, payee, num)
+                VALUES (:name, :amount, :createdate, :userid, :num)';
 
-        $numPayers = getGroupMemberNum($groupid);
-        $date = date('Y-m-d H:i:s');
+        $numPayers = $this->getGroupMemberNum($groupid);
+        $createdate = date('d/m/Y h:m:s');
 
         $statement = $this->prepare($sql);
         $statement->bindValue(':name', $name);
         $statement->bindValue(':amount', $amount);
-        $statement->bindValue(':date', $date);
-        $statement->bindValue(':numPayers', $numPayers);
-        $statement->bindValue(':payee', $userid);
+        $statement->bindValue(':createdate', $createdate);
+        $statement->bindValue(':num', $numPayers);
+        $statement->bindValue(':userid', $userid);
 
         $statement->execute();
-
         $statement->close();
-        return true;
+    }
+
+    public function getBillId($name)
+    {
+        $sql = 'SELECT id
+                FROM bills
+                WHERE name = :name';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':name', $name);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['id'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getBillNum($id)
+    {
+        $sql = 'SELECT num
+                FROM bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['num'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getBillAmount($id)
+    {
+        $sql = 'SELECT amount
+                FROM bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['amount'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getUserBills($userid)
+    {
+        $sql = 'SELECT id
+                FROM bills
+                WHERE payee = :userid';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':userid', $userid);
+        $result = $statement->execute();
+        $res = array();
+        while ($row = $result->fetchArray()) {
+            array_push($res, $row['id']);
+        }
+        $statement->close();
+        return $res;
+    }
+
+    public function createSplitBill($parent, $payer, $amount)
+    {
+        $sql = 'INSERT INTO splitbills(parent, payer, amount)
+                VALUES (:parent, :payer, :amount)';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':parent', $parent);
+        $statement->bindValue(':amount', $this->format($amount));
+        $statement->bindValue(':payer', $payer);
+
+        $statement->execute();
+        $statement->close();
+    }
+
+    public function getUserSplitBills($userid)
+    {
+        $sql = 'SELECT id
+                FROM splitbills
+                WHERE payer = :userid';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':userid', $userid);
+        $result = $statement->execute();
+        $res = array();
+        while ($row = $result->fetchArray()) {
+            array_push($res, $row['id']);
+        }
+        $statement->close();
+        return $res;
+    }
+
+    public function getChildSplitBills($parent)
+    {
+        $sql = 'SELECT id
+                FROM splitbills
+                WHERE parent = :parent';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':parent', $parent);
+        $result = $statement->execute();
+        $res = array();
+        while ($row = $result->fetchArray()) {
+            array_push($res, $row['id']);
+        }
+        $statement->close();
+        return $res;
+    }
+
+    public function getSplitBillAmount($id)
+    {
+        $sql = 'SELECT amount
+                FROM splitbills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['amount'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getSplitBillParent($id)
+    {
+        $sql = 'SELECT parent
+                FROM splitbills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['parent'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getSplitBillPayer($id)
+    {
+        $sql = 'SELECT payer
+                FROM splitbills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['payer'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getBillName($id)
+    {
+        $sql = 'SELECT name
+                FROM Bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['name'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getBillPayee($id)
+    {
+        $sql = 'SELECT payee
+                FROM Bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['payee'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getBillDate($id)
+    {
+        $sql = 'SELECT createdate
+                FROM Bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['createdate'];
+        $statement->close();
+        return $res;
+    }
+
+    public static function format($amount)
+    {
+        return number_format((float)$amount, 2, '.', '');
     }
 }

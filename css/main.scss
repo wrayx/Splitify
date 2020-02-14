@@ -248,8 +248,8 @@ label {
 }
 
 /* active state */
-input:focus ~ label,
-input:valid ~ label {
+input:valid ~ label,
+input:focus ~ label {
   top: -20px;
   font-size: 14px;
   color: $prim-color;
@@ -703,7 +703,7 @@ footer {
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 0px solid #888;
-  width: 650px; /* Could be more or less, depending on screen size */
+  width: 700px; /* Could be more or less, depending on screen size */
   -webkit-animation: movedown 0.3s;
   animation: movedown 0.3s;
   border-radius: 10px;

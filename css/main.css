@@ -182,11 +182,12 @@ label {
   -webkit-transition: 0.2s ease all; }
 
 /* active state */
-input:focus ~ label,
-input:valid ~ label {
+input:valid ~ label,
+input:focus ~ label {
   top: -20px;
   font-size: 14px;
-  color: #4dd599; }
+  color: #4dd599;
+}
 
 /* BOTTOM BARS ================================= */
 .bar {
@@ -529,11 +530,12 @@ footer {
   /* 15% from the top and centered */
   padding: 20px;
   border: 0px solid #888;
-  width: 650px;
+  width: 700px;
   /* Could be more or less, depending on screen size */
   -webkit-animation: movedown 0.3s;
   animation: movedown 0.3s;
-  border-radius: 10px; }
+  border-radius: 10px;
+}
   .modal-content .modal-header {
     margin: 20px 20px 40px 0;
     font-size: 30px;
