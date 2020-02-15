@@ -278,6 +278,21 @@ class DB extends SQLite3
         return $res;
     }
 
+    public function getBillPaidNum($parent)
+    {
+        $sql = 'SELECT COUNT(*) AS count
+                FROM splitbills
+                WHERE parent = :parent
+                AND status = 1';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':parent', $parent);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['count'];
+        $statement->close();
+        return $res;
+    }
+
     public function getBillAmount($id)
     {
         $sql = 'SELECT amount
@@ -338,7 +353,8 @@ class DB extends SQLite3
     {
         $sql = 'SELECT id
                 FROM bills
-                WHERE payee = :userid';
+                WHERE payee = :userid
+                AND status < 100';
         $statement = $this->prepare($sql);
         $statement->bindValue(':userid', $userid);
         $result = $statement->execute();
@@ -398,7 +414,8 @@ class DB extends SQLite3
     {
         $sql = 'SELECT id
                 FROM splitbills
-                WHERE payer = :userid';
+                WHERE payer = :userid
+                AND status = 0';
         $statement = $this->prepare($sql);
         $statement->bindValue(':userid', $userid);
         $result = $statement->execute();
@@ -414,7 +431,8 @@ class DB extends SQLite3
     {
         $sql = 'SELECT id
                 FROM splitbills
-                WHERE parent = :parent';
+                WHERE parent = :parent
+                AND status = 0';
         $statement = $this->prepare($sql);
         $statement->bindValue(':parent', $parent);
         $result = $statement->execute();
@@ -471,5 +489,41 @@ class DB extends SQLite3
     public static function format($amount)
     {
         return number_format((float)$amount, 2, '.', '');
+    }
+
+    public function paySplitBill($id)
+    {
+        $parent = $this->getSplitBillParent($id);
+        $sql = 'SELECT status
+                FROM bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $parent);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $billPercentage = $row['status'];
+        $statement->close();
+
+        $billNum = $this->getBillNum($parent);
+        $billPercentage = $billPercentage + floor(100 / $billNum);
+        echo $billPercentage;
+
+        $sql = 'UPDATE bills
+                SET status = :status
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':status', $billPercentage);
+        $statement->bindValue(':id', $parent);
+        $statement->execute();
+        $statement->close();
+
+        $sql = 'UPDATE splitbills
+                SET status = :status
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':status', 1);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $statement->close();
     }
 }

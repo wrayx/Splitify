@@ -71,12 +71,22 @@ let payModals = document.querySelectorAll(".pay-modal");
 let confirmModals = document.querySelectorAll(".confirm-modal");
 let deleteModals = document.querySelectorAll(".delete-modal");
 for (let i = 0; i < payModals.length; i++) {
-    let modal = new Modal('pay', Modal.getModalId(payModals[i].id));
+    let id = Modal.getModalId(payModals[i].id);
+    let modal = new Modal('pay', id);
+    let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
     modal.addModalEvtListener();
+    proceed.addEventListener("click", function () {
+        payBill(id);
+    });
 }
 for (let i = 0; i < confirmModals.length; i++) {
-    let modal = new Modal('confirm', Modal.getModalId(confirmModals[i].id));
+    let id = Modal.getModalId(confirmModals[i].id);
+    let modal = new Modal('confirm', id);
+    let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
     modal.addModalEvtListener();
+    proceed.addEventListener("click", function () {
+        payBill(id);
+    });
 }
 for (let i = 0; i < deleteModals.length; i++) {
     let id = Modal.getModalId(deleteModals[i].id);
@@ -91,7 +101,7 @@ for (let i = 0; i < deleteModals.length; i++) {
 }
 
 function deleteBill(id) {
-    let params = "id=" + id;
+    let params = "deleteId=" + id;
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
@@ -107,6 +117,26 @@ function deleteBill(id) {
             }
             row.parentElement.removeChild(row);
             remainingModal.parentElement.parentElement.removeChild(remainingModal.parentElement);
+        }
+    };
+    xhttp.open("POST", "includes/bills.inc.php");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
+
+function payBill(id) {
+    let params = "paySplitBillId=" + id;
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            let modal = new Modal('pay', id);
+            let trigger = document.querySelector(`#${modal.htmlTriggerId()}`);
+            let remainingModal = document.querySelector(`#${modal.htmlModalId()}`);
+            let row = trigger.parentElement.parentElement;
+            row.parentElement.removeChild(row);
+            remainingModal.parentElement.removeChild(remainingModal);
+            ;
         }
     };
     xhttp.open("POST", "includes/bills.inc.php");

@@ -43,7 +43,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                 </div>
             </div>
         </div>
-        <!--        first section bills to pay-->
+        <!-- first section bills to pay -->
         <div class="card">
             <div class="face face1 blue">
                 <div class="content">
@@ -106,7 +106,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                         to <?php echo $splitBillPayee; ?></div>
                                     <p><b>Payment:</b> <?php echo $splitBillName; ?></p><br>
                                     <p><b>Amount:</b> $<?php echo $splitBillAmount; ?></p><br>
-                                    <button class="action red"
+                                    <button class="action green"
                                             id="<?php echo modalId($type, "proceed", $userBill); ?>">Pay
                                     </button>
                                     <button class="action blue cancel-btn"
@@ -148,6 +148,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                             foreach ($payeeBills as $payeeBill):
                                 $billName = $db->getBillName($payeeBill);
                                 $billNum = $db->getBillNum($payeeBill) - 1;
+                                $billNum = $billNum - $db->getBillPaidNum($payeeBill);
                                 $i = $billNum;
                                 $childBills = $db->getChildSplitBills($payeeBill);
                                 foreach ($childBills as $childBill):
@@ -201,7 +202,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                     <p><b>Payment:</b> <?php echo $billName; ?></p><br>
                                     <p><b>Payer:</b> <?php echo $childBillPayer; ?></p><br>
                                     <p><b>Amount:</b> $<?php echo $childBillAmount; ?></p><br>
-                                    <button class="action red"
+                                    <button class="action green"
                                             id="<?php echo modalId("confirm", "proceed", $childBill); ?>">
                                         Proceed
                                     </button>

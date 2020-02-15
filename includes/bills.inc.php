@@ -33,9 +33,12 @@ if (checkParams(array('name', 'amount', 'group')) === true) {
             var_dump($splitAmount);
         }
     }
-} elseif (checkParams(array('id')) === true) {
-    $id = h($_POST['id']);
+} elseif (checkParams(array('deleteId')) === true) {
+    $id = h($_POST['deleteId']);
     $db->deleteBill($id);
+} elseif (checkParams(array('paySplitBillId')) === true) {
+    $id = h($_POST['paySplitBillId']);
+    $db->paySplitBill($id);
 } else {
     header('Location: ../bills.php?create=failed&error=missing-param');
     exit;
