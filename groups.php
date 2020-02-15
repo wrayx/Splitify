@@ -74,22 +74,30 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                         <td><?php echo $i; ?></td>
                                         <td><?php echo $username; ?></td>
                                         <td><?php echo $email; ?>
-                                            <button class="button-sm del del-right del-btn"><i class="fas fa-times"></i>
+                                            <button class="button-sm del del-right del-btn"
+                                                    id="<?php echo modalId("delete", "trigger", $member) ?>"><i
+                                                        class="fas fa-times"></i>
                                             </button>
                                         </td>
                                     </tr>
                                     <!-- The Deletion Modal -->
-                                    <div class="delete-modal">
+                                    <div class="delete-modal" id="<?php echo modalId("delete", "", $member) ?>">
                                         <!-- Modal content -->
                                         <div class="modal-content">
-                                            <span class="close"><i class="fas fa-times"></i></span>
+                                            <span class="close"
+                                                  id="<?php echo modalId("delete", "close", $member) ?>"><i
+                                                        class="fas fa-times"></i></span>
                                             <div class="modal-header">
                                                 Confirm to Remove This Member ?
                                             </div>
                                             <p><b>Group Name:</b> <?php echo $groupName; ?></p><br>
                                             <p><b>Username:</b> <?php echo $username; ?></p><br>
-                                            <button class="action red action-rm-member">Delete</button>
-                                            <button class="action blue cancel-btn">Cancel</button>
+                                            <button class="action red action-rm-member"
+                                                    id="<?php echo modalId("delete", "proceed", $member) ?>">Delete
+                                            </button>
+                                            <button class="action blue cancel-btn"
+                                                    id="<?php echo modalId("delete", "cancel", $member) ?>">Cancel
+                                            </button>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -97,26 +105,33 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                             </table>
                         </div>
                         <br>
-                        <button class="button-sm del del-right del-group-btn">Delete Group</button>
+                        <button class="button-sm del del-right del-group-btn"
+                                id="<?php echo modalId("deletegroup", "trigger", $group) ?>">Delete Group
+                        </button>
                     </div>
                 </div>
             </div>
             <!-- The Group Deletion Modal -->
-            <div class="group-delete-modal">
+            <div class="group-delete-modal" id="<?php echo modalId("deletegroup", "", $group) ?>">
                 <!-- Modal content -->
                 <div class="modal-content">
-                    <span class="close"><i class="fas fa-times"></i></span>
+                    <span class="close" id="<?php echo modalId("deletegroup", "close", $group) ?>"><i
+                                class="fas fa-times"></i></span>
                     <div class="modal-header">
                         Confirm to Delete this Group ?
                     </div>
                     <p><b>Group Name:</b> <?php echo $groupName; ?></p><br>
-                    <button class="action red action-del-group">Delete</button>
-                    <button class="action blue cancel-btn">Cancel</button>
+                    <button class="action red action-del-group"
+                            id="<?php echo modalId("deletegroup", "proceed", $group) ?>">Delete
+                    </button>
+                    <button class="action blue cancel-btn" id="<?php echo modalId("deletegroup", "cancel", $group) ?>">
+                        Cancel
+                    </button>
                 </div>
             </div>
         <?php endforeach; ?>
     </div>
-    <script src="js/groups.js"></script>
+    <script src="js/groups.js" type="module"></script>
     <?php
 } else {
     header('Location: signin.php');

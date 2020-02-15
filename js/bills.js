@@ -1,4 +1,6 @@
-let groupOptions= document.querySelectorAll(".group-options");
+import Modal from './modal.js';
+
+let groupOptions = document.querySelectorAll(".group-options");
 let dropdown = document.querySelector(".dropdown");
 let angle = document.querySelector(".fa-angle-down");
 let selector = document.querySelector(".selector");
@@ -6,75 +8,35 @@ for (let i = 0; i < groupOptions.length; i++) {
     groupOptions[i].addEventListener("click", optionChange);
 }
 
-function optionChange(e){
+function optionChange(e) {
     let optionText = e.target.textContent;
     for (let i = 0; i < groupOptions.length; i++) {
         groupOptions[i].classList.remove("active");
     }
     e.target.classList.add("active");
     selector.firstElementChild.innerHTML = optionText;
-    dropdown.style.opacity = "0";
-    dropdown.style.visibility = "hidden";
-    angle.style.transitionDuration = "0.25s";
-    angle.style.transform = "rotate(0Deg)";
+    hideDropdown();
 }
 
-selector.addEventListener("mouseover", displayDropdown);
-// selector.addEventListener("mouseout", hideDropdown);
-function displayDropdown(e){
+selector.addEventListener("click", displayDropdown);
+
+function displayDropdown() {
     dropdown.style.opacity = "1";
     dropdown.style.visibility = "visible";
     dropdown.style.transform = "translate(0, 20px)";
     angle.style.transitionDuration = "0.25s";
     angle.style.transform = "rotate(180Deg)";
 }
+
 // window.addEventListener("click", hideDropdown);
 // selector.addEventListener("click", displayDropdown);
 dropdown.addEventListener("mouseout", hideDropdown);
-function hideDropdown(e){
+
+function hideDropdown() {
     dropdown.style.opacity = "0";
     dropdown.style.visibility = "hidden";
     angle.style.transitionDuration = "0.25s";
     angle.style.transform = "rotate(0Deg)";
-}
-
-
-// Get the pay-modal
-let payModal = document.querySelector(".pay-modal");
-let confirmModal = document.querySelector(".confirm-modal");
-let deleteModal = document.querySelector(".delete-modal");
-
-let payBtns = document.querySelectorAll(".pay-btn");
-let cancelBtns = document.querySelectorAll(".cancel-btn");
-let delBtns = document.querySelectorAll(".del-btn");
-let confirmBtns = document.querySelectorAll(".confirm-btn");
-
-let closeBtns = document.querySelectorAll(".close");
-function loopEvtListner(array, listenFor, functionExecute){
-    for (let i = 0; i < array.length; i++) {
-        array[i].addEventListener(listenFor, functionExecute);
-    }
-}
-loopEvtListner(payBtns, "click", openModal);
-loopEvtListner(cancelBtns, "click", closeModal);
-loopEvtListner(confirmBtns, "click", openModal);
-loopEvtListner(delBtns, "click", openModal);
-loopEvtListner(closeBtns, "click", closeModal);
-function openModal(e) {
-    if (e.target.classList.contains("confirm-btn") || e.target.parentElement.classList.contains("confirm-btn"))
-        confirmModal.style.display = "block";
-    else if (e.target.classList.contains("pay-btn"))
-        payModal.style.display = "block";
-    else if (e.target.classList.contains("del-btn"))
-        deleteModal.style.display = "block";
-}
-function closeModal(e) {
-    if (confirmModal.style.display === "block")
-        confirmModal.style.display = "none";
-    else if (payModal.style.display === "block")
-        payModal.style.display = "none";
-    else if (deleteModal.style.display === "block")
-        deleteModal.style.display = "none";
 }
 
 let billSubmit = document.querySelector("#bill-form");
@@ -92,7 +54,7 @@ function sendInputGroup(e) {
     let params = "group=" + groupname + "&name=" + name + "&amount=" + amount;
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
+        if (this.readyState === 4 && this.status === 200) {
             console.log(this.responseText);
         }
     };
@@ -105,4 +67,20 @@ function sendInputGroup(e) {
 function trim(str) {
     str = str.replace(/\s+/g, "");
     return str;
+}
+
+let payModals = document.querySelectorAll(".pay-modal");
+let confirmModals = document.querySelectorAll(".confirm-modal");
+let deleteModals = document.querySelectorAll(".delete-modal");
+for (let i = 0; i < payModals.length; i++) {
+    let modal = new Modal('pay', Modal.getModalId(payModals[i].id));
+    modal.addModalEvtListener();
+}
+for (let i = 0; i < confirmModals.length; i++) {
+    let modal = new Modal('confirm', Modal.getModalId(confirmModals[i].id));
+    modal.addModalEvtListener();
+}
+for (let i = 0; i < deleteModals.length; i++) {
+    let modal = new Modal('delete', Modal.getModalId(deleteModals[i].id));
+    modal.addModalEvtListener();
 }

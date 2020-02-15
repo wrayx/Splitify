@@ -1,16 +1,19 @@
+@import "font.css";
+
 $prim-color: #4dd599;
 $sec-color: #00918e;
 $third-color: #113a5d;
 $grey-black: #12171b;
 $grey-light: #2d3840;
 $red: #e74c3c;
-$prim-font: "Montserrat", sans-serif;
+$prim-font: 'Montserrat', sans-serif;
 
 body {
   min-height: 100vh;
   background: black;
   color: #fff;
   font-family: $prim-font;
+
   a {
     text-decoration: none;
   }
@@ -172,7 +175,7 @@ header {
 }
 
 .landing-title {
-  margin: 0 150px 0px 150px;
+  margin: 0 150px 0 150px;
 }
 
 /* form starting stylings */
@@ -267,7 +270,7 @@ input:focus ~ label {
   content: "";
   height: 2px;
   width: 0;
-  bottom: 0px;
+  bottom: 0;
   position: absolute;
   background: $prim-color;
   transition: 0.2s ease all;
@@ -393,7 +396,7 @@ input:focus ~ .bar:after {
       content: '';
       top: 0;
       left: 0;
-      width: 0%;
+      width: 0;
       height: 100%;
       background-color: rgba(255, 255, 255, 0.2);
       transition: width 0.2s;
@@ -543,10 +546,10 @@ table{
 .tbl-header{
   background-color: $grey-light;
 }
-.tbl-content{
+.tbl-content {
   //height:300px;
-  overflow-x:auto;
-  margin-top: 0px;
+  overflow-x: auto;
+  margin-top: 0;
   //border: 1px solid rgba(255,255,255,0.3);
 }
 
@@ -702,7 +705,7 @@ footer {
   background-color: $grey-black;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
-  border: 0px solid #888;
+  //border: 0 solid #888;
   width: 700px; /* Could be more or less, depending on screen size */
   -webkit-animation: movedown 0.3s;
   animation: movedown 0.3s;
@@ -736,7 +739,7 @@ footer {
       content: '';
       top: 0;
       left: 0;
-      width: 0%;
+      width: 0;
       height: 100%;
       background-color: rgba(255, 255, 255, 0.2);
       transition: width 0.3s;

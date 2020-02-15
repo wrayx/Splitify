@@ -4,6 +4,14 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+function modalId($type, $function, $id)
+{
+    if ($function === "") {
+        return $type . "-modal-" . $id;
+    } else {
+        return $type . "-modal-" . $function . "-" . $id;
+    }
+}
 if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == true) {
     $userInfo = $_SESSION["userInfo"];
     $userid = $db->getUserId($userInfo);
