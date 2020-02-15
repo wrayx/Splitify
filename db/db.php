@@ -198,7 +198,7 @@ class DB extends SQLite3
     }
 
     /**
-     * @param $groupid
+     * @param $groupId
      * @return array of members id in given group
      */
     public function getGroupMembers($groupId)
@@ -292,6 +292,48 @@ class DB extends SQLite3
         return $res;
     }
 
+    public function getBillName($id)
+    {
+        $sql = 'SELECT name
+                FROM Bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['name'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getBillPayee($id)
+    {
+        $sql = 'SELECT payee
+                FROM Bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['payee'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getBillDate($id)
+    {
+        $sql = 'SELECT createdate
+                FROM Bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['createdate'];
+        $statement->close();
+        return $res;
+    }
+
     public function getUserBills($userid)
     {
         $sql = 'SELECT id
@@ -308,6 +350,17 @@ class DB extends SQLite3
         return $res;
     }
 
+    public function deleteBill($id)
+    {
+        $sql = 'DELETE FROM bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $statement->close();
+        $this->deleteSplitBills($id);
+    }
+
     public function createSplitBill($parent, $payer, $amount)
     {
         $sql = 'INSERT INTO splitbills(parent, payer, amount)
@@ -320,6 +373,26 @@ class DB extends SQLite3
         $statement->execute();
         $statement->close();
     }
+
+    public function deleteSplitBills($parent)
+    {
+        $sql = 'DELETE FROM splitbills
+                WHERE parent = :parent';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':parent', $parent);
+        $statement->execute();
+        $statement->close();
+    }
+
+//    public function confirmSplitBill($id)
+//    {
+//        $sql = 'DELETE FROM splitbills
+//                WHERE id = :id';
+//        $statement = $this->prepare($sql);
+//        $statement->bindValue(':id', $id);
+//        $statement->execute();
+//        $statement->close();
+//    }
 
     public function getUserSplitBills($userid)
     {
@@ -391,48 +464,6 @@ class DB extends SQLite3
         $result = $statement->execute();
         $row = $result->fetchArray();
         $res = $row['payer'];
-        $statement->close();
-        return $res;
-    }
-
-    public function getBillName($id)
-    {
-        $sql = 'SELECT name
-                FROM Bills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['name'];
-        $statement->close();
-        return $res;
-    }
-
-    public function getBillPayee($id)
-    {
-        $sql = 'SELECT payee
-                FROM Bills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['payee'];
-        $statement->close();
-        return $res;
-    }
-
-    public function getBillDate($id)
-    {
-        $sql = 'SELECT createdate
-                FROM Bills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['createdate'];
         $statement->close();
         return $res;
     }

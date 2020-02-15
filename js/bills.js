@@ -28,8 +28,6 @@ function displayDropdown() {
     angle.style.transform = "rotate(180Deg)";
 }
 
-// window.addEventListener("click", hideDropdown);
-// selector.addEventListener("click", displayDropdown);
 dropdown.addEventListener("mouseout", hideDropdown);
 
 function hideDropdown() {
@@ -81,6 +79,37 @@ for (let i = 0; i < confirmModals.length; i++) {
     modal.addModalEvtListener();
 }
 for (let i = 0; i < deleteModals.length; i++) {
-    let modal = new Modal('delete', Modal.getModalId(deleteModals[i].id));
+    let id = Modal.getModalId(deleteModals[i].id);
+    let modal = new Modal('delete', id);
+    let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
     modal.addModalEvtListener();
+    // if they proceed to delete the bill, we will remove the bill
+    // from both database and the website
+    proceed.addEventListener("click", function () {
+        deleteBill(id);
+    });
+}
+
+function deleteBill(id) {
+    let params = "id=" + id;
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            let modal = new Modal('delete', id);
+            let trigger = document.querySelector(`#${modal.htmlTriggerId()}`);
+            let rowNum = trigger.parentElement.getAttribute("rowspan");
+            let row = trigger.parentElement.parentElement;
+            let remainingModal = document.querySelector(`#${modal.htmlModalId()}`);
+            while (rowNum > 1) {
+                row.parentElement.removeChild(row.nextElementSibling);
+                rowNum--;
+            }
+            row.parentElement.removeChild(row);
+            remainingModal.parentElement.parentElement.removeChild(remainingModal.parentElement);
+        }
+    };
+    xhttp.open("POST", "includes/bills.inc.php");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
 }

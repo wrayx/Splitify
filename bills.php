@@ -86,27 +86,35 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                         </button>
                                     </td>
                                 </tr>
-                                <!-- The Pay Modal -->
-                                <div class="pay-modal" id="<?php echo modalId($type, "", $userBill); ?>">
-                                    <!-- Modal content -->
-                                    <div class="modal-content">
-                                        <span class="close" id="<?php echo modalId($type, "close", $userBill);; ?>"><i
-                                                class="fas fa-times"></i></span>
-                                        <div class="modal-header">Please Confirm Your Payment
-                                            to <?php echo $splitBillPayee; ?></div>
-                                        <p><b>Payment:</b> <?php echo $splitBillName; ?></p><br>
-                                        <p><b>Amount:</b> $<?php echo $splitBillAmount; ?></p><br>
-                                        <button class="action red"
-                                                id="<?php echo modalId($type, "proceed", $userBill); ?>">Pay
-                                        </button>
-                                        <button class="action blue cancel-btn"
-                                                id="<?php echo modalId($type, "cancel", $userBill); ?>">Cancel
-                                        </button>
-                                    </div>
-                                </div>
                             <?php endforeach; ?>
                             </tbody>
                         </table>
+                        <?php
+                        $userBills = $db->getUserSplitBills($userid);
+                        $type = "pay";
+                        foreach ($userBills as $userBill):
+                            $splitBillName = $db->getBillName($db->getSplitBillParent($userBill));
+                            $splitBillAmount = number_format($db->getSplitBillAmount($userBill), 2, '.', '');
+                            $splitBillPayee = $db->getUsername($db->getBillPayee($db->getSplitBillParent($userBill))); ?>
+                            <!-- The Pay Modal -->
+                            <div class="pay-modal" id="<?php echo modalId($type, "", $userBill); ?>">
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                        <span class="close" id="<?php echo modalId($type, "close", $userBill);; ?>"><i
+                                                    class="fas fa-times"></i></span>
+                                    <div class="modal-header">Please Confirm Your Payment
+                                        to <?php echo $splitBillPayee; ?></div>
+                                    <p><b>Payment:</b> <?php echo $splitBillName; ?></p><br>
+                                    <p><b>Amount:</b> $<?php echo $splitBillAmount; ?></p><br>
+                                    <button class="action red"
+                                            id="<?php echo modalId($type, "proceed", $userBill); ?>">Pay
+                                    </button>
+                                    <button class="action blue cancel-btn"
+                                            id="<?php echo modalId($type, "cancel", $userBill); ?>">Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
@@ -158,58 +166,77 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                         <td>$<?php echo $childBillAmount; ?>
                                             <button class="button-sm confirm-btn"
                                                     id="<?php echo modalId("confirm", "trigger", $childBill); ?>"><i
-                                                    class="fas fa-check"></i></button>
+                                                        class="fas fa-check"></i></button>
                                         </td>
                                     </tr>
-                                    <div class="confirm-modal" id="<?php echo modalId("confirm", "", $childBill); ?>">
-                                        <!-- Modal content -->
-                                        <div class="modal-content">
-                                            <span class="close"
-                                                  id="<?php echo modalId("confirm", "close", $childBill); ?>"><i
-                                                    class="fas fa-times"></i></span>
-                                            <!--                            <p>Make a Payment</p><br>-->
-                                            <div class="modal-header">Please Confirm the Pending Payment</div>
-                                            <p><b>Payment:</b> <?php echo $billName; ?></p><br>
-                                            <p><b>Payer:</b> <?php echo $childBillPayer; ?></p><br>
-                                            <p><b>Amount:</b> $<?php echo $childBillAmount; ?></p><br>
-                                            <button class="action red"
-                                                    id="<?php echo modalId("confirm", "proceed", $childBill); ?>">
-                                                Proceed
-                                            </button>
-                                            <button class="action blue cancel-btn"
-                                                    id="<?php echo modalId("confirm", "cancel", $childBill); ?>">Cancel
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- The Deletion Modal -->
-                                    <div class="delete-modal" id="<?php echo modalId("delete", "", $payeeBill); ?>">
-                                        <!-- Modal content -->
-                                        <div class="modal-content">
-                                            <span class="close"
-                                                  id="<?php echo modalId("delete", "close", $payeeBill); ?>"><i
-                                                    class="fas fa-times"></i></span>
-                                            <div class="modal-header">Confirm to Delete This Bill ?</div>
-                                            <p><b>Name:</b> <?php echo $billName; ?></p><br>
-                                            <p><b>Total Amount:</b> <?php echo $db->getBillAmount($payeeBill); ?></p>
-                                            <br>
-                                            <button class="action red"
-                                                    id="<?php echo modalId("delete", "proceed", $payeeBill); ?>">Delete
-                                            </button>
-                                            <button class="action blue cancel-btn"
-                                                    id="<?php echo modalId("delete", "cancel", $payeeBill); ?>">Cancel
-                                            </button>
-                                        </div>
-                                    </div>
                                     <?php
                                     $i--;
                                 endforeach;
                             endforeach; ?>
                             </tbody>
                         </table>
+                        <?php
+                        $payeeBills = $db->getUserBills($userid);
+                        foreach ($payeeBills
+
+                        as $payeeBill):
+                        $billName = $db->getBillName($payeeBill);
+                        $billNum = $db->getBillNum($payeeBill) - 1;
+                        $i = $billNum;
+                        $childBills = $db->getChildSplitBills($payeeBill);
+                        echo "<div>";
+                        foreach ($childBills as $childBill):
+                            $childBillAmount = number_format($db->getSplitBillAmount($childBill), 2, '.', '');
+                            $childBillDate = str_replace('/', '-', $db->getBillDate($db->getSplitBillParent($childBill)));
+                            $childBillPayer = $db->getUsername($db->getSplitBillPayer($childBill));
+                            ?>
+                            <div class="confirm-modal" id="<?php echo modalId("confirm", "", $childBill); ?>">
+                                <!-- Modal content -->
+                                <div class="modal-content">
+                                                <span class="close"
+                                                      id="<?php echo modalId("confirm", "close", $childBill); ?>"><i
+                                                            class="fas fa-times"></i></span>
+                                    <!--                            <p>Make a Payment</p><br>-->
+                                    <div class="modal-header">Please Confirm the Pending Payment</div>
+                                    <p><b>Payment:</b> <?php echo $billName; ?></p><br>
+                                    <p><b>Payer:</b> <?php echo $childBillPayer; ?></p><br>
+                                    <p><b>Amount:</b> $<?php echo $childBillAmount; ?></p><br>
+                                    <button class="action red"
+                                            id="<?php echo modalId("confirm", "proceed", $childBill); ?>">
+                                        Proceed
+                                    </button>
+                                    <button class="action blue cancel-btn"
+                                            id="<?php echo modalId("confirm", "cancel", $childBill); ?>">Cancel
+                                    </button>
+                                </div>
+                            </div>
+                            <?php $i--; endforeach; ?>
+                        <!-- The Deletion Modal -->
+                        <div class="delete-modal" id="<?php echo modalId("delete", "", $payeeBill); ?>">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                                <span class="close"
+                                                      id="<?php echo modalId("delete", "close", $payeeBill); ?>"><i
+                                                            class="fas fa-times"></i></span>
+                                <div class="modal-header">Confirm to Delete This Bill ?</div>
+                                <p><b>Name:</b> <?php echo $billName; ?></p><br>
+                                <p><b>Total Amount:</b>
+                                    $<?php echo number_format($db->getBillAmount($payeeBill), 2, '.', ''); ?></p>
+                                <br>
+                                <button class="action red"
+                                        id="<?php echo modalId("delete", "proceed", $payeeBill); ?>">Delete
+                                </button>
+                                <button class="action blue cancel-btn"
+                                        id="<?php echo modalId("delete", "cancel", $payeeBill); ?>">Cancel
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <script src="js/bills.js" type="module"></script>
     <?php

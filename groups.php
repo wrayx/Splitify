@@ -80,26 +80,6 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                             </button>
                                         </td>
                                     </tr>
-                                    <!-- The Deletion Modal -->
-                                    <div class="delete-modal" id="<?php echo modalId("delete", "", $member) ?>">
-                                        <!-- Modal content -->
-                                        <div class="modal-content">
-                                            <span class="close"
-                                                  id="<?php echo modalId("delete", "close", $member) ?>"><i
-                                                        class="fas fa-times"></i></span>
-                                            <div class="modal-header">
-                                                Confirm to Remove This Member ?
-                                            </div>
-                                            <p><b>Group Name:</b> <?php echo $groupName; ?></p><br>
-                                            <p><b>Username:</b> <?php echo $username; ?></p><br>
-                                            <button class="action red action-rm-member"
-                                                    id="<?php echo modalId("delete", "proceed", $member) ?>">Delete
-                                            </button>
-                                            <button class="action blue cancel-btn"
-                                                    id="<?php echo modalId("delete", "cancel", $member) ?>">Cancel
-                                            </button>
-                                        </div>
-                                    </div>
                                 <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -111,6 +91,35 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                     </div>
                 </div>
             </div>
+            <?php
+            $members = $db->getGroupMembers($group);
+            $i = 0;
+            foreach ($members as $member):
+                $i++;
+                $username = $db->getUsername($member);
+                $email = $db->getUserEmail($member);
+                ?>
+                <!-- The Member Deletion Modal -->
+                <div class="delete-modal" id="<?php echo modalId("delete", "", $member) ?>">
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                                            <span class="close"
+                                                  id="<?php echo modalId("delete", "close", $member) ?>"><i
+                                                        class="fas fa-times"></i></span>
+                        <div class="modal-header">
+                            Confirm to Remove This Member ?
+                        </div>
+                        <p><b>Group Name:</b> <?php echo $groupName; ?></p><br>
+                        <p><b>Username:</b> <?php echo $username; ?></p><br>
+                        <button class="action red action-rm-member"
+                                id="<?php echo modalId("delete", "proceed", $member) ?>">Delete
+                        </button>
+                        <button class="action blue cancel-btn"
+                                id="<?php echo modalId("delete", "cancel", $member) ?>">Cancel
+                        </button>
+                    </div>
+                </div>
+            <?php endforeach; ?>
             <!-- The Group Deletion Modal -->
             <div class="group-delete-modal" id="<?php echo modalId("deletegroup", "", $group) ?>">
                 <!-- Modal content -->
