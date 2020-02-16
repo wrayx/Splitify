@@ -233,8 +233,8 @@ class DB extends SQLite3
 
     public function createBill($userid, $name, $amount, $groupid)
     {
-        $sql = 'INSERT INTO bills(name, amount, createdate, payee, num)
-                VALUES (:name, :amount, :createdate, :userid, :num)';
+        $sql = 'INSERT INTO bills(name, amount, createdate, payee, num, status)
+                VALUES (:name, :amount, :createdate, :userid, :num, :status)';
 
         $numPayers = $this->getGroupMemberNum($groupid);
         $createdate = date('d/m/Y h:m:s');
@@ -245,6 +245,7 @@ class DB extends SQLite3
         $statement->bindValue(':createdate', $createdate);
         $statement->bindValue(':num', $numPayers);
         $statement->bindValue(':userid', $userid);
+        $statement->bindValue(':status', floor(100 / $numPayers));
 
         $statement->execute();
         $statement->close();
@@ -345,6 +346,20 @@ class DB extends SQLite3
         $result = $statement->execute();
         $row = $result->fetchArray();
         $res = $row['createdate'];
+        $statement->close();
+        return $res;
+    }
+
+    public function getBillPercentage($id)
+    {
+        $sql = 'SELECT status
+                FROM Bills
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['status'];
         $statement->close();
         return $res;
     }
@@ -506,7 +521,7 @@ class DB extends SQLite3
 
         $billNum = $this->getBillNum($parent);
         $billPercentage = $billPercentage + floor(100 / $billNum);
-        echo $billPercentage;
+//        echo $billPercentage;
 
         $sql = 'UPDATE bills
                 SET status = :status

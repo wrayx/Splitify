@@ -35,7 +35,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                             </div>
                         </div>
                         <div class="group">
-                            <button class="button" type="submit">
+                            <button class="button" type="submit" id="bill-submit">
                                 <span class="text">Submit</span>
                             </button>
                         </div>

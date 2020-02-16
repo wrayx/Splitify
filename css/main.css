@@ -1,6 +1,4 @@
-@import url(/Users/wray/PhpstormProjects/cs139_coursework/css/font.css);
 @import url("https://fonts.googleapis.com/css?family=Saira:200,300,400,500,600,700,900&display=swap");
-
 body {
   min-height: 100vh;
   background: black;
@@ -107,7 +105,7 @@ h6 {
 }
 
 .container .pending-bills .bill-name {
-  margin: 10px 0 20px 0;
+  margin: 20px 0 20px 0;
   font-size: 20px;
   font-weight: 300;
 }
@@ -151,13 +149,11 @@ h6 {
 .container .pending-bills .progress-moved .progress-bar {
   width: 80%;
   background-color: #4dd599;
-  -webkit-animation: progressAnimation 0.8s;
-  animation: progressAnimation 0.8s;
 }
 
 @-webkit-keyframes progressAnimation {
   0% {
-    width: 5%;
+    width: 0%;
     background-color: #00918e;
   }
   100% {
@@ -168,7 +164,7 @@ h6 {
 
 @keyframes progressAnimation {
   0% {
-    width: 5%;
+    width: 0%;
     background-color: #00918e;
   }
   100% {
@@ -541,7 +537,12 @@ input:focus ~ .bar:after {
   letter-spacing: 1.2px;
   text-transform: uppercase;
   overflow: hidden;
+  pointer-events: all;
   cursor: pointer;
+}
+
+.selector span {
+  width: 100%;
 }
 
 .selector .dropdown {
@@ -550,7 +551,7 @@ input:focus ~ .bar:after {
   left: 0;
   background: #fff;
   list-style: none;
-  width: 100%;
+  width: 260px;
   border-radius: 4px;
   -webkit-box-shadow: 0 4px 12px rgba(18, 23, 27, 0.1);
   box-shadow: 0 4px 12px rgba(18, 23, 27, 0.1);
@@ -560,6 +561,7 @@ input:focus ~ .bar:after {
   -webkit-transition: 0.3s ease;
   transition: 0.3s ease;
   z-index: 1;
+  pointer-events: all;
 }
 
 .selector .dropdown:before {
@@ -948,15 +950,15 @@ footer {
   transform: translate3d(6px, -6px, 0);
   -webkit-transition-delay: 0s;
   transition-delay: 0s;
-  -webkit-transition-duration: 0.4s;
-  transition-duration: 0.4s;
+  -webkit-transition-duration: 0.2s;
+  transition-duration: 0.2s;
   -webkit-transition-property: all;
   transition-property: all;
-  -webkit-transition-timing-function: line;
-  transition-timing-function: line;
+  -webkit-transition-timing-function: linear;
+  transition-timing-function: linear;
 }
 
-.index-table tr:hover {
+.index-table thead tr:hover {
   -webkit-transform: none;
   transform: none;
 }
@@ -972,5 +974,4 @@ footer {
     display: none;
   }
 }
-
 /*# sourceMappingURL=main.css.map */

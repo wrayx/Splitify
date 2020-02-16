@@ -1,24 +1,31 @@
 import Modal from './modal.js';
 
-let groupOptions = document.querySelectorAll(".group-options");
-let dropdown = document.querySelector(".dropdown");
-let angle = document.querySelector(".fa-angle-down");
-let selector = document.querySelector(".selector");
+const groupOptions = document.querySelectorAll(".group-options");
+const dropdown = document.querySelector(".dropdown");
+const angle = document.querySelector(".fa-angle-down");
+const selectorTrigger = document.querySelector("#input-group");
+const selector = document.querySelector(".selector");
 for (let i = 0; i < groupOptions.length; i++) {
-    groupOptions[i].addEventListener("click", optionChange);
+    groupOptions[i].addEventListener("click", (e) => {
+        optionChange(e);
+        hideDropdown();
+    });
 }
+dropdown.addEventListener("mouseout", hideDropdown);
+selectorTrigger.addEventListener("click", displayDropdown);
+angle.addEventListener("click", displayDropdown);
+
+// window.addEventListener("click", hideDropdown, true);
 
 function optionChange(e) {
+    hideDropdown();
     let optionText = e.target.textContent;
     for (let i = 0; i < groupOptions.length; i++) {
         groupOptions[i].classList.remove("active");
     }
     e.target.classList.add("active");
     selector.firstElementChild.innerHTML = optionText;
-    hideDropdown();
 }
-
-selector.addEventListener("click", displayDropdown);
 
 function displayDropdown() {
     dropdown.style.opacity = "1";
@@ -28,17 +35,16 @@ function displayDropdown() {
     angle.style.transform = "rotate(180Deg)";
 }
 
-dropdown.addEventListener("mouseout", hideDropdown);
-
 function hideDropdown() {
     dropdown.style.opacity = "0";
     dropdown.style.visibility = "hidden";
+    dropdown.style.transform = "translate(0, 0px)";
     angle.style.transitionDuration = "0.25s";
     angle.style.transform = "rotate(0Deg)";
 }
 
-let billSubmit = document.querySelector("#bill-form");
-billSubmit.addEventListener("submit", sendInputGroup);
+let billSubmit = document.querySelector("#bill-submit");
+billSubmit.addEventListener("click", sendInputGroup);
 
 // send todo contents to php file
 function sendInputGroup(e) {

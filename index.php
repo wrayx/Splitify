@@ -36,7 +36,8 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                 class="fas fa-expand-arrows-alt"></i></a>
                 </div>
                 <div class="progress progress-moved">
-                    <div class="progress-bar">
+                    <div class="progress-bar"
+                         id="progress-<?php echo $db->getBillPercentage($payeeBill); ?>-<?php echo $payeeBill; ?>">
                     </div>
                 </div>
             </div>
@@ -44,18 +45,10 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
         <table class="index-table">
             <thead>
             <tr>
-                <th>
-                    Bill
-                </th>
-                <th>
-                    Payee
-                </th>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Amount
-                </th>
+                <th>Bill</th>
+                <th>Payee</th>
+                <th>Date</th>
+                <th>Amount</th>
             </tr>
             </thead>
             <tbody>
@@ -78,6 +71,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
             </tbody>
         </table>
     </div>
+    <script src="js/index.js"></script>
 <?php } else { ?>
     <div class="container">
         <h1 class="index-title">Sign up today to split bills easily with your mates. </h1>

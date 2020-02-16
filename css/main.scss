@@ -1,4 +1,4 @@
-@import "font.css";
+// @import "font.css";
 @import url("https://fonts.googleapis.com/css?family=Saira:200,300,400,500,600,700,900&display=swap");
 
 $prim-color: #4dd599;
@@ -98,7 +98,7 @@ h6 {
   .pending-bills {
     // width: 700px;
     .bill-name {
-      margin: 10px 0 20px 0;
+      margin: 20px 0 20px 0;
       font-size: 20px;
       font-weight: 300;
     }
@@ -136,12 +136,13 @@ h6 {
     .progress-moved .progress-bar {
       width: 80%;
       background-color: $prim-color;
-      animation: progressAnimation 0.8s;
+      // background: linear-gradient(90deg, rgba(0,145,142,1) 0%, rgba(77,213,153,1) 100%);
+      // animation: progressAnimation 0.8s;
     }
 
     @keyframes progressAnimation {
       0% {
-        width: 5%;
+        width: 0%;
         background-color: $sec-color;
       }
       100% {
@@ -235,7 +236,6 @@ header {
   margin: 0 200px 45px 200px;
   //   padding: 40px 0px;
 }
-
 .first-group {
   margin-top: 60px;
 }
@@ -509,7 +509,12 @@ input:focus ~ .bar:after {
   letter-spacing: 1.2px;
   text-transform: uppercase;
   overflow: hidden;
+  pointer-events: all;
   cursor: pointer;
+
+  span {
+    width: 100%;
+  }
 
   .dropdown {
     position: absolute;
@@ -517,7 +522,7 @@ input:focus ~ .bar:after {
     left: 0;
     background: #fff;
     list-style: none;
-    width: 100%;
+    width: 260px;
     border-radius: 4px;
     box-shadow: 0 4px 12px rgba($grey-black, 0.1);
     text-align: left;
@@ -525,6 +530,7 @@ input:focus ~ .bar:after {
     visibility: hidden;
     transition: 0.3s ease;
     z-index: 1;
+    pointer-events: all;
 
     &:before {
       content: "";
@@ -917,12 +923,12 @@ footer {
   transform: translate3d(6px, -6px, 0);
 
   transition-delay: 0s;
-  transition-duration: 0.4s;
+  transition-duration: 0.2s;
   transition-property: all;
-  transition-timing-function: line;
+  transition-timing-function: linear;
 }
 
-.index-table tr:hover {
+.index-table thead tr:hover {
   transform: none;
 }
 
