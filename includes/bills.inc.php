@@ -26,12 +26,18 @@ if (checkParams(array('name', 'amount', 'group')) === true) {
     $groupNum = $db->getGroupMemberNum($groupid);
     $splitAmount = ((float)$amount) / $groupNum;
     foreach ($groupMembers as $member) {
-        if ($member != $userid) {
-            $db->createSplitBill($billId, $member, $splitAmount);
-            var_dump($billId);
-            var_dump($userid);
-            var_dump($splitAmount);
-        }
+        $db->createSplitBill($billId, $member, $splitAmount);
+//        var_dump($billId);
+//        var_dump($userid);
+//        var_dump($splitAmount);
+//        if ($member === $userid){
+//            $splitBills = $db->getUserSplitBills($userid);
+//            foreach ($splitBills as $splitBill){
+//                if ($db->getSplitBillParent($splitBill) === $billId){
+//                    $db->paySplitBill($splitBill);
+//                }
+//            }
+//        }
     }
 } elseif (checkParams(array('deleteId')) === true) {
     $id = h($_POST['deleteId']);

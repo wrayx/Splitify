@@ -38,6 +38,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                 <div class="progress progress-moved">
                     <div class="progress-bar"
                          id="progress-<?php echo $db->getBillPercentage($payeeBill); ?>-<?php echo $payeeBill; ?>">
+                    <span class="progress-percentage"><?php echo $db->getBillPercentage($payeeBill); ?>%</span>
                     </div>
                 </div>
             </div>

@@ -33,7 +33,7 @@ else {
     $i = 0;
     while ($_POST['member-email'][$i] != null) {
         $email = h($_POST['member-email'][$i]);
-        var_dump($email);
+//        var_dump($email);
         if ($db->getUserId($userInfo) == $db->getUserId($email)) {
             continue;
         }

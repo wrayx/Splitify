@@ -26,10 +26,11 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                             <label>Amount</label>
                         </div>
                         <div class="group">
-                            <div class="selector"><span id="input-group">Choose a Group</span><i class="fas fa-angle-down"></i>
+                            <div class="selector"><span id="input-group">Choose a Group</span><i
+                                        class="fas fa-angle-down"></i>
                                 <ul class="dropdown">
                                     <?php foreach ($groups as $group): ?>
-                                    <li class="group-options"><?php echo $db->getGroupName($group); ?></li>
+                                        <li class="group-options"><?php echo $db->getGroupName($group); ?></li>
                                     <?php endforeach; ?>
                                 </ul>
                             </div>
@@ -100,7 +101,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                             <div class="pay-modal" id="<?php echo modalId($type, "", $userBill); ?>">
                                 <!-- Modal content -->
                                 <div class="modal-content">
-                                        <span class="close" id="<?php echo modalId($type, "close", $userBill);; ?>"><i
+                                        <span class="close" id="<?php echo modalId($type, "close", $userBill); ?>"><i
                                                     class="fas fa-times"></i></span>
                                     <div class="modal-header">Please Confirm Your Payment
                                         to <?php echo $splitBillPayee; ?></div>
@@ -145,10 +146,10 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                             <tbody>
                             <?php
                             $payeeBills = $db->getUserBills($userid);
+                            //                            var_dump($payeeBills);
                             foreach ($payeeBills as $payeeBill):
                                 $billName = $db->getBillName($payeeBill);
-                                $billNum = $db->getBillNum($payeeBill) - 1;
-                                $billNum = $billNum - $db->getBillPaidNum($payeeBill);
+                                $billNum = $db->getBillNum($payeeBill) - $db->getBillPaidNum($payeeBill);
                                 $i = $billNum;
                                 $childBills = $db->getChildSplitBills($payeeBill);
                                 foreach ($childBills as $childBill):
@@ -156,12 +157,15 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                     $childBillDate = str_replace('/', '-', $db->getBillDate($db->getSplitBillParent($childBill)));
                                     $childBillPayer = $db->getUsername($db->getSplitBillPayer($childBill));
                                     ?>
-                                    <tr>
-                                        <?php
-                                        if ($billNum == $i) {
-                                            echo "<td rowspan=" . $billNum . "><h3>" . $billName . "</h3><br><button class=\"button-sm del del-btn\" id=\"" . modalId("delete", "trigger", $payeeBill) . "\">Delete</button></td>";
-                                        }
-                                        ?>
+                                    <tr id="splitebill-row-<?php echo $childBill; ?>">
+                                        <?php if ($billNum === $i): ?>
+                                            <td rowspan="<?php echo $billNum; ?>"><h3><?php echo $billName ?></h3>
+                                                <button class="button-sm del del-btn"
+                                                        id="<?php echo modalId("delete", "trigger", $payeeBill) ?>">
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        <?php endif; ?>
                                         <td><?php echo $childBillPayer; ?></td>
                                         <td><?php echo date("d/m/Y", strtotime($childBillDate)); ?></td>
                                         <td>$<?php echo $childBillAmount; ?>
@@ -170,22 +174,18 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                                         class="fas fa-check"></i></button>
                                         </td>
                                     </tr>
-                                    <?php
-                                    $i--;
-                                endforeach;
+                                <?php $i--; endforeach;
                             endforeach; ?>
                             </tbody>
                         </table>
-                        <?php
-                        $payeeBills = $db->getUserBills($userid);
-                        foreach ($payeeBills
-
-                        as $payeeBill):
+                    </div>
+                    <?php
+                    foreach ($payeeBills as $payeeBill):
                         $billName = $db->getBillName($payeeBill);
-                        $billNum = $db->getBillNum($payeeBill) - 1;
-                        $i = $billNum;
-                        $childBills = $db->getChildSplitBills($payeeBill);
-                        echo "<div>";
+                        $childBills = $db->getChildSplitBills($payeeBill); ?>
+
+                    <div class="bill-modal-wrapper">
+                        <?php
                         foreach ($childBills as $childBill):
                             $childBillAmount = number_format($db->getSplitBillAmount($childBill), 2, '.', '');
                             $childBillDate = str_replace('/', '-', $db->getBillDate($db->getSplitBillParent($childBill)));
@@ -196,7 +196,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                 <div class="modal-content">
                                                 <span class="close"
                                                       id="<?php echo modalId("confirm", "close", $childBill); ?>"><i
-                                                            class="fas fa-times"></i></span>
+                                                        class="fas fa-times"></i></span>
                                     <!--                            <p>Make a Payment</p><br>-->
                                     <div class="modal-header">Please Confirm the Pending Payment</div>
                                     <p><b>Payment:</b> <?php echo $billName; ?></p><br>
@@ -211,14 +211,13 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                     </button>
                                 </div>
                             </div>
-                            <?php $i--; endforeach; ?>
+                        <?php endforeach; ?>
                         <!-- The Deletion Modal -->
                         <div class="delete-modal" id="<?php echo modalId("delete", "", $payeeBill); ?>">
                             <!-- Modal content -->
                             <div class="modal-content">
-                                                <span class="close"
-                                                      id="<?php echo modalId("delete", "close", $payeeBill); ?>"><i
-                                                            class="fas fa-times"></i></span>
+                                <span class="close" id="<?php echo modalId("delete", "close", $payeeBill); ?>"><i
+                                        class="fas fa-times"></i></span>
                                 <div class="modal-header">Confirm to Delete This Bill ?</div>
                                 <p><b>Name:</b> <?php echo $billName; ?></p><br>
                                 <p><b>Total Amount:</b>
@@ -241,9 +240,8 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
     </div>
     <script src="js/bills.js" type="module"></script>
     <?php
+} else {
+    header('Location: signin.php');
 }
-else {
-        header('Location: signin.php');
-    }
 include "footer.php";
 ?>

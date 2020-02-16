@@ -11,7 +11,7 @@ for (let i = 0; i < groupOptions.length; i++) {
         hideDropdown();
     });
 }
-dropdown.addEventListener("mouseout", hideDropdown);
+// dropdown.addEventListener("mouseout", hideDropdown);
 selectorTrigger.addEventListener("click", displayDropdown);
 angle.addEventListener("click", displayDropdown);
 
@@ -91,13 +91,16 @@ for (let i = 0; i < confirmModals.length; i++) {
     let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
     modal.addModalEvtListener();
     proceed.addEventListener("click", function () {
-        payBill(id);
+        confirmBill(id);
     });
 }
 for (let i = 0; i < deleteModals.length; i++) {
     let id = Modal.getModalId(deleteModals[i].id);
     let modal = new Modal('delete', id);
     let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
+    console.log(modal.htmlTriggerId());
+    console.log();
+    console.log();
     modal.addModalEvtListener();
     // if they proceed to delete the bill, we will remove the bill
     // from both database and the website
@@ -142,7 +145,19 @@ function payBill(id) {
             let row = trigger.parentElement.parentElement;
             row.parentElement.removeChild(row);
             remainingModal.parentElement.removeChild(remainingModal);
-            ;
+        }
+    };
+    xhttp.open("POST", "includes/bills.inc.php");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
+
+function confirmBill(id) {
+    let params = "paySplitBillId=" + id;
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            window.location.reload();
         }
     };
     xhttp.open("POST", "includes/bills.inc.php");

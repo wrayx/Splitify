@@ -245,7 +245,7 @@ class DB extends SQLite3
         $statement->bindValue(':createdate', $createdate);
         $statement->bindValue(':num', $numPayers);
         $statement->bindValue(':userid', $userid);
-        $statement->bindValue(':status', floor(100 / $numPayers));
+        $statement->bindValue(':status', 0);
 
         $statement->execute();
         $statement->close();
