@@ -75,7 +75,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                 $splitBillName = $db->getBillName($db->getSplitBillParent($userBill));
                                 $splitBillAmount = number_format($db->getSplitBillAmount($userBill), 2, '.', '');
                                 $splitBillPayee = $db->getUsername($db->getBillPayee($db->getSplitBillParent($userBill))); ?>
-                                <tr>
+                                <tr id="splitbill-row-<?php echo $userBill; ?>">
                                     <td><?php echo $splitBillName; ?></td>
                                     <td><?php echo $splitBillPayee; ?></td>
                                     <td><?php
@@ -159,7 +159,8 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                     ?>
                                     <tr id="splitebill-row-<?php echo $childBill; ?>">
                                         <?php if ($billNum === $i): ?>
-                                            <td rowspan="<?php echo $billNum; ?>"><h3><?php echo $billName ?></h3>
+                                            <td rowspan="<?php echo $billNum; ?>"
+                                                id="bill-cell-<?php echo $payeeBill ?>"><h3><?php echo $billName ?></h3>
                                                 <button class="button-sm del del-btn"
                                                         id="<?php echo modalId("delete", "trigger", $payeeBill) ?>">
                                                     Delete

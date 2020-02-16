@@ -32,13 +32,14 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
         foreach ($payeeBills as $payeeBill):
             $billName = $db->getBillName($payeeBill); ?>
             <div class="pending-bills">
-                <div class="bill-name"><?php echo $billName; ?><a href="bills.php"><i
+                <div class="bill-name"><?php echo $billName; ?><a
+                            href="bills.php#bill-cell-<?php echo $payeeBill; ?>"><i
                                 class="fas fa-expand-arrows-alt"></i></a>
                 </div>
                 <div class="progress progress-moved">
                     <div class="progress-bar"
                          id="progress-<?php echo $db->getBillPercentage($payeeBill); ?>-<?php echo $payeeBill; ?>">
-                    <span class="progress-percentage"><?php echo $db->getBillPercentage($payeeBill); ?>%</span>
+                        <span class="progress-percentage"><?php echo $db->getBillPercentage($payeeBill); ?>%</span>
                     </div>
                 </div>
             </div>
@@ -60,7 +61,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                 $splitBillName = $db->getBillName($db->getSplitBillParent($userBill));
                 $splitBillAmount = number_format($db->getSplitBillAmount($userBill), 2, '.', '');
                 $splitBillPayee = $db->getUsername($db->getBillPayee($db->getSplitBillParent($userBill))); ?>
-                <tr>
+                <tr class="splitbill-row" id="splitbill-row-<?php echo $userBill; ?>">
                     <td><?php echo $splitBillName; ?></td>
                     <td><?php echo $splitBillPayee; ?></td>
                     <td><?php

@@ -6,41 +6,39 @@ $userInfo = $_SESSION['userInfo'];
 function checkParams($parameters) {
     foreach ($parameters as $parameter) {
         // some field is empty
-        if (empty($_POST[$parameter])){
-            header('Location: ../groups.php?create=failed&error=miss-'.$parameter.'-param');
+        if (empty($_POST[$parameter])) {
+            header('Location: ../groups.php?create=failed&error=miss-' . $parameter . '-param');
             exit;
         }// end if statemente
     }// end foreach loop
 }// end checkParams()
 
-checkParams(array('name', 'member-email'));
+checkParams(array('name', 'members'));
 $name = h($_POST['name']);
+$members = $_POST['members'];
+//var_dump($members);
+//foreach ($members as $member){
+//    $member = h($member);
+//}
+//var_dump($members);
 if ($db->getGroupId($name) != null) {
     header('Location: ../groups.php?create=failed&error=namealreadyexist');
     exit;
-}
-else {
-    $i = 0;
-    while ($_POST['member-email'][$i] != null) {
-        $email = h($_POST['member-email'][$i]);
-        if (!$db->userExists($email)) {
+} else {
+    foreach ($members as $member) {
+        if (!$db->userExists($member)) {
             header('Location: ../groups.php?create=failed&error=usernotexist');
             exit;
         }
-        $i++;
     }
     $db->createGroup($name);
-    $i = 0;
-    while ($_POST['member-email'][$i] != null) {
-        $email = h($_POST['member-email'][$i]);
-//        var_dump($email);
-        if ($db->getUserId($userInfo) == $db->getUserId($email)) {
-            continue;
+    $groupid = $db->getGroupId($name);
+    foreach ($members as $member) {
+        if ($db->getUserId($userInfo) != $db->getUserId($member)) {
+            $db->addGroupMember($db->getUserId($member), $groupid);
         }
-        $db->addGroupMember($db->getUserId($email), $db->getGroupId($name));
-        $i++;
     }
-    $db->addGroupMember($db->getUserId($userInfo), $db->getGroupId($name));
+    $db->addGroupMember($db->getUserId($userInfo), $groupid);
 
     header('Location: ../groups.php?create=success');
 }

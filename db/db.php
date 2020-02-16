@@ -143,7 +143,7 @@ class DB extends SQLite3
 
     public function addGroupMember($userid, $groupid)
     {
-        $sql = 'INSERT INTO members(member, groupid)
+        $sql = 'INSERT INTO members(member, groupId)
                 VALUES (:member, :groupid)';
         $statement = $this->prepare($sql);
         $statement->bindValue(':member', $userid);
@@ -249,6 +249,14 @@ class DB extends SQLite3
 
         $statement->execute();
         $statement->close();
+
+        $billId = $this->getBillId($name);
+        $groupMembers = $this->getGroupMembers($groupid);
+        $groupNum = $this->getGroupMemberNum($groupid);
+        $splitAmount = ((float)$amount) / $groupNum;
+        foreach ($groupMembers as $member) {
+            $this->createSplitBill($billId, $member, $splitAmount);
+        }
     }
 
     public function getBillId($name)
@@ -261,20 +269,6 @@ class DB extends SQLite3
         $result = $statement->execute();
         $row = $result->fetchArray();
         $res = $row['id'];
-        $statement->close();
-        return $res;
-    }
-
-    public function getBillNum($id)
-    {
-        $sql = 'SELECT num
-                FROM bills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['num'];
         $statement->close();
         return $res;
     }
@@ -294,74 +288,48 @@ class DB extends SQLite3
         return $res;
     }
 
-    public function getBillAmount($id)
+    protected function getBillData($header, $id)
     {
-        $sql = 'SELECT amount
+        $sql = 'SELECT *
                 FROM bills
                 WHERE id = :id';
         $statement = $this->prepare($sql);
         $statement->bindValue(':id', $id);
         $result = $statement->execute();
         $row = $result->fetchArray();
-        $res = $row['amount'];
+        $res = $row[$header];
         $statement->close();
         return $res;
+    }
+
+    public function getBillNum($id)
+    {
+        return $this->getBillData('num', $id);
+    }
+
+    public function getBillAmount($id)
+    {
+        return $this->getBillData('amount', $id);
     }
 
     public function getBillName($id)
     {
-        $sql = 'SELECT name
-                FROM Bills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['name'];
-        $statement->close();
-        return $res;
+        return $this->getBillData('name', $id);
     }
 
     public function getBillPayee($id)
     {
-        $sql = 'SELECT payee
-                FROM Bills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['payee'];
-        $statement->close();
-        return $res;
+        return $this->getBillData('payee', $id);
     }
 
     public function getBillDate($id)
     {
-        $sql = 'SELECT createdate
-                FROM Bills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['createdate'];
-        $statement->close();
-        return $res;
+        return $this->getBillData('createdate', $id);
     }
 
     public function getBillPercentage($id)
     {
-        $sql = 'SELECT status
-                FROM Bills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['status'];
-        $statement->close();
-        return $res;
+        return $this->getBillData('status', $id);
     }
 
     public function getUserBills($userid)
@@ -415,16 +383,6 @@ class DB extends SQLite3
         $statement->close();
     }
 
-//    public function confirmSplitBill($id)
-//    {
-//        $sql = 'DELETE FROM splitbills
-//                WHERE id = :id';
-//        $statement = $this->prepare($sql);
-//        $statement->bindValue(':id', $id);
-//        $statement->execute();
-//        $statement->close();
-//    }
-
     public function getUserSplitBills($userid)
     {
         $sql = 'SELECT id
@@ -459,46 +417,39 @@ class DB extends SQLite3
         return $res;
     }
 
-    public function getSplitBillAmount($id)
+    protected function getSplitBillData($header, $id)
     {
-        $sql = 'SELECT amount
+        $sql = 'SELECT *
                 FROM splitbills
                 WHERE id = :id';
         $statement = $this->prepare($sql);
+        $statement->bindValue(':header', $header);
         $statement->bindValue(':id', $id);
         $result = $statement->execute();
         $row = $result->fetchArray();
-        $res = $row['amount'];
+        $res = $row[$header];
         $statement->close();
         return $res;
+    }
+
+    public function getSplitBillAmount($id)
+    {
+        return $this->getSplitBillData('amount', $id);
     }
 
     public function getSplitBillParent($id)
     {
-        $sql = 'SELECT parent
-                FROM splitbills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['parent'];
-        $statement->close();
-        return $res;
+        return $this->getSplitBillData('parent', $id);
     }
 
     public function getSplitBillPayer($id)
     {
-        $sql = 'SELECT payer
-                FROM splitbills
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['payer'];
-        $statement->close();
-        return $res;
+        return $this->getSplitBillData('payer', $id);
+    }
+
+    public function getSplitBillStatus($id)
+    {
+        return $this->getSplitBillData('status', $id);
     }
 
     public static function format($amount)
@@ -509,6 +460,7 @@ class DB extends SQLite3
     public function paySplitBill($id)
     {
         $parent = $this->getSplitBillParent($id);
+
         $sql = 'SELECT status
                 FROM bills
                 WHERE id = :id';
@@ -538,6 +490,37 @@ class DB extends SQLite3
         $statement = $this->prepare($sql);
         $statement->bindValue(':status', 1);
         $statement->bindValue(':id', $id);
+        $statement->execute();
+        $statement->close();
+
+        $this->matchBillStatus($parent);
+    }
+
+    public function matchBillStatus($parent)
+    {
+        $sql = 'SELECT status
+                FROM splitbills
+                WHERE parent = :parent';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':parent', $parent);
+        $result = $statement->execute();
+        $allStatus = array();
+        while ($row = $result->fetchArray()) {
+            array_push($allStatus, $row['status']);
+        }
+        $statement->close();
+        foreach ($allStatus as $status) {
+            if ($status === 0)
+                exit();
+        }
+
+
+        $sql = 'UPDATE bills
+                SET status = :status
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':status', 100);
+        $statement->bindValue(':id', $parent);
         $statement->execute();
         $statement->close();
     }

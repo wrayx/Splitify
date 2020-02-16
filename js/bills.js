@@ -14,15 +14,14 @@ for (let i = 0; i < groupOptions.length; i++) {
 // dropdown.addEventListener("mouseout", hideDropdown);
 selectorTrigger.addEventListener("click", displayDropdown);
 angle.addEventListener("click", displayDropdown);
-
 // window.addEventListener("click", hideDropdown, true);
 
 function optionChange(e) {
     hideDropdown();
     let optionText = e.target.textContent;
-    for (let i = 0; i < groupOptions.length; i++) {
-        groupOptions[i].classList.remove("active");
-    }
+    groupOptions.forEach(groupOption => {
+        groupOption.classList.remove("active");
+    });
     e.target.classList.add("active");
     selector.firstElementChild.innerHTML = optionText;
 }
@@ -76,26 +75,26 @@ function trim(str) {
 let payModals = document.querySelectorAll(".pay-modal");
 let confirmModals = document.querySelectorAll(".confirm-modal");
 let deleteModals = document.querySelectorAll(".delete-modal");
-for (let i = 0; i < payModals.length; i++) {
-    let id = Modal.getModalId(payModals[i].id);
+payModals.forEach(payModal => {
+    let id = Modal.getModalId(payModal.id);
     let modal = new Modal('pay', id);
     let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
     modal.addModalEvtListener();
     proceed.addEventListener("click", function () {
         payBill(id);
     });
-}
-for (let i = 0; i < confirmModals.length; i++) {
-    let id = Modal.getModalId(confirmModals[i].id);
+});
+confirmModals.forEach(confirmModal => {
+    let id = Modal.getModalId(confirmModal.id);
     let modal = new Modal('confirm', id);
     let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
     modal.addModalEvtListener();
     proceed.addEventListener("click", function () {
         confirmBill(id);
     });
-}
-for (let i = 0; i < deleteModals.length; i++) {
-    let id = Modal.getModalId(deleteModals[i].id);
+});
+deleteModals.forEach(deleteModal => {
+    let id = Modal.getModalId(deleteModal.id);
     let modal = new Modal('delete', id);
     let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
     console.log(modal.htmlTriggerId());
@@ -107,7 +106,7 @@ for (let i = 0; i < deleteModals.length; i++) {
     proceed.addEventListener("click", function () {
         deleteBill(id);
     });
-}
+});
 
 function deleteBill(id) {
     let params = "deleteId=" + id;

@@ -4,10 +4,6 @@ for (let i = 0; i < progressBars.length; i++) {
     let id = idArr.pop();
     let percentage = idArr.pop();
     progressBars[i].style.width = `${percentage.toString()}%`;
-    // progressBars[i].animate([
-    //     {width: 0%},
-    //     {width: `${percentage}`%}
-    // ], 0.8s);
     console.log(progressBars[i].animate([
         // keyframes
         {width: '0%'},
@@ -17,3 +13,10 @@ for (let i = 0; i < progressBars.length; i++) {
         duration: 1000
     }));
 }
+
+const splitBillRows = document.querySelectorAll(".splitbill-row");
+splitBillRows.forEach(splitBillRow => {
+    splitBillRow.addEventListener("click", () => {
+        window.location = `bills.php#${splitBillRow.id}`;
+    });
+});

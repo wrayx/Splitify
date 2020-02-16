@@ -20,7 +20,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                             <label>Name</label>
                         </div>
                         <div class="group">
-                            <input type="text" name="member-email[]" class="member-email" required>
+                            <input type="text" name="members[]" class="member" required>
                             <span class="highlight"></span>
                             <span class="bar"></span>
                             <label>Member's username or email</label>

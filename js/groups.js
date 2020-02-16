@@ -7,7 +7,7 @@ function addMemberInput() {
     let form = addMemberBtn.parentElement.parentElement;
     let node = document.createElement("DIV");
     node.classList.add("group");
-    node.innerHTML += "<input type=\"text\" name=\"member-email[]\"  class=\"member-email\" required>\n" +
+    node.innerHTML += "<input type=\"text\" name=\"members[]\"  class=\"member-email\" required>\n" +
         "<span class=\"highlight\"></span>\n" +
         "<span class=\"bar\"></span>\n" +
         "<label>Member</label>";

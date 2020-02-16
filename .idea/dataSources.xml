@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="splitify.db" uuid="eecb5763-67b3-4a89-a61e-18313e521e29">
+    <data-source source="LOCAL" name="splitify.db" uuid="858ea45c-9805-4b83-bb4a-1f945bc7ada8">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
