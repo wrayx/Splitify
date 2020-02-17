@@ -141,18 +141,6 @@ class DB extends SQLite3
         $statement->close();
     }
 
-    public function addGroupMember($userid, $groupid)
-    {
-        $sql = 'INSERT INTO members(member, groupId)
-                VALUES (:member, :groupid)';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':member', $userid);
-        $statement->bindValue(':groupid', $groupid);
-        $statement->execute();
-
-        $statement->close();
-    }
-
     public function getGroupId($name)
     {
         $sql = 'SELECT id
@@ -229,6 +217,32 @@ class DB extends SQLite3
         $res = $row['count'];
         $statement->close();
         return $res;
+    }
+
+    public function addGroupMember($userid, $groupid)
+    {
+        $sql = 'INSERT INTO members(member, groupId)
+                VALUES (:member, :groupid)';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':member', $userid);
+        $statement->bindValue(':groupid', $groupid);
+        $statement->execute();
+
+        $statement->close();
+    }
+
+    public function deleteGroupMember($userid, $groupid)
+    {
+        $sql = 'DELETE FROM members
+                WHERE member = :userid
+                AND groupid = :groupid';
+
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':member', $userid);
+        $statement->bindValue(':groupid', $groupid);
+        $statement->execute();
+
+        $statement->close();
     }
 
     public function createBill($userid, $name, $amount, $groupid)
@@ -417,6 +431,22 @@ class DB extends SQLite3
         return $res;
     }
 
+    public function getSplitBillid($parent, $userid)
+    {
+        $sql = 'SELECT id
+                FROM splitbills
+                WHERE parent = :parent
+                AND payer = :userid';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':parent', $parent);
+        $statement->bindValue(':userid', $userid);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['id'];
+        $statement->close();
+        return $res;
+    }
+
     protected function getSplitBillData($header, $id)
     {
         $sql = 'SELECT *
@@ -513,7 +543,6 @@ class DB extends SQLite3
             if ($status === 0)
                 exit();
         }
-
 
         $sql = 'UPDATE bills
                 SET status = :status

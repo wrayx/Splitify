@@ -14,13 +14,17 @@ function checkParams($parameters)
     return true;
 }// end checkParams()
 
-if (checkParams(array('name', 'amount', 'group')) === true) {
+if (checkParams(array('name', 'amount', 'group','paid')) === true) {
     $name = h($_POST['name']);
     $amount = h($_POST['amount']);
     $userid = $db->getUserId($userInfo);
     $group = h($_POST['group']);
     $groupid = $db->getGroupId($group);
     $db->createBill($userid, $name, $amount, $groupid);
+    if (h($_POST['paid']) === 'true'){
+        $parent = $db->getBillId($name);
+        $db->paySplitBill($db->getSplitBillid($parent, $userid));
+    }
 } elseif (checkParams(array('deleteId')) === true) {
     $id = h($_POST['deleteId']);
     $db->deleteBill($id);

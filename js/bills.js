@@ -43,18 +43,19 @@ function hideDropdown() {
 }
 
 let billSubmit = document.querySelector("#bill-submit");
-billSubmit.addEventListener("click", sendInputGroup);
+billSubmit.addEventListener("click", sendInputBill);
 
 // send todo contents to php file
-function sendInputGroup(e) {
+function sendInputBill(e) {
     e.preventDefault();
     let groupname = document.querySelector("#input-group").textContent;
     let amount = document.querySelector("#amount").value;
     let name = document.querySelector("#name").value;
+    let paid = document.querySelector('#bill-self-paid').checked;
     if (groupname === "Choose a Group") {
         return;
     }
-    let params = "group=" + groupname + "&name=" + name + "&amount=" + amount;
+    let params = `group=${groupname}&name=${name}&amount=${amount}&paid=${paid}`;
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
@@ -97,9 +98,6 @@ deleteModals.forEach(deleteModal => {
     let id = Modal.getModalId(deleteModal.id);
     let modal = new Modal('delete', id);
     let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
-    console.log(modal.htmlTriggerId());
-    console.log();
-    console.log();
     modal.addModalEvtListener();
     // if they proceed to delete the bill, we will remove the bill
     // from both database and the website
