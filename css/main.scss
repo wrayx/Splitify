@@ -6,6 +6,7 @@ $sec-color: #00918e;
 $third-color: #113a5d;
 $grey-black: #12171b;
 $grey-light: #2d3840;
+$prim-time: 0.3s;
 $red: #e74c3c;
 $prim-font: "Saira", sans-serif;
 
@@ -131,7 +132,7 @@ h6 {
       height: 18px;
       border-radius: 30px;
       background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
-      transition: 0.3s linear;
+      transition: $prim-time linear;
       transition-property: width, background-color;
     }
 
@@ -230,7 +231,7 @@ header {
       padding: 30px 25px 30px 25px;
       text-decoration: none;
       color: white;
-      transition: 0.3s cubic-bezier(0.165, 0.84, 0.34, 1);
+      transition: $prim-time cubic-bezier(0.165, 0.84, 0.34, 1);
     }
   }
 }
@@ -270,9 +271,9 @@ header {
     pointer-events: none;
     left: 5px;
     top: 10px;
-    transition: 0.2s ease all;
-    -moz-transition: 0.2s ease all;
-    -webkit-transition: 0.2s ease all;
+    transition: $prim-time ease all;
+    -moz-transition: $prim-time ease all;
+    -webkit-transition: $prim-time ease all;
   }
 }
 input {
@@ -291,7 +292,7 @@ input:focus {
 }
 
 #add-member-input i {
-  transition: 0.3s ease;
+  transition: $prim-time ease;
 
   &:hover {
     color: $prim-color;
@@ -307,9 +308,9 @@ label {
   pointer-events: none;
   left: 5px;
   top: 10px;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
+  transition: $prim-time ease all;
+  -moz-transition: $prim-time ease all;
+  -webkit-transition: $prim-time ease all;
 }
 
 /* active state */
@@ -335,9 +336,9 @@ input:focus ~ label {
   bottom: 0;
   position: absolute;
   background: $prim-color;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
+  transition: $prim-time ease all;
+  -moz-transition: $prim-time ease all;
+  -webkit-transition: $prim-time ease all;
 }
 
 .bar:before {
@@ -404,7 +405,7 @@ input:focus ~ .bar:after {
   position: relative;
   margin: 10px 120px;
   border: 2px solid $prim-color;
-  transition: 0.25s;
+  transition: $prim-time;
   font-family: $prim-font;
 
   .text {
@@ -427,15 +428,12 @@ input:focus ~ .bar:after {
 
 .button-sm {
   background: transparent;
-  padding: 5px 10px;
-  margin-top: 0px;
   text-align: center;
   position: relative;
   margin-left: 10px;
-  border-radius: 4px;
-  border: 1px solid $prim-color;
+  border: 1px solid transparent;
   font-family: $prim-font;
-  transition: 0.25s;
+  transition: $prim-time;
   font-size: 14px;
   color: $prim-color;
   outline: none;
@@ -443,40 +441,23 @@ input:focus ~ .bar:after {
 
   &:hover,
   &:focus {
-    background-color: $prim-color;
-    color: $grey-black;
+    color: darken($prim-color, 20%);
+    transition: all $prim-time ease-in;
   }
 
   &.del {
-    //margin-top: 20px;
+    margin-top: 20px;
     margin-left: 0;
-    margin-top: 10px;
-    color: white;
-    background: $red;
-    border: none;
+    color: $red;
     float: left;
-
-    &:before {
-      position: absolute;
-      content: "";
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 100%;
-      background-color: rgba(255, 255, 255, 0.2);
-      transition: width 0.2s;
-      z-index: 0;
-    }
 
     &:hover,
     &:focus {
-      &:before {
-        width: 100%;
-      }
+      color: darken($red, 20%);
     }
 
     &.del-right {
-      // margin-left: 40px;
+      margin-top: 0;
       float: right;
     }
   }
@@ -493,11 +474,10 @@ input:focus ~ .bar:after {
   border: 2px solid $prim-color;
   color: $prim-color;
   font-family: $prim-font;
-  transition: 0.25s;
+  transition: $prim-time;
 
   &:hover,
   &:focus {
-    //background-color: $sec-color;
     box-shadow: inset 150px 0 0 0 $prim-color;
     color: $grey-black;
   }
@@ -540,7 +520,7 @@ input:focus ~ .bar:after {
     text-align: left;
     opacity: 0;
     visibility: hidden;
-    transition: 0.3s ease;
+    transition: $prim-time ease;
     z-index: 1;
     pointer-events: all;
 
@@ -572,6 +552,7 @@ input:focus ~ .bar:after {
 
       &:hover {
         color: $prim-color;
+        transition: all $prim-time ease-out;
       }
 
       &:first-child {
@@ -630,7 +611,7 @@ table {
 }
 
 // Mixin for drawing button with optional argument for width, padding, and time
-@mixin btn-draw($color, $color-hov, $width: 1px, $padding: 30px 30px, $time: 0.2s) {
+@mixin btn-draw($color, $color-hov, $width: 1px, $padding: 30px 30px, $time: $prim-time) {
   position: relative;
 
   display: inline-block;
@@ -750,8 +731,8 @@ footer {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
-  animation: fadeIn 0.3s;
-  -webkit-animation: fadeIn 0.3s;
+  animation: fadeIn $prim-time;
+  -webkit-animation: fadeIn $prim-time;
 }
 
 /* Modal Content/Box */
@@ -761,8 +742,8 @@ footer {
   padding: 20px;
   //border: 0 solid #888;
   width: 700px; /* Could be more or less, depending on screen size */
-  -webkit-animation: movedown 0.3s;
-  animation: movedown 0.3s;
+  -webkit-animation: movedown $prim-time;
+  animation: movedown $prim-time;
   border-radius: 10px;
 
   .modal-header {
@@ -796,7 +777,7 @@ footer {
       width: 0;
       height: 100%;
       background-color: rgba(255, 255, 255, 0.2);
-      transition: width 0.3s;
+      transition: width $prim-time;
       z-index: 0;
     }
 
@@ -831,6 +812,7 @@ footer {
     color: $red;
     text-decoration: none;
     cursor: pointer;
+    transition: all $prim-time ease;
   }
 }
 
@@ -938,7 +920,7 @@ footer {
   transform: translate3d(6px, -6px, 0);
 
   transition-delay: 0s;
-  transition-duration: 0.2s;
+  transition-duration: $prim-time;
   transition-property: all;
   transition-timing-function: linear;
 }

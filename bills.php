@@ -175,8 +175,9 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                         <td><?php echo date("d/m/Y", strtotime($childBillDate)); ?></td>
                                         <td>$<?php echo $childBillAmount; ?>
                                             <button class="button-sm confirm-btn"
-                                                    id="<?php echo modalId("confirm", "trigger", $childBill); ?>"><i
-                                                        class="fas fa-check"></i></button>
+                                                    id="<?php echo modalId("confirm", "trigger", $childBill); ?>">
+                                                confirm
+                                            </button>
                                         </td>
                                     </tr>
                                 <?php $i--; endforeach;
@@ -241,6 +242,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                 </div>
             </div>
         </div>
+        <a class="btn-draw" href="signin.php"><span>History</span></a>
     </div>
     </div>
     <script src="js/bills.js" type="module"></script>

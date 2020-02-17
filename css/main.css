@@ -189,9 +189,9 @@ header {
   pointer-events: none;
   left: 5px;
   top: 10px;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all; }
+  transition: 0.3s ease all;
+  -moz-transition: 0.3s ease all;
+  -webkit-transition: 0.3s ease all; }
 
 input {
   font-size: 18px;
@@ -220,9 +220,9 @@ label {
   pointer-events: none;
   left: 5px;
   top: 10px;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all; }
+  transition: 0.3s ease all;
+  -moz-transition: 0.3s ease all;
+  -webkit-transition: 0.3s ease all; }
 
 /* active state */
 input:valid ~ label,
@@ -245,9 +245,9 @@ input:focus ~ label {
   bottom: 0;
   position: absolute;
   background: #4dd599;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all; }
+  transition: 0.3s ease all;
+  -moz-transition: 0.3s ease all;
+  -webkit-transition: 0.3s ease all; }
 
 .bar:before {
   left: 50%; }
@@ -297,7 +297,7 @@ input:focus ~ .bar:after {
   position: relative;
   margin: 10px 120px;
   border: 2px solid #4dd599;
-  transition: 0.25s;
+  transition: 0.3s;
   font-family: "Saira", sans-serif; }
   .button .text {
     font-size: 18px;
@@ -313,42 +313,28 @@ input:focus ~ .bar:after {
 
 .button-sm {
   background: transparent;
-  padding: 5px 10px;
-  margin-top: 0px;
   text-align: center;
   position: relative;
   margin-left: 10px;
-  border-radius: 4px;
-  border: 1px solid #4dd599;
+  border: 1px solid transparent;
   font-family: "Saira", sans-serif;
-  transition: 0.25s;
+  transition: 0.3s;
   font-size: 14px;
   color: #4dd599;
   outline: none;
   float: right; }
   .button-sm:hover, .button-sm:focus {
-    background-color: #4dd599;
-    color: #12171b; }
+    color: #249865;
+    transition: all 0.3s ease-in; }
   .button-sm.del {
+    margin-top: 20px;
     margin-left: 0;
-    margin-top: 10px;
-    color: white;
-    background: #e74c3c;
-    border: none;
+    color: #e74c3c;
     float: left; }
-    .button-sm.del:before {
-      position: absolute;
-      content: "";
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 100%;
-      background-color: rgba(255, 255, 255, 0.2);
-      transition: width 0.2s;
-      z-index: 0; }
-    .button-sm.del:hover:before, .button-sm.del:focus:before {
-      width: 100%; }
+    .button-sm.del:hover, .button-sm.del:focus {
+      color: #a82315; }
     .button-sm.del.del-right {
+      margin-top: 0;
       float: right; }
 
 .modal-pay-btn,
@@ -362,7 +348,7 @@ input:focus ~ .bar:after {
   border: 2px solid #4dd599;
   color: #4dd599;
   font-family: "Saira", sans-serif;
-  transition: 0.25s; }
+  transition: 0.3s; }
   .modal-pay-btn:hover, .modal-pay-btn:focus,
   .modal-confirm-btn:hover,
   .modal-confirm-btn:focus {
@@ -428,7 +414,8 @@ input:focus ~ .bar:after {
       .selector .dropdown li.active {
         color: #4dd599; }
       .selector .dropdown li:hover {
-        color: #4dd599; }
+        color: #4dd599;
+        transition: all 0.3s ease-out; }
       .selector .dropdown li:first-child {
         border-radius: 4px 4px 0 0; }
       .selector .dropdown li:last-child {
@@ -472,7 +459,7 @@ table {
   border-bottom: 2px solid #4dd599;
   cursor: pointer;
   overflow: hidden;
-  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out; }
+  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out; }
   .btn-draw:after {
     content: "";
     position: absolute;
@@ -482,8 +469,8 @@ table {
     width: 2px;
     background: #4dd599;
     transform: translateY(100%);
-    transition: transform 0.2s ease-in-out;
-    transition-delay: 0.6s; }
+    transition: transform 0.3s ease-in-out;
+    transition-delay: 0.9s; }
   .btn-draw > span {
     position: relative;
     display: block;
@@ -495,29 +482,29 @@ table {
       left: 0;
       top: 0;
       background: #4dd599;
-      transition: transform 0.2s ease-in-out; }
+      transition: transform 0.3s ease-in-out; }
     .btn-draw > span:before {
       height: 2px;
       width: 100%;
       transform: translateX(100%);
-      transition-delay: 0.4s; }
+      transition-delay: 0.6s; }
     .btn-draw > span:after {
       height: 100%;
       width: 2px;
       transform: translateY(-100%);
-      transition-delay: 0.2s; }
+      transition-delay: 0.3s; }
   .btn-draw:hover:after, .btn-draw:hover > span:before, .btn-draw:hover > span:after {
     transform: translate(0, 0); }
   .btn-draw:hover:after {
     transition-delay: 0s; }
   .btn-draw:hover > span:before {
-    transition-delay: 0.2s; }
+    transition-delay: 0.3s; }
   .btn-draw:hover > span:after {
-    transition-delay: 0.4s; }
+    transition-delay: 0.6s; }
   .btn-draw:hover {
     color: #fff;
     background-color: #4dd599;
-    transition-delay: 0.6s; }
+    transition-delay: 0.9s; }
 
 footer {
   padding: 1rem;
@@ -610,7 +597,8 @@ footer {
   .close:hover, .close:focus {
     color: #e74c3c;
     text-decoration: none;
-    cursor: pointer; }
+    cursor: pointer;
+    transition: all 0.3s ease; }
 
 @-webkit-keyframes movedown {
   from {
@@ -679,7 +667,7 @@ footer {
   box-shadow: #2d3840 -1px 1px, #2d3840 -2px 2px, #2d3840 -3px 3px, #2d3840 -4px 4px, #2d3840 -5px 5px, #2d3840 -6px 6px;
   transform: translate3d(6px, -6px, 0);
   transition-delay: 0s;
-  transition-duration: 0.2s;
+  transition-duration: 0.3s;
   transition-property: all;
   transition-timing-function: linear; }
 

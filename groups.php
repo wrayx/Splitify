@@ -75,8 +75,8 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                         <td><?php echo $username; ?></td>
                                         <td><?php echo $email; ?>
                                             <button class="button-sm del del-right del-btn"
-                                                    id="<?php echo modalId("delete", "trigger", preg_replace('/\s/', '', $groupName.'_'.$member)) ?>"><i
-                                                        class="fas fa-times"></i>
+                                                    id="<?php echo modalId("delete", "trigger", preg_replace('/\s/', '', $groupName.'_'.$member)) ?>">
+                                                Remove
                                             </button>
                                         </td>
                                     </tr>

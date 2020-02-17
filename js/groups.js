@@ -47,8 +47,7 @@ function deleteMember(id){
             let remainingModal = document.querySelector(`#${modal.htmlModalId()}`);
             if (row.parentElement.childElementCount === 1){
                 let card = row.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
-                card.parentElement.removeChild(card);
-                remainingModal.parentElement.parentElement.removeChild(remainingModal.parentElement);
+                deleteGroup(card.id.split('-').pop());
             }
             else {
                 row.parentElement.removeChild(row);
