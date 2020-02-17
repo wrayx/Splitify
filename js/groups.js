@@ -16,11 +16,65 @@ function addMemberInput() {
 
 let deleteModals = document.querySelectorAll(".delete-modal");
 let groupDeleteModals = document.querySelectorAll(".group-delete-modal");
-for (let i = 0; i < deleteModals.length; i++) {
-    let modal = new Modal('delete', Modal.getModalId(deleteModals[i].id));
+deleteModals.forEach(deleteModal => {
+    let id = Modal.getModalId(deleteModal.id);
+    let modal = new Modal('delete', id);
+    let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
     modal.addModalEvtListener();
+    proceed.addEventListener('click', () => {
+        deleteMember(id);
+    });
+});
+groupDeleteModals.forEach(groupDeleteModal => {
+    let id = Modal.getModalId(groupDeleteModal.id);
+    let modal = new Modal('deletegroup', id);
+    let proceed = document.querySelector(`#${modal.htmlProceedId()}`);
+    modal.addModalEvtListener();
+    proceed.addEventListener('click', () => {
+        deleteGroup(id);
+    });
+});
+
+function deleteMember(id){
+    let params = `deleteMemberId=${id}`;
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            let modal = new Modal('delete', id);
+            let trigger = document.querySelector(`#${modal.htmlTriggerId()}`);
+            let row = trigger.parentElement.parentElement;
+            let remainingModal = document.querySelector(`#${modal.htmlModalId()}`);
+            if (row.parentElement.childElementCount === 1){
+                let card = row.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                card.parentElement.removeChild(card);
+                remainingModal.parentElement.parentElement.removeChild(remainingModal.parentElement);
+            }
+            else {
+                row.parentElement.removeChild(row);
+                remainingModal.parentElement.removeChild(remainingModal);
+            }
+        }
+    };
+    xhttp.open("POST", "includes/groups.inc.php");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
 }
-for (let i = 0; i < groupDeleteModals.length; i++) {
-    let modal = new Modal('deletegroup', Modal.getModalId(groupDeleteModals[i].id));
-    modal.addModalEvtListener();
+
+function deleteGroup(id){
+    let params = `deleteGroupId=${id}`;
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            let modal = new Modal('deletegroup', id);
+            let groupCard = document.querySelector(`#group-card-${id}`);
+            let remainingModal = document.querySelector(`#${modal.htmlModalId()}`);
+            groupCard.parentElement.removeChild(groupCard);
+            remainingModal.parentElement.parentElement.removeChild(remainingModal.parentElement);
+        }
+    };
+    xhttp.open("POST", "includes/groups.inc.php");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
 }

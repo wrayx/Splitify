@@ -38,7 +38,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
             </div>
         </div>
         <?php foreach ($groups as $group): ?>
-            <div class="card">
+            <div class="card" id="group-card-<?php echo $group; ?>">
                 <div class="face face1 blue">
                     <div class="content">
                         <h3><?php
@@ -75,7 +75,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                                         <td><?php echo $username; ?></td>
                                         <td><?php echo $email; ?>
                                             <button class="button-sm del del-right del-btn"
-                                                    id="<?php echo modalId("delete", "trigger", $member) ?>"><i
+                                                    id="<?php echo modalId("delete", "trigger", preg_replace('/\s/', '', $groupName.'_'.$member)) ?>"><i
                                                         class="fas fa-times"></i>
                                             </button>
                                         </td>
@@ -93,49 +93,52 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
             </div>
             <?php
             $members = $db->getGroupMembers($group);
-            $i = 0;
-            foreach ($members as $member):
-                $i++;
-                $username = $db->getUsername($member);
-                $email = $db->getUserEmail($member);
-                ?>
-                <!-- The Member Deletion Modal -->
-                <div class="delete-modal" id="<?php echo modalId("delete", "", $member) ?>">
+            $i = 0; ?>
+            <div>
+                <?php
+                foreach ($members as $member):
+                    $i++;
+                    $username = $db->getUsername($member);
+                    $email = $db->getUserEmail($member);
+                    ?>
+                    <!-- The Member Deletion Modal -->
+                    <div class="delete-modal" id="<?php echo modalId("delete", "", preg_replace('/\s/', '', $groupName.'_'.$member)) ?>">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                                                <span class="close"
+                                                      id="<?php echo modalId("delete", "close", preg_replace('/\s/', '', $groupName.'_'.$member)) ?>"><i
+                                                            class="fas fa-times"></i></span>
+                            <div class="modal-header">
+                                Confirm to Remove This Member ?
+                            </div>
+                            <p><b>Group Name:</b> <?php echo $groupName; ?></p><br>
+                            <p><b>Username:</b> <?php echo $username; ?></p><br>
+                            <button class="action red action-rm-member"
+                                    id="<?php echo modalId("delete", "proceed", preg_replace('/\s/', '', $groupName.'_'.$member)) ?>">Delete
+                            </button>
+                            <button class="action blue cancel-btn"
+                                    id="<?php echo modalId("delete", "cancel", preg_replace('/\s/', '', $groupName.'_'.$member)) ?>">Cancel
+                            </button>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                <!-- The Group Deletion Modal -->
+                <div class="group-delete-modal" id="<?php echo modalId("deletegroup", "", $group) ?>">
                     <!-- Modal content -->
                     <div class="modal-content">
-                                            <span class="close"
-                                                  id="<?php echo modalId("delete", "close", $member) ?>"><i
-                                                        class="fas fa-times"></i></span>
+                        <span class="close" id="<?php echo modalId("deletegroup", "close", $group) ?>"><i
+                                    class="fas fa-times"></i></span>
                         <div class="modal-header">
-                            Confirm to Remove This Member ?
+                            Confirm to Delete this Group ?
                         </div>
                         <p><b>Group Name:</b> <?php echo $groupName; ?></p><br>
-                        <p><b>Username:</b> <?php echo $username; ?></p><br>
-                        <button class="action red action-rm-member"
-                                id="<?php echo modalId("delete", "proceed", $member) ?>">Delete
+                        <button class="action red action-del-group"
+                                id="<?php echo modalId("deletegroup", "proceed", $group) ?>">Delete
                         </button>
-                        <button class="action blue cancel-btn"
-                                id="<?php echo modalId("delete", "cancel", $member) ?>">Cancel
+                        <button class="action blue cancel-btn" id="<?php echo modalId("deletegroup", "cancel", $group) ?>">
+                            Cancel
                         </button>
                     </div>
-                </div>
-            <?php endforeach; ?>
-            <!-- The Group Deletion Modal -->
-            <div class="group-delete-modal" id="<?php echo modalId("deletegroup", "", $group) ?>">
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close" id="<?php echo modalId("deletegroup", "close", $group) ?>"><i
-                                class="fas fa-times"></i></span>
-                    <div class="modal-header">
-                        Confirm to Delete this Group ?
-                    </div>
-                    <p><b>Group Name:</b> <?php echo $groupName; ?></p><br>
-                    <button class="action red action-del-group"
-                            id="<?php echo modalId("deletegroup", "proceed", $group) ?>">Delete
-                    </button>
-                    <button class="action blue cancel-btn" id="<?php echo modalId("deletegroup", "cancel", $group) ?>">
-                        Cancel
-                    </button>
                 </div>
             </div>
         <?php endforeach; ?>

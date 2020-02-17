@@ -235,11 +235,29 @@ class DB extends SQLite3
     {
         $sql = 'DELETE FROM members
                 WHERE member = :userid
-                AND groupid = :groupid';
+                AND groupId = :groupid';
 
         $statement = $this->prepare($sql);
-        $statement->bindValue(':member', $userid);
+        $statement->bindValue(':userid', $userid);
         $statement->bindValue(':groupid', $groupid);
+        $statement->execute();
+
+        $statement->close();
+    }
+
+    public function deleteGroup($id)
+    {
+        $members = $this->getGroupMembers($id);
+//        var_dump($members);
+        foreach($members as $member){
+            $this->deleteGroupMember($member, $id);
+        }
+
+        $sql = 'DELETE FROM groups
+                WHERE id = :id';
+
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
         $statement->execute();
 
         $statement->close();
