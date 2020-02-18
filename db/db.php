@@ -288,7 +288,26 @@ class DB extends SQLite3
         $splitAmount = ((float)$amount) / $groupNum;
         foreach ($groupMembers as $member) {
             $this->createSplitBill($billId, $member, $splitAmount);
+            $this->sendBillNotification($this->getUserEmail($member), $this->getUsername($userid), $splitAmount, $createdate);
         }
+    }
+
+    public function sendBillNotification($email, $payeeName, $amount, $date){
+        $to      =  $email;
+        $subject = 'Splitify Notification';
+        $message = '
+        <h1>Payment Notification</h1>
+        <p><strong>Payee: </strong>'.$payeeName.'</p>
+        <p><strong>Amount: </strong>$'.number_format($amount, 2, '.', '').'</p>
+        <p><strong>Date Added: </strong>'.date("d/m/Y", strtotime($date)).'</p>
+        <a href="http://cs139.dcs.warwick.ac.uk/~u1915472/cs139/cs139_coursework/signin.php">Complete Payment</a>';
+
+        $headers = 'From: noreply@splitify.com' . "\r\n" .
+            'Reply-To: reply@splitify.com' . "\r\n" .
+            'Content-type: text/html; charset=iso-8859-1' . "\r\n".
+            'X-Mailer: PHP/' . phpversion();
+
+        mail($to, $subject, $message, $headers);
     }
 
     public function getBillId($name)
