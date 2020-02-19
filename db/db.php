@@ -702,25 +702,6 @@ class DB extends SQLite3
         $statement->close();
     }
 
-//    public function sendPwdRecoverEmail($email, $url)
-//    {
-//        $to      =  $email;
-//        $subject = 'Splitify Reset Password';
-//        $message = '
-//        <h1>Splitify: Reset Password</h1>
-//        <p>Please click the link down below to reset you password: </p>
-//        <p>'.$url.'</p>
-//        <p>The link will be expired in few minutes.</p><br><br>
-//        <p>Splitify</p>';
-//
-//        $headers = 'From: noreply@splitify.com' . "\r\n" .
-//            'Reply-To: reply@splitify.com' . "\r\n" .
-//            'Content-type: text/html; charset=iso-8859-1' . "\r\n".
-//            'X-Mailer: PHP/' . phpversion();
-//
-//        mail($to, $subject, $message, $headers);
-//    }
-
     public function verifyResetToken($selector, $token)
     {
         $sql = 'SELECT *
@@ -730,7 +711,7 @@ class DB extends SQLite3
         $statement->bindValue(':selector', $selector);
         $result = $statement->execute();
         $row = $result->fetchArray();
-        $tokenExpires = strtotime($row['tokenExpires']);
+        $tokenExpires = $row['tokenExpires'];
         $hashed_token = $row['token'];
         $statement->close();
 
