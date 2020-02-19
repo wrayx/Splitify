@@ -5,7 +5,7 @@ include "header.php";
         <h1 class="landing-title"><?php echo $title; ?></h1>
         <form action="includes/pwdreset.inc.php" method="POST">
             <input type="hidden" name="selector" value="<?php echo $_GET['selector']; ?>">
-            <input type="hidden" name="selector" value="<?php echo $_GET['token']; ?>">
+            <input type="hidden" name="token" value="<?php echo $_GET['token']; ?>">
             <div class="group first-group">
                 <input type="password" id="pwd" name="pwd" required>
                 <span class="highlight"></span>

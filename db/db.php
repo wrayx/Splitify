@@ -132,6 +132,21 @@ class DB extends SQLite3
         $statement->close();
     }
 
+    public function changeUserPwd($userid, $pwd){
+        $sql = 'UPDATE users
+                SET pwd = :pwd
+                WHERE id = :userid';
+
+        $options = array('cost' => self::BCRYPT_COST);
+        $hashedpwd = password_hash($pwd, PASSWORD_BCRYPT, $options);
+
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':pwd', $hashedpwd);
+        $statement->bindValue(':userid', $userid);
+        $statement->execute();
+        $statement->close();
+    }
+
     public function getUserPaidSplitBills($userid)
     {
         $sql = 'SELECT id
@@ -727,5 +742,18 @@ class DB extends SQLite3
         }
     }
 
-//    public function getResetEntries($selector){}
+    public function getSelectorEmail($selector)
+    {
+        $sql = 'SELECT email
+                FROM resetpwd
+                WHERE selector = :selector';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':selector', $selector);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['email'];
+        $statement->close();
+
+        return $res;
+    }
 }
