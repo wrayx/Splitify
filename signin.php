@@ -20,8 +20,12 @@ include "header.php";
                 <button class="button fill" name="signin-submit" type="submit">
                     <span class="text">Sign In</span>
                 </button>
+            <a href="pwdrecover.php">Forget Password ?</a>
             </div>
         </form>
+
+        <div class="group smail-link">
+        </div>
     </div>
 <?php
 include "footer.php"

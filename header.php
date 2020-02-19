@@ -27,6 +27,12 @@ else if ($filename == "signin")
     $title = "Sign In";
 else if ($filename == "signup")
     $title = "Sign up";
+else if ($filename == "account")
+    $title = "Account";
+else if ($filename == "pwdrecover")
+    $title = "Recover Password";
+else if ($filename == "pwdreset")
+    $title = "Reset Password";
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +54,7 @@ else if ($filename == "signup")
         <?php if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == true){ ?>
         <li class="<?php if ($filename == "bills") echo "active" ?>"><a href="bills.php">Bills</a></li>
         <li class="<?php if ($filename == "groups") echo "active" ?>"><a href="groups.php">Groups</a></li>
+        <li class="<?php if ($filename == "account") echo "active" ?>"><a href="account.php">Account</a></li>
         <li><a href="includes/signout.inc.php">Sign Out</a></li>
         <?php } else{ ?>
         <li class="<?php if ($filename == "signin") echo "active" ?>"><a href="signin.php">Sign In</a></li>

@@ -242,7 +242,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                 </div>
             </div>
         </div>
-        <a class="btn-draw" href="signin.php"><span>History</span></a>
+        <a class="btn-draw" href="history.php"><span>History</span></a>
     </div>
     </div>
     <script src="js/bills.js" type="module"></script>

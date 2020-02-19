@@ -37,3 +37,24 @@ CREATE TABLE members
     FOREIGN KEY (member) REFERENCES users (id),
     FOREIGN KEY (groupId) REFERENCES groups (id)
 );
+
+CREATE TABLE bills
+(
+    id     INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name   NVARCHAR(50) NOT NULL,
+    amount REAL         NOT NULL,
+    date   TEXT         NOT NULL,
+    payee  INTEGER      NOT NULL,
+    num    INTEGER      NOT NULL,
+    status INTEGER      NOT NULL DEFAULT 0,
+    FOREIGN KEY (payee) REFERENCES users (id)
+);
+
+CREATE TABLE resetpwd
+(
+    id       INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+    email    NVARCHAR(50) NOT NULL,
+    token    TEXT         NOT NULL,
+    selector TEXT         NOT NULL,
+    tokenExpires TEXT     NOT NULL
+);

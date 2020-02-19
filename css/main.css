@@ -7,7 +7,11 @@ body {
   font-weight: 300;
   font-size: 18px; }
   body a {
-    text-decoration: none; }
+    text-decoration: none;
+    color: #4dd599; }
+    body a:hover, body a:active {
+      color: #249865;
+      transition: all 0.3s ease-in-out; }
 
 h1,
 h2,
@@ -21,6 +25,12 @@ h6 {
   box-sizing: border-box;
   margin: 0;
   padding: 0; }
+
+button {
+  background-color: transparent;
+  border: none; }
+  button span {
+    font-size: 18px; }
 
 .container {
   margin: 150px 350px 400px 350px;
@@ -167,10 +177,15 @@ header {
 .group,
 .group-light {
   position: relative;
-  margin: 0 200px 45px 200px; }
+  margin: 0 100px 45px 200px; }
+  .group.account-group,
+  .group-light.account-group {
+    margin: 0 550px 45px 0; }
 
 .first-group {
   margin-top: 60px; }
+  .first-group.account-group {
+    margin-top: 100px; }
 
 .group-light input {
   font-size: 18px;
@@ -291,25 +306,64 @@ input:focus ~ .bar:after {
     background: transparent; } }
 .button {
   background: transparent;
-  height: 60px;
-  width: 150px;
-  text-align: center;
+  border: none;
+  font-size: 18px;
+  margin: 0px 60px 50px 130px;
+  font-family: "Saira", sans-serif;
   position: relative;
-  margin: 10px 120px;
-  border: 2px solid #4dd599;
-  transition: 0.3s;
-  font-family: "Saira", sans-serif; }
-  .button .text {
-    font-size: 18px;
-    font-family: "Saira", sans-serif;
-    color: #71dfbe;
-    margin: 10px; }
-  .button:hover, .button:focus {
+  display: inline-block;
+  color: #4dd599;
+  border-bottom: 1px solid #4dd599;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out; }
+  .button:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 1px;
+    background: #4dd599;
+    transform: translateY(100%);
+    transition: transform 0.2s ease-in-out;
+    transition-delay: 0.6s; }
+  .button > span {
+    position: relative;
+    display: block;
+    padding: 20px 25px;
+    color: inherit; }
+    .button > span:before, .button > span:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: #4dd599;
+      transition: transform 0.2s ease-in-out; }
+    .button > span:before {
+      height: 1px;
+      width: 100%;
+      transform: translateX(100%);
+      transition-delay: 0.4s; }
+    .button > span:after {
+      height: 100%;
+      width: 1px;
+      transform: translateY(-100%);
+      transition-delay: 0.2s; }
+  .button:hover:after, .button:hover > span:before, .button:hover > span:after {
+    transform: translate(0, 0); }
+  .button:hover:after {
+    transition-delay: 0s; }
+  .button:hover > span:before {
+    transition-delay: 0.2s; }
+  .button:hover > span:after {
+    transition-delay: 0.4s; }
+  .button:hover {
+    color: black;
     background-color: #4dd599;
-    box-shadow: inset 0 0 0 2em #4dd599;
+    transition-delay: 0.6s; }
+  .button:hover, .button:focus {
     outline: none; }
-    .button:hover .text, .button:focus .text {
-      color: #12171b; }
 
 .button-sm {
   background: transparent;
@@ -317,6 +371,9 @@ input:focus ~ .bar:after {
   position: relative;
   margin-left: 10px;
   border: 1px solid transparent;
+  background-color: #2d3840;
+  border-radius: 4px;
+  padding: 4px 7px;
   font-family: "Saira", sans-serif;
   transition: 0.3s;
   font-size: 14px;
@@ -324,7 +381,8 @@ input:focus ~ .bar:after {
   outline: none;
   float: right; }
   .button-sm:hover, .button-sm:focus {
-    color: #249865;
+    color: #030404;
+    background-color: #4dd599;
     transition: all 0.3s ease-in; }
   .button-sm.del {
     margin-top: 20px;
@@ -332,7 +390,8 @@ input:focus ~ .bar:after {
     color: #e74c3c;
     float: left; }
     .button-sm.del:hover, .button-sm.del:focus {
-      color: #a82315; }
+      color: #030404;
+      background-color: #e74c3c; }
     .button-sm.del.del-right {
       margin-top: 0;
       float: right; }
@@ -459,7 +518,7 @@ table {
   border-bottom: 2px solid #4dd599;
   cursor: pointer;
   overflow: hidden;
-  transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out; }
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out; }
   .btn-draw:after {
     content: "";
     position: absolute;
@@ -469,8 +528,8 @@ table {
     width: 2px;
     background: #4dd599;
     transform: translateY(100%);
-    transition: transform 0.3s ease-in-out;
-    transition-delay: 0.9s; }
+    transition: transform 0.2s ease-in-out;
+    transition-delay: 0.6s; }
   .btn-draw > span {
     position: relative;
     display: block;
@@ -482,29 +541,29 @@ table {
       left: 0;
       top: 0;
       background: #4dd599;
-      transition: transform 0.3s ease-in-out; }
+      transition: transform 0.2s ease-in-out; }
     .btn-draw > span:before {
       height: 2px;
       width: 100%;
       transform: translateX(100%);
-      transition-delay: 0.6s; }
+      transition-delay: 0.4s; }
     .btn-draw > span:after {
       height: 100%;
       width: 2px;
       transform: translateY(-100%);
-      transition-delay: 0.3s; }
+      transition-delay: 0.2s; }
   .btn-draw:hover:after, .btn-draw:hover > span:before, .btn-draw:hover > span:after {
     transform: translate(0, 0); }
   .btn-draw:hover:after {
     transition-delay: 0s; }
   .btn-draw:hover > span:before {
-    transition-delay: 0.3s; }
+    transition-delay: 0.2s; }
   .btn-draw:hover > span:after {
-    transition-delay: 0.6s; }
+    transition-delay: 0.4s; }
   .btn-draw:hover {
     color: #fff;
     background-color: #4dd599;
-    transition-delay: 0.9s; }
+    transition-delay: 0.6s; }
 
 footer {
   padding: 1rem;

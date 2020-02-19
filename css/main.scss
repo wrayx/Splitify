@@ -10,6 +10,96 @@ $prim-time: 0.3s;
 $red: #e74c3c;
 $prim-font: "Saira", sans-serif;
 
+
+// Mixin for drawing button with optional argument for width, padding, and time
+@mixin btn-draw($color, $color-hov, $width: 1px, $padding: 30px 30px, $time: 0.2s) {
+  position: relative;
+
+  display: inline-block;
+
+  color: $color;
+  border-bottom: $width solid $color;
+  cursor: pointer;
+  overflow: hidden;
+  transition: color $time ease-in-out, background-color $time ease-in-out;
+
+  &:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    height: 100%;
+    width: $width;
+
+    background: $color;
+    transform: translateY(100%);
+    transition: transform $time ease-in-out;
+    transition-delay: $time * 3;
+  }
+
+  > span {
+    position: relative;
+
+    display: block;
+    padding: $padding;
+
+    color: inherit;
+
+    &:before,
+    &:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+
+      background: $color;
+      transition: transform $time ease-in-out;
+    }
+
+    &:before {
+      height: $width;
+      width: 100%;
+
+      transform: translateX(100%);
+      transition-delay: $time * 2;
+    }
+
+    &:after {
+      height: 100%;
+      width: $width;
+
+      transform: translateY(-100%);
+      transition-delay: $time;
+    }
+  }
+
+  &:hover:after,
+  &:hover > span:before,
+  &:hover > span:after {
+    transform: translate(0, 0);
+  }
+
+  &:hover:after {
+    transition-delay: 0s;
+  }
+
+  &:hover > span:before {
+    transition-delay: $time;
+  }
+
+  &:hover > span:after {
+    transition-delay: $time * 2;
+  }
+
+  &:hover {
+    color: $color-hov;
+    background-color: $color;
+    transition-delay: $time * 3;
+  }
+}
+
+
 body {
   min-height: 100vh;
   background: black;
@@ -20,6 +110,14 @@ body {
 
   a {
     text-decoration: none;
+    color: $prim-color;
+
+    &:hover,
+    &:active{
+      color: darken($prim-color, 20%);
+      transition: all $prim-time ease-in-out;
+      //background-color: $grey-light;
+    }
   }
 }
 
@@ -36,6 +134,14 @@ h6 {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  span {
+    font-size: 18px;
+  }
 }
 
 .container {
@@ -244,11 +350,17 @@ header {
 .group,
 .group-light {
   position: relative;
-  margin: 0 200px 45px 200px;
+  margin: 0 100px 45px 200px;
+  &.account-group {
+    margin: 0 550px 45px 0;
+  }
   //   padding: 40px 0px;
 }
 .first-group {
   margin-top: 60px;
+  &.account-group {
+    margin-top: 100px;
+  }
 }
 
 .group-light {
@@ -399,30 +511,36 @@ input:focus ~ .bar:after {
 
 .button {
   background: transparent;
-  height: 60px;
-  width: 150px;
-  text-align: center;
-  position: relative;
-  margin: 10px 120px;
-  border: 2px solid $prim-color;
-  transition: $prim-time;
+  //height: 60px;
+  //width: 150px;
+  //text-align: center;
+  //position: relative;
+  //margin: 10px 120px;
+  border: none;
+  //border-bottom: 1px solid $prim-color;
+  //transition: $prim-time;
+  //font-family: $prim-font;
+  font-size: 18px;
+  margin: 0px 60px 50px 130px;
   font-family: $prim-font;
+  @include btn-draw($prim-color, black, 1px, 20px 25px);
 
-  .text {
-    font-size: 18px;
-    font-family: $prim-font;
-    color: #71dfbe;
-    margin: 10px;
-  }
+  //.text {
+  //  font-size: 18px;
+  //  font-family: $prim-font;
+  //  color: #71dfbe;
+  //  margin: 10px;
+  //}
 
   &:hover,
   &:focus {
-    background-color: $prim-color;
-    box-shadow: inset 0 0 0 2em $prim-color;
+    //background-color: $prim-color;
+    //box-shadow: inset 0 0 0 2em $prim-color;
+    //box-shadow: inset 0 -60px 0 0 $prim-color;
     outline: none;
-    .text {
-      color: $grey-black;
-    }
+    //.text {
+    //  color: $grey-black;
+    //}
   }
 }
 
@@ -432,6 +550,9 @@ input:focus ~ .bar:after {
   position: relative;
   margin-left: 10px;
   border: 1px solid transparent;
+  background-color: $grey-light;
+  border-radius: 4px;
+  padding: 4px 7px;
   font-family: $prim-font;
   transition: $prim-time;
   font-size: 14px;
@@ -441,7 +562,9 @@ input:focus ~ .bar:after {
 
   &:hover,
   &:focus {
-    color: darken($prim-color, 20%);
+    color: darken($grey-light, 20%);
+    //background-color: darken($prim-color, 80%);
+    background-color: $prim-color;
     transition: all $prim-time ease-in;
   }
 
@@ -453,7 +576,9 @@ input:focus ~ .bar:after {
 
     &:hover,
     &:focus {
-      color: darken($red, 20%);
+      //color: darken($red, 20%);
+      color: darken($grey-light, 20%);
+      background-color: $red;
     }
 
     &.del-right {
@@ -608,94 +733,6 @@ table {
   overflow-x: auto;
   margin-top: 0;
   //border: 1px solid rgba(255,255,255,0.3);
-}
-
-// Mixin for drawing button with optional argument for width, padding, and time
-@mixin btn-draw($color, $color-hov, $width: 1px, $padding: 30px 30px, $time: $prim-time) {
-  position: relative;
-
-  display: inline-block;
-
-  color: $color;
-  border-bottom: $width solid $color;
-  cursor: pointer;
-  overflow: hidden;
-  transition: color $time ease-in-out, background-color $time ease-in-out;
-
-  &:after {
-    content: "";
-    position: absolute;
-    right: 0;
-    bottom: 0;
-
-    height: 100%;
-    width: $width;
-
-    background: $color;
-    transform: translateY(100%);
-    transition: transform $time ease-in-out;
-    transition-delay: $time * 3;
-  }
-
-  > span {
-    position: relative;
-
-    display: block;
-    padding: $padding;
-
-    color: inherit;
-
-    &:before,
-    &:after {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0;
-
-      background: $color;
-      transition: transform $time ease-in-out;
-    }
-
-    &:before {
-      height: $width;
-      width: 100%;
-
-      transform: translateX(100%);
-      transition-delay: $time * 2;
-    }
-
-    &:after {
-      height: 100%;
-      width: $width;
-
-      transform: translateY(-100%);
-      transition-delay: $time;
-    }
-  }
-
-  &:hover:after,
-  &:hover > span:before,
-  &:hover > span:after {
-    transform: translate(0, 0);
-  }
-
-  &:hover:after {
-    transition-delay: 0s;
-  }
-
-  &:hover > span:before {
-    transition-delay: $time;
-  }
-
-  &:hover > span:after {
-    transition-delay: $time * 2;
-  }
-
-  &:hover {
-    color: $color-hov;
-    background-color: $color;
-    transition-delay: $time * 3;
-  }
 }
 
 .btn-draw {
@@ -904,13 +941,6 @@ footer {
 .index-table td:first-child {
   color: #fff;
 }
-
-// .index-table tr:hover {
-//   background-color: black;
-//   -webkit-box-shadow: 0 6px 6px -6px $grey-black;
-//   -moz-box-shadow: 0 6px 6px -6px $grey-black;
-//   box-shadow: 0 6px 6px -6px $grey-black;
-// }
 
 .index-table tr:hover {
   background-color: $prim-color;

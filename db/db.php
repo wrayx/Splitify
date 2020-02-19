@@ -111,6 +111,77 @@ class DB extends SQLite3
         return $username;
     }
 
+    public function changeUsername($userid, $newUsername){
+        $sql = 'UPDATE users
+                SET username = :username
+                WHERE id = :userid';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':username', $newUsername);
+        $statement->bindValue(':userid', $userid);
+        $statement->execute();
+        $statement->close();
+    }
+    public function changeUserEmail($userid, $newEmail){
+        $sql = 'UPDATE users
+                SET email = :email
+                WHERE id = :userid';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':email', $newEmail);
+        $statement->bindValue(':userid', $userid);
+        $statement->execute();
+        $statement->close();
+    }
+
+    public function getUserPaidSplitBills($userid)
+    {
+        $sql = 'SELECT id
+                FROM splitbills
+                WHERE payer = :userid
+                AND status = 1';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':userid', $userid);
+        $result = $statement->execute();
+        $res = array();
+        while ($row = $result->fetchArray()) {
+            array_push($res, $row['id']);
+        }
+        $statement->close();
+        return $res;
+    }
+
+    public function getUserPaidBills($userid)
+    {
+        $sql = 'SELECT id
+                FROM bills
+                WHERE payee = :userid
+                AND status = 100';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':userid', $userid);
+        $result = $statement->execute();
+        $res = array();
+        while ($row = $result->fetchArray()) {
+            array_push($res, $row['id']);
+        }
+        $statement->close();
+        return $res;
+    }
+
+    public function getUserPaidSplitBillsNum($userid)
+    {
+        $sql = 'SELECT COUNT(*) AS count
+                FROM splitbills
+                WHERE payer = :userid
+                AND status = 1';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':userid', $userid);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['count'];
+
+        $statement->close();
+        return $res;
+    }
+
     public function createUser($username, $email, $pwd)
     {
         $sql = 'INSERT INTO users(username, email, pwd)
@@ -590,4 +661,71 @@ class DB extends SQLite3
         $statement->execute();
         $statement->close();
     }
+
+    public function saveResetToken($email, $selector, $token, $expires)
+    {
+        $sql = 'DELETE FROM resetpwd
+                WHERE email = :email';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':email', $email);
+        $statement->execute();
+//        $statement->close();
+
+        $sql = 'INSERT INTO resetpwd(email, token, selector, tokenExpires)
+                VALUES (:email, :token, :selector, :tokenExpires)';
+
+        $options = array('cost' => self::BCRYPT_COST);
+        $hashed_token = password_hash($token, PASSWORD_BCRYPT, $options);
+
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':email', $email);
+        $statement->bindValue(':token', $hashed_token);
+        $statement->bindValue(':selector', $selector);
+        $statement->bindValue(':tokenExpires', $expires);
+        $statement->execute();
+
+        $statement->close();
+    }
+
+    public function sendPwdRecoverEmail($email, $url)
+    {
+        $to      =  $email;
+        $subject = 'Splitify: Reset Password';
+        $message = '
+        <h1>Splitify: Reset Password</h1>
+        <p>Please click the link down below to reset you password: </p>
+        <p>'.$url.'</p>
+        <p>The link will be expired in few minutes.</p><br><br>
+        <p>Splitify</p>';
+
+        $headers = 'From: noreply@splitify.com' . "\r\n" .
+            'Reply-To: reply@splitify.com' . "\r\n" .
+            'Content-type: text/html; charset=iso-8859-1' . "\r\n".
+            'X-Mailer: PHP/' . phpversion();
+
+        mail($to, $subject, $message, $headers);
+    }
+
+    public function verifyResetToken($selector, $token)
+    {
+        $sql = 'SELECT *
+                FROM resetpwd
+                WHERE selector = :selector';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':selector', $selector);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $tokenExpires = strtotime($row['tokenExpires']);
+        $hashed_token = $row['token'];
+        $statement->close();
+
+        if (password_verify($token, $hashed_token) && date("U") < $tokenExpires){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+//    public function getResetEntries($selector){}
 }
