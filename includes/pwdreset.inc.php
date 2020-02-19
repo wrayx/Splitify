@@ -5,4 +5,5 @@ if (isset($_POST['pwd-submit'])){
     $selector = $_POST['selector'];
     $token = $_POST['token'];
     echo'$pwd = '.$pwd;
+    echo '$selector= '.$selector;
 }
