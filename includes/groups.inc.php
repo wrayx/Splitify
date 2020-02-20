@@ -3,7 +3,8 @@ include_once "inc.php";
 session_start();
 $userInfo = $_SESSION['userInfo'];
 
-function checkParams($parameters) {
+function checkParams($parameters)
+{
     foreach ($parameters as $parameter) {
         // some field is empty
         if (empty($_POST[$parameter])) {
@@ -14,7 +15,7 @@ function checkParams($parameters) {
     return true;
 }// end checkParams()
 
-if (checkParams(array('name', 'members')) === true){
+if (checkParams(array('name', 'members')) === true) {
     $name = h($_POST['name']);
     $members = $_POST['members'];
     if ($db->getGroupId($name) != null) {
@@ -38,24 +39,21 @@ if (checkParams(array('name', 'members')) === true){
 
         header('Location: ../groups.php?create=success');
     }
-}
-else if(checkParams(array('deleteMemberId')) === true){
-    echo "deleteMemberId:".$_POST['deleteMemberId'];
+} else if (checkParams(array('deleteMemberId')) === true) {
+    echo "deleteMemberId:" . $_POST['deleteMemberId'];
     $groupName = explode("_", h($_POST['deleteMemberId']))[0];
     $memberid = explode("_", h($_POST['deleteMemberId']))[1];
     var_dump($db->getGroupId($groupName));
     var_dump((int)$memberid);
     $db->deleteGroupMember((int)$memberid, $db->getGroupId($groupName));
     echo "ok";
-}
-else if(checkParams(array('deleteGroupId')) === true){
-    echo "deleteGroupId ".$_POST['deleteGroupId'];
+} else if (checkParams(array('deleteGroupId')) === true) {
+    echo "deleteGroupId " . $_POST['deleteGroupId'];
     var_dump($_POST['deleteGroupId']);
     $groupid = (int)h($_POST['deleteGroupId']);
     echo $groupid;
     var_dump($groupid);
     $db->deleteGroup($groupid);
-}
-else {
+} else {
     echo "failed";
 }

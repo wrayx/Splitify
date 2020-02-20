@@ -7,8 +7,8 @@ require_once("password.php");
  */
 class DB extends SQLite3
 {
-    private $filename;
     const BCRYPT_COST = 14;
+    private $filename;
 
     public function __construct($filename)
     {
@@ -83,35 +83,8 @@ class DB extends SQLite3
         return $userId;
     }
 
-    public function getUserEmail($id)
+    public function changeUsername($userid, $newUsername)
     {
-        $sql = 'SELECT email
-                FROM users
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $email = $row['email'];
-        $statement->close();
-        return $email;
-    }
-
-    public function getUsername($id)
-    {
-        $sql = 'SELECT username
-                FROM users
-                WHERE id = :id';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $username = $row['username'];
-        $statement->close();
-        return $username;
-    }
-
-    public function changeUsername($userid, $newUsername){
         $sql = 'UPDATE users
                 SET username = :username
                 WHERE id = :userid';
@@ -121,7 +94,9 @@ class DB extends SQLite3
         $statement->execute();
         $statement->close();
     }
-    public function changeUserEmail($userid, $newEmail){
+
+    public function changeUserEmail($userid, $newEmail)
+    {
         $sql = 'UPDATE users
                 SET email = :email
                 WHERE id = :userid';
@@ -132,7 +107,8 @@ class DB extends SQLite3
         $statement->close();
     }
 
-    public function changeUserPwd($userid, $pwd){
+    public function changeUserPwd($userid, $pwd)
+    {
         $sql = 'UPDATE users
                 SET pwd = :pwd
                 WHERE id = :userid';
@@ -271,6 +247,36 @@ class DB extends SQLite3
         return $res;
     }
 
+    public function addGroupMember($userid, $groupid)
+    {
+        $sql = 'INSERT INTO members(member, groupId)
+                VALUES (:member, :groupid)';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':member', $userid);
+        $statement->bindValue(':groupid', $groupid);
+        $statement->execute();
+
+        $statement->close();
+    }
+
+    public function deleteGroup($id)
+    {
+        $members = $this->getGroupMembers($id);
+//        var_dump($members);
+        foreach ($members as $member) {
+            $this->deleteGroupMember($member, $id);
+        }
+
+        $sql = 'DELETE FROM groups
+                WHERE id = :id';
+
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+
+        $statement->close();
+    }
+
     /**
      * @param $groupId
      * @return array of members id in given group
@@ -291,32 +297,6 @@ class DB extends SQLite3
         return $res;
     }
 
-    public function getGroupMemberNum($groupId)
-    {
-        $sql = 'SELECT COUNT(*) AS count
-                FROM members
-                WHERE groupId = :groupId';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':groupId', $groupId);
-        $result = $statement->execute();
-        $row = $result->fetchArray();
-        $res = $row['count'];
-        $statement->close();
-        return $res;
-    }
-
-    public function addGroupMember($userid, $groupid)
-    {
-        $sql = 'INSERT INTO members(member, groupId)
-                VALUES (:member, :groupid)';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':member', $userid);
-        $statement->bindValue(':groupid', $groupid);
-        $statement->execute();
-
-        $statement->close();
-    }
-
     public function deleteGroupMember($userid, $groupid)
     {
         $sql = 'DELETE FROM members
@@ -326,24 +306,6 @@ class DB extends SQLite3
         $statement = $this->prepare($sql);
         $statement->bindValue(':userid', $userid);
         $statement->bindValue(':groupid', $groupid);
-        $statement->execute();
-
-        $statement->close();
-    }
-
-    public function deleteGroup($id)
-    {
-        $members = $this->getGroupMembers($id);
-//        var_dump($members);
-        foreach($members as $member){
-            $this->deleteGroupMember($member, $id);
-        }
-
-        $sql = 'DELETE FROM groups
-                WHERE id = :id';
-
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':id', $id);
         $statement->execute();
 
         $statement->close();
@@ -359,7 +321,7 @@ class DB extends SQLite3
 
         $statement = $this->prepare($sql);
         $statement->bindValue(':name', $name);
-        $statement->bindValue(':amount', $amount);
+        $statement->bindValue(':amount', (float)$amount);
         $statement->bindValue(':createdate', $createdate);
         $statement->bindValue(':num', $numPayers);
         $statement->bindValue(':userid', $userid);
@@ -378,22 +340,18 @@ class DB extends SQLite3
         }
     }
 
-    public function sendBillNotification($email, $payeeName, $amount, $date){
-        $to      =  $email;
-        $subject = 'Splitify Notification';
-        $message = '
-        <h1>Payment Notification</h1>
-        <p><strong>Payee: </strong>'.$payeeName.'</p>
-        <p><strong>Amount: </strong>$'.number_format($amount, 2, '.', '').'</p>
-        <p><strong>Date Added: </strong>'.date("d/m/Y", strtotime($date)).'</p>
-        <a href="http://cs139.dcs.warwick.ac.uk/~u1915472/cs139/cs139_coursework/signin.php">Complete Payment</a>';
-
-        $headers = 'From: noreply@splitify.com' . "\r\n" .
-            'Reply-To: reply@splitify.com' . "\r\n" .
-            'Content-type: text/html; charset=iso-8859-1' . "\r\n".
-            'X-Mailer: PHP/' . phpversion();
-
-        mail($to, $subject, $message, $headers);
+    public function getGroupMemberNum($groupId)
+    {
+        $sql = 'SELECT COUNT(*) AS count
+                FROM members
+                WHERE groupId = :groupId';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':groupId', $groupId);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $res = $row['count'];
+        $statement->close();
+        return $res;
     }
 
     public function getBillId($name)
@@ -408,6 +366,71 @@ class DB extends SQLite3
         $res = $row['id'];
         $statement->close();
         return $res;
+    }
+
+    public function createSplitBill($parent, $payer, $amount)
+    {
+        $sql = 'INSERT INTO splitbills(parent, payer, amount)
+                VALUES (:parent, :payer, :amount)';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':parent', $parent);
+        $statement->bindValue(':amount', $this->format($amount));
+        $statement->bindValue(':payer', $payer);
+
+        $statement->execute();
+        $statement->close();
+    }
+
+    public static function format($amount)
+    {
+        return number_format((float)$amount, 2, '.', '');
+    }
+
+    public function sendBillNotification($email, $payeeName, $amount, $date)
+    {
+        $to = $email;
+        $subject = 'Splitify Notification';
+        $message = '
+        <h1>Payment Notification</h1>
+        <p><strong>Payee: </strong>' . $payeeName . '</p>
+        <p><strong>Amount: </strong>$' . number_format($amount, 2, '.', '') . '</p>
+        <p><strong>Date Added: </strong>' . date("d/m/Y", strtotime($date)) . '</p>
+        <a href="http://cs139.dcs.warwick.ac.uk/~u1915472/cs139/cs139_coursework/signin.php">Complete Payment</a>';
+
+        $headers = 'From: noreply@splitify.com' . "\r\n" .
+            'Reply-To: reply@splitify.com' . "\r\n" .
+            'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
+            'X-Mailer: PHP/' . phpversion();
+
+        mail($to, $subject, $message, $headers);
+    }
+
+    public function getUserEmail($id)
+    {
+        $sql = 'SELECT email
+                FROM users
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $email = $row['email'];
+        $statement->close();
+        return $email;
+    }
+
+    public function getUsername($id)
+    {
+        $sql = 'SELECT username
+                FROM users
+                WHERE id = :id';
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $result = $statement->execute();
+        $row = $result->fetchArray();
+        $username = $row['username'];
+        $statement->close();
+        return $username;
     }
 
     public function getBillPaidNum($parent)
@@ -425,6 +448,11 @@ class DB extends SQLite3
         return $res;
     }
 
+    public function getBillAmount($id)
+    {
+        return $this->getBillData('amount', $id);
+    }
+
     protected function getBillData($header, $id)
     {
         $sql = 'SELECT *
@@ -437,16 +465,6 @@ class DB extends SQLite3
         $res = $row[$header];
         $statement->close();
         return $res;
-    }
-
-    public function getBillNum($id)
-    {
-        return $this->getBillData('num', $id);
-    }
-
-    public function getBillAmount($id)
-    {
-        return $this->getBillData('amount', $id);
     }
 
     public function getBillName($id)
@@ -495,19 +513,6 @@ class DB extends SQLite3
         $statement->execute();
         $statement->close();
         $this->deleteSplitBills($id);
-    }
-
-    public function createSplitBill($parent, $payer, $amount)
-    {
-        $sql = 'INSERT INTO splitbills(parent, payer, amount)
-                VALUES (:parent, :payer, :amount)';
-        $statement = $this->prepare($sql);
-        $statement->bindValue(':parent', $parent);
-        $statement->bindValue(':amount', $this->format($amount));
-        $statement->bindValue(':payer', $payer);
-
-        $statement->execute();
-        $statement->close();
     }
 
     public function deleteSplitBills($parent)
@@ -570,6 +575,11 @@ class DB extends SQLite3
         return $res;
     }
 
+    public function getSplitBillAmount($id)
+    {
+        return $this->getSplitBillData('amount', $id);
+    }
+
     protected function getSplitBillData($header, $id)
     {
         $sql = 'SELECT *
@@ -585,16 +595,6 @@ class DB extends SQLite3
         return $res;
     }
 
-    public function getSplitBillAmount($id)
-    {
-        return $this->getSplitBillData('amount', $id);
-    }
-
-    public function getSplitBillParent($id)
-    {
-        return $this->getSplitBillData('parent', $id);
-    }
-
     public function getSplitBillPayer($id)
     {
         return $this->getSplitBillData('payer', $id);
@@ -603,11 +603,6 @@ class DB extends SQLite3
     public function getSplitBillStatus($id)
     {
         return $this->getSplitBillData('status', $id);
-    }
-
-    public static function format($amount)
-    {
-        return number_format((float)$amount, 2, '.', '');
     }
 
     public function paySplitBill($id)
@@ -647,6 +642,16 @@ class DB extends SQLite3
         $statement->close();
 
         $this->matchBillStatus($parent);
+    }
+
+    public function getSplitBillParent($id)
+    {
+        return $this->getSplitBillData('parent', $id);
+    }
+
+    public function getBillNum($id)
+    {
+        return $this->getBillData('num', $id);
     }
 
     public function matchBillStatus($parent)
@@ -715,10 +720,9 @@ class DB extends SQLite3
         $hashed_token = $row['token'];
         $statement->close();
 
-        if (password_verify($token, $hashed_token) && date("U") < $tokenExpires){
+        if (password_verify($token, $hashed_token) && date("U") < $tokenExpires) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

@@ -14,9 +14,7 @@ $prim-font: "Saira", sans-serif;
 // Mixin for drawing button with optional argument for width, padding, and time
 @mixin btn-draw($color, $color-hov, $width: 1px, $padding: 30px 30px, $time: 0.2s) {
   position: relative;
-
   display: inline-block;
-
   color: $color;
   border-bottom: $width solid $color;
   cursor: pointer;
@@ -45,6 +43,7 @@ $prim-font: "Saira", sans-serif;
     padding: $padding;
 
     color: inherit;
+    font-size: 18px;
 
     &:before,
     &:after {
@@ -111,9 +110,10 @@ body {
   a {
     text-decoration: none;
     color: $prim-color;
+    font-size: 16px;
 
     &:hover,
-    &:active{
+    &:active {
       color: darken($prim-color, 20%);
       transition: all $prim-time ease-in-out;
       //background-color: $grey-light;
@@ -139,6 +139,7 @@ h6 {
 button {
   background-color: transparent;
   border: none;
+
   span {
     font-size: 18px;
   }
@@ -150,7 +151,7 @@ button {
 
   .card {
     position: relative;
-    margin-top: 90px;
+    margin-top: 0px;
     margin-bottom: 60px;
 
     .face {
@@ -167,20 +168,24 @@ button {
         align-items: center;
         justify-content: center;
       }
+
       &.blue {
         //background:linear-gradient(90deg, #4e54c8 0%,#8f94fb 100% );
         background-image: linear-gradient(to left bottom, $sec-color, $third-color);
       }
     }
+
     .face.face1 .content {
       opacity: 0.8;
       transition: 0.5s;
     }
+
     .face {
       &.face1 .content {
         img {
           max-width: 60px;
         }
+
         h3 {
           margin: 10px 0 0;
           padding: 0;
@@ -189,6 +194,7 @@ button {
           font-size: 1.5em;
         }
       }
+
       &.face2 {
         padding: 70px 30px;
         position: relative;
@@ -248,7 +254,7 @@ button {
       padding-bottom: 10px;
       // background: linear-gradient(90deg, rgba(0,145,142,1) 0%, rgba(77,213,153,1) 100%);
       // animation: progressAnimation 0.8s;
-      .progress-percentage{
+      .progress-percentage {
         float: right;
         padding-right: 10px;
         font-size: 13px;
@@ -335,6 +341,7 @@ header {
       position: relative;
       display: flex;
       padding: 30px 25px 30px 25px;
+      font-size: 18px;
       text-decoration: none;
       color: white;
       transition: $prim-time cubic-bezier(0.165, 0.84, 0.34, 1);
@@ -351,13 +358,17 @@ header {
 .group-light {
   position: relative;
   margin: 0 100px 45px 200px;
+
   &.account-group {
     margin: 0 550px 45px 0;
   }
+
   //   padding: 40px 0px;
 }
+
 .first-group {
   margin-top: 60px;
+
   &.account-group {
     margin-top: 100px;
   }
@@ -388,6 +399,7 @@ header {
     -webkit-transition: $prim-time ease all;
   }
 }
+
 input {
   font-size: 18px;
   padding: 10px 10px 10px 5px;
@@ -844,6 +856,7 @@ footer {
   float: right;
   font-size: 28px;
   font-weight: bold;
+
   &:hover,
   &:focus {
     color: $red;
@@ -989,6 +1002,7 @@ footer {
     clear: both;
     color: white;
     padding-left: 1px;
+
     &:not(:empty) {
       padding-left: 2em;
     }
@@ -1025,11 +1039,12 @@ footer {
     font-size: inherit;
 
     &:checked {
-       + label:before{
+      + label:before {
         background: $prim-color;
-        border:none;
+        border: none;
         transition: all .2s;
       }
+
       + label:after {
         transform: translate(.25em, (1.25em / 2) - ((1.25em - 2 * .25em) / 2.6)) rotate(-45deg);
         width: (1.25em - 2 * .25em);
@@ -1042,14 +1057,51 @@ footer {
     }
 
     &:disabled {
-      + label:before{
+      + label:before {
         border-color: $grey-black;
       }
+
       &:checked {
-        + label:before{
+        + label:before {
           background: $grey-black;
         }
       }
+    }
+  }
+}
+
+/* The alert message box */
+.alert {
+  padding: 20px;
+  background-color: $grey-black; /* Red */
+  color: $red;
+  margin-bottom: 40px;
+  border-radius: 12px;
+
+  &.info {
+    color: $prim-color;
+
+    .closebtn {
+      color: $prim-color;
+
+      &:hover {
+        color: darken($prim-color, 20%);
+      }
+    }
+  }
+
+  .closebtn {
+    margin-left: 15px;
+    color: $red;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      color: darken($red, 20%);
     }
   }
 }

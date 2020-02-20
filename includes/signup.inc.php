@@ -2,16 +2,17 @@
 require_once('inc.php');
 
 // user haven't not submit any form
-if (!isset($_POST['signup-submit'])){
+if (!isset($_POST['signup-submit'])) {
     header('Location: ../signup.php');
     exit;
 }
 
-function checkParams($parameters) {
+function checkParams($parameters)
+{
     foreach ($parameters as $parameter) {
         // some field is empty
-        if (empty($_POST[$parameter])){
-            header('Location: ../signup.php?error=param-'.$parameter.'-empty');
+        if (empty($_POST[$parameter])) {
+            header('Location: ../signup.php?error=param-missing');
             exit;
         }// end if statemente
     }// end foreach loop
@@ -28,28 +29,23 @@ $pwd = h($_POST['pwd']);
 $rePwd = h($_POST['re-pwd']);
 
 // 2. check if password and repeated password did match
-if ($pwd !== $rePwd){
+if ($pwd !== $rePwd) {
     header('Location: ../signup.php?error=pwddiff');
-}
-// 3. validate email and username valid
-else if((!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > $emailMaxLength) && (!preg_match("/^[a-zA-Z0-9]*$/",$username) || strlen($username) > $usernameMaxLength)){
+} // 3. validate email and username valid
+else if ((!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > $emailMaxLength) && (!preg_match("/^[a-zA-Z0-9]*$/", $username) || strlen($username) > $usernameMaxLength)) {
     // both not valid
     header('Location: ../signup.php?error=paramsnotvalid');
-}
-else if(!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > $emailMaxLength){
+} else if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > $emailMaxLength) {
     // email not valid, send back ok username
-    header('Location: ../signup.php?error=email-not-valid&username='.$username);
-}
-else if(!preg_match("/^[a-zA-Z0-9]*$/",$username) || strlen($username) > $usernameMaxLength){
+    header('Location: ../signup.php?error=email-not-valid&username=' . $username);
+} else if (!preg_match("/^[a-zA-Z0-9]*$/", $username) || strlen($username) > $usernameMaxLength) {
     // username not valid, send back email
-    header('Location: ../signup.php?error=username-not-valid&useremail='.$email);
-}
-else {
+    header('Location: ../signup.php?error=username-not-valid&useremail=' . $email);
+} else {
     $res = $db->createUser($username, $email, $pwd);
-    if ($res){
+    if ($res) {
         header('Location: ../signin.php?signup=success');
-    }
-    else {
+    } else {
         header('Location: ../index.php?error=sqlerror');
     }
 }

@@ -1,12 +1,25 @@
 <?php
 require_once('inc.php');
-// require('../random_compact/lib/random.php');
+
+function checkParams($parameters)
+{
+    foreach ($parameters as $parameter) {
+        // some field is empty
+        if (empty($_POST[$parameter])) {
+            header('Location: ../pwdrecover.php?error=param-missing');
+            exit;
+        }// end if statemente
+    }// end foreach loop
+}// end checkParams()
+
+// 1. check if all fields have been filled and submit button has been pressed
+checkParams(array('email'));
 
 if (isset($_POST['pwd-submit'])) {
     $selector = substr(md5(rand()), 0, 8);
     $token = substr(md5(rand()), 0, 32);
 
-    $url = "http://cs139.dcs.warwick.ac.uk/~u1915472/cs139/cs139_coursework/pwdreset.php?selector=".$selector."&token=".$token;
+    $url = "http://cs139.dcs.warwick.ac.uk/~u1915472/cs139/cs139_coursework/pwdreset.php?selector=" . $selector . "&token=" . $token;
     $expires = date("U") + 1800;
 
     $email = h($_POST['email']);

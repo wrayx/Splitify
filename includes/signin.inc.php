@@ -2,16 +2,17 @@
 require_once('inc.php');
 
 // user haven't not submit any form
-if (!isset($_POST['signin-submit'])){
+if (!isset($_POST['signin-submit'])) {
     header('Location: ../signin.php');
     exit;
 }
 
-function checkParams($parameters) {
+function checkParams($parameters)
+{
     foreach ($parameters as $parameter) {
         // some field is empty
-        if (empty($_POST[$parameter])){
-            header('Location: ../signin.php?error=param-'.$parameter.'-empty');
+        if (empty($_POST[$parameter])) {
+            header('Location: ../signin.php?error=param-missing');
             exit;
         }// end if statement
     }// end foreach loop
@@ -30,5 +31,5 @@ if ($authenticated) {
     $_SESSION["userInfo"] = $usernameOrEmail;
     header('Location: ../index.php?signin=success');
 } else {
-    header('Location: ../signin.php?signin=faild');
+    header('Location: ../signin.php?signin=failed');
 }

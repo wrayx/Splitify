@@ -9,19 +9,36 @@ function checkParams($parameters)
         // some field is empty
         if (empty($_POST[$parameter])) {
             return false;
-        }// end if statemente
-    }// end foreach loop
+        }
+    }
     return true;
-}// end checkParams()
+}
 
-if (checkParams(array('name', 'amount', 'group','paid')) === true) {
+
+function checkStr($params)
+{
+    foreach ($params as $param) {
+        // input is not alpha numerical
+        if (!ctype_alnum($_POST[$param])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+if (checkParams(array('name', 'amount', 'group', 'paid'))) {
+    if (!checkStr(array('name')) || !is_numeric($_POST['amount'])) {
+        echo 'param-invalid';
+        exit;
+    }
     $name = h($_POST['name']);
     $amount = h($_POST['amount']);
     $userid = $db->getUserId($userInfo);
     $group = h($_POST['group']);
     $groupid = $db->getGroupId($group);
     $db->createBill($userid, $name, $amount, $groupid);
-    if (h($_POST['paid']) === 'true'){
+    if (h($_POST['paid']) === 'true') {
         $parent = $db->getBillId($name);
         $db->paySplitBill($db->getSplitBillid($parent, $userid));
     }
@@ -32,6 +49,6 @@ if (checkParams(array('name', 'amount', 'group','paid')) === true) {
     $id = h($_POST['paySplitBillId']);
     $db->paySplitBill($id);
 } else {
-    header('Location: ../bills.php?create=failed&error=missing-param');
+    echo 'param-missing';
     exit;
 }

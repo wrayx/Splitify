@@ -1,17 +1,18 @@
 <?php
-include "header.php"
+include "header.php";
 ?>
-<div class="container">
     <h1 class="landing-title"><?php echo $title; ?></h1>
     <form action="includes/signup.inc.php" method="POST">
         <div class="group first-group">
-            <input type="text" required name="username">
+            <input type="text" required value="<?php if (isset($_GET['username'])) echo $_GET['username']; ?>"
+                   name="username">
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>Username</label>
         </div>
         <div class="group">
-            <input type="text" required name="email">
+            <input type="text" value="<?php if (isset($_GET['useremail'])) echo $_GET['useremail']; ?>" name="email"
+                   required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>E-mail</label>
@@ -34,7 +35,6 @@ include "header.php"
             </button>
         </div>
     </form>
-</div>
 <?php
 include "footer.php"
 ?>

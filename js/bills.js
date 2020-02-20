@@ -14,6 +14,7 @@ for (let i = 0; i < groupOptions.length; i++) {
 // dropdown.addEventListener("mouseout", hideDropdown);
 selectorTrigger.addEventListener("click", displayDropdown);
 angle.addEventListener("click", displayDropdown);
+
 // window.addEventListener("click", hideDropdown, true);
 
 function optionChange(e) {
@@ -60,12 +61,19 @@ function sendInputBill(e) {
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.responseText);
+            if (this.responseText == 'param-invalid') {
+                addAlert(1, "Please input in the correct format");
+                return;
+            } else if (this.responseText == 'param-missing') {
+                addAlert(1, 'Please complete all fields');
+                return;
+            }
         }
     };
     xhttp.open("POST", "includes/bills.inc.php");
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(params);
-    window.location.reload();
+    // window.location.reload();
 }
 
 function trim(str) {
@@ -160,4 +168,14 @@ function confirmBill(id) {
     xhttp.open("POST", "includes/bills.inc.php");
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(params);
+}
+
+function addAlert(type, message) {
+    let node = document.createElement("DIV");
+    node.classList.add('alert');
+    if (type === 0) {
+        node.classList.add('info');
+    }
+    node.innerHTML = "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\"><i class=\"fas fa-times\"></i></span>" + message;
+    document.querySelector('.container').insertBefore(node, document.querySelector(".card"));
 }

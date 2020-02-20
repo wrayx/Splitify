@@ -1,6 +1,6 @@
 <?php
 
-$to      = 'yyeween@gmail.com';
+$to = 'yyeween@gmail.com';
 $subject = 'Splitify Notification';
 $message = '
 <h1>Payment Notification</h1>
@@ -11,7 +11,7 @@ $message = '
 
 $headers = 'From: noreply@splitify.com' . "\r\n" .
     'Reply-To: reply@splitify.com' . "\r\n" .
-    'Content-type: text/html; charset=iso-8859-1' . "\r\n".
+    'Content-type: text/html; charset=iso-8859-1' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();
 
 mail($to, $subject, $message, $headers);

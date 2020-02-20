@@ -12,6 +12,10 @@ export default class Modal {
     //     return this._id;
     // }
 
+    static getModalId(modalsOnPage) {
+        return modalsOnPage.split('-').pop();
+    }
+
     htmlModalId() {
         return `${this._type}-modal-${this._id}`;
     }
@@ -56,9 +60,5 @@ export default class Modal {
     closeModal() {
         let modal = document.querySelector(`#${this.htmlModalId()}`);
         modal.style.display = "none";
-    }
-
-    static getModalId(modalsOnPage) {
-        return modalsOnPage.split('-').pop();
     }
 }

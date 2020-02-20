@@ -1,8 +1,9 @@
-CREATE TABLE users (
-	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	username NVARCHAR(20) NOT NULL,
-  	email NVARCHAR(40) NOT NULL,
-  	pwd NVARCHAR(45) NOT NULL
+CREATE TABLE users
+(
+    id       INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+    username NVARCHAR(20) NOT NULL,
+    email    NVARCHAR(40) NOT NULL,
+    pwd      NVARCHAR(45) NOT NULL
 );
 CREATE TABLE bills
 (
@@ -25,9 +26,10 @@ CREATE TABLE splitbills
     FOREIGN KEY (payer) REFERENCES users (id),
     FOREIGN KEY (parent) REFERENCES bills (id)
 );
-CREATE TABLE groups (
-	id INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
-	name NVARCHAR(20) NOT NULL
+CREATE TABLE groups
+(
+    id   INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name NVARCHAR(20) NOT NULL
 
 );
 CREATE TABLE members
@@ -52,9 +54,9 @@ CREATE TABLE bills
 
 CREATE TABLE resetpwd
 (
-    id       INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
-    email    NVARCHAR(50) NOT NULL,
-    token    TEXT         NOT NULL,
-    selector TEXT         NOT NULL,
-    tokenExpires TEXT     NOT NULL
+    id           INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+    email        NVARCHAR(50) NOT NULL,
+    token        TEXT         NOT NULL,
+    selector     TEXT         NOT NULL,
+    tokenExpires TEXT         NOT NULL
 );

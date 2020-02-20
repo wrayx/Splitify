@@ -1,7 +1,9 @@
 import Modal from './modal.js';
+
 let addMemberBtn = document.querySelector("#add-member-input");
 // let groupForm = document.querySelector("#group-form")
 addMemberBtn.addEventListener("click", addMemberInput);
+
 // groupForm.addEventListener("submit", createGroup);
 function addMemberInput() {
     let form = addMemberBtn.parentElement.parentElement;
@@ -35,7 +37,7 @@ groupDeleteModals.forEach(groupDeleteModal => {
     });
 });
 
-function deleteMember(id){
+function deleteMember(id) {
     let params = `deleteMemberId=${id}`;
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -45,11 +47,10 @@ function deleteMember(id){
             let trigger = document.querySelector(`#${modal.htmlTriggerId()}`);
             let row = trigger.parentElement.parentElement;
             let remainingModal = document.querySelector(`#${modal.htmlModalId()}`);
-            if (row.parentElement.childElementCount === 1){
+            if (row.parentElement.childElementCount === 1) {
                 let card = row.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
                 deleteGroup(card.id.split('-').pop());
-            }
-            else {
+            } else {
                 row.parentElement.removeChild(row);
                 remainingModal.parentElement.removeChild(remainingModal);
             }
@@ -60,7 +61,7 @@ function deleteMember(id){
     xhttp.send(params);
 }
 
-function deleteGroup(id){
+function deleteGroup(id) {
     let params = `deleteGroupId=${id}`;
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {

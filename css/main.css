@@ -8,7 +8,8 @@ body {
   font-size: 18px; }
   body a {
     text-decoration: none;
-    color: #4dd599; }
+    color: #4dd599;
+    font-size: 16px; }
     body a:hover, body a:active {
       color: #249865;
       transition: all 0.3s ease-in-out; }
@@ -37,7 +38,7 @@ button {
   min-height: 47vh; }
   .container .card {
     position: relative;
-    margin-top: 90px;
+    margin-top: 0px;
     margin-bottom: 60px; }
     .container .card .face {
       position: relative;
@@ -166,6 +167,7 @@ header {
       position: relative;
       display: flex;
       padding: 30px 25px 30px 25px;
+      font-size: 18px;
       text-decoration: none;
       color: white;
       transition: 0.3s cubic-bezier(0.165, 0.84, 0.34, 1); }
@@ -332,7 +334,8 @@ input:focus ~ .bar:after {
     position: relative;
     display: block;
     padding: 20px 25px;
-    color: inherit; }
+    color: inherit;
+    font-size: 18px; }
     .button > span:before, .button > span:after {
       content: "";
       position: absolute;
@@ -534,7 +537,8 @@ table {
     position: relative;
     display: block;
     padding: 30px 30px;
-    color: inherit; }
+    color: inherit;
+    font-size: 18px; }
     .btn-draw > span:before, .btn-draw > span:after {
       content: "";
       position: absolute;
@@ -793,5 +797,31 @@ footer {
       border-color: #12171b; }
     .md-checkbox input[type="checkbox"]:disabled:checked + label:before {
       background: #12171b; }
+
+/* The alert message box */
+.alert {
+  padding: 20px;
+  background-color: #12171b;
+  /* Red */
+  color: #e74c3c;
+  margin-bottom: 40px;
+  border-radius: 12px; }
+  .alert.info {
+    color: #4dd599; }
+    .alert.info .closebtn {
+      color: #4dd599; }
+      .alert.info .closebtn:hover {
+        color: #249865; }
+  .alert .closebtn {
+    margin-left: 15px;
+    color: #e74c3c;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s; }
+    .alert .closebtn:hover {
+      color: #a82315; }
 
 /*# sourceMappingURL=main.css.map */

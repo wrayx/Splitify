@@ -1,4 +1,4 @@
-if (document.querySelector("#add-member-input") != null){
+if (document.querySelector("#add-member-input") != null) {
     // let addMemberBtn = document.querySelector("#add-member-input");
     // addMemberBtn.addEventListener("click", addMemberInput);
     // function addMemberInput() {
