@@ -43,7 +43,7 @@ elseif (isset($_GET['signin'])){
 }
 elseif (isset($_GET['pwdchange'])){
     if ($_GET['pwdchange'] === 'success'){
-        alertMessage(1, 'The password has been changed, You can new sign in with the new password.');
+        alertMessage(1, 'The password has been changed, You can now sign in with the new password.');
     }
     elseif ($_GET['pwdchange'] === 'failed'){
         alertMessage(0, 'Password change faild, please try again');
@@ -52,6 +52,5 @@ elseif (isset($_GET['pwdchange'])){
 elseif(isset($_GET['email']) && $_GET['email'] === 'sent'){
     alertMessage(1, 'Email has been sent, please check your mail box for instructions.');
 }
-//elseif (isset($_GET['email']) && $_GET['pwdchange'] === 'success')
 
 ?>
