@@ -29,6 +29,12 @@ if (isset($_GET['error'])) {
     elseif($_GET['error'] === 'usernotexist'){
         alertMessage(0, 'User does not exist on our system.');
     }
+    elseif($_GET['error'] === 'amount-invalid'){
+        alertMessage(0, 'Please enter the correct amount.');
+    }
+    elseif($_GET['error'] === 'name-invalid'){
+        alertMessage(0, 'The name wasn\'t valid (only alpha numerical and spaces are allowed).');
+    }
 }
 elseif (isset($_GET['signup']) && $_GET['signup'] === 'success'){
     alertMessage(1, 'Sign up successful. You can sign in now.');

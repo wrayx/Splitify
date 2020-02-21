@@ -34,9 +34,10 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                             </ul>
                         </div>
                     </div>
+                    <input type="hidden" name="group" id="input-group-name">
                     <div class="group">
                         <div class="md-checkbox">
-                            <input id="bill-self-paid" type="checkbox">
+                            <input id="bill-self-paid" type="checkbox" name="paid">
                             <label for="bill-self-paid">I've paid my part.</label><br>
                         </div>
                         <button class="button" type="submit" id="bill-submit">

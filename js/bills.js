@@ -25,6 +25,7 @@ function optionChange(e) {
     });
     e.target.classList.add("active");
     selector.firstElementChild.innerHTML = optionText;
+    document.getElementById("input-group-name").setAttribute("value", document.querySelector("#input-group").textContent);
 }
 
 function displayDropdown() {
@@ -43,36 +44,40 @@ function hideDropdown() {
     angle.style.transform = "rotate(0Deg)";
 }
 
-let billSubmit = document.querySelector("#bill-submit");
-billSubmit.addEventListener("click", sendInputBill);
+// let billSubmit = document.querySelector("#bill-submit");
+// billSubmit.addEventListener("click", () => {
+//
+// });
 
 // send todo contents to php file
 function sendInputBill(e) {
-    e.preventDefault();
-    let groupname = document.querySelector("#input-group").textContent;
-    let amount = document.querySelector("#amount").value;
-    let name = document.querySelector("#name").value;
-    let paid = document.querySelector('#bill-self-paid').checked;
-    if (groupname === "Choose a Group") {
-        return;
-    }
-    let params = `group=${groupname}&name=${name}&amount=${amount}&paid=${paid}`;
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
-            if (this.responseText == 'param-invalid') {
-                addAlert(1, "Please input in the correct format");
-                return;
-            } else if (this.responseText == 'param-missing') {
-                addAlert(1, 'Please complete all fields');
-                return;
-            }
-        }
-    };
-    xhttp.open("POST", "includes/bills.inc.php");
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send(params);
+
+    // e.preventDefault();
+    // let groupname = document.querySelector("#input-group").textContent;
+    // let amount = document.querySelector("#amount").value;
+    // let name = document.querySelector("#name").value;
+    // let paid = document.querySelector('#bill-self-paid').checked;
+    // if (groupname === "Choose a Group") {
+    //     return;
+    // }
+    // let params = `group=${groupname}&name=${name}&amount=${amount}&paid=${paid}`;
+    // let xhttp = new XMLHttpRequest();
+    // xhttp.onreadystatechange = function () {
+    //     if (this.readyState === 4 && this.status === 200) {
+    //         console.log(this.responseText);
+    //         window.location.reload();
+    //         if (this.responseText == 'param-invalid') {
+    //             addAlert(1, "Please input in the correct format");
+    //             return;
+    //         } else if (this.responseText == 'param-missing') {
+    //             addAlert(1, 'Please complete all fields');
+    //             return;
+    //         }
+    //     }
+    // };
+    // xhttp.open("POST", "includes/bills.inc.php");
+    // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    // xhttp.send(params);
     // window.location.reload();
 }
 
@@ -170,12 +175,12 @@ function confirmBill(id) {
     xhttp.send(params);
 }
 
-function addAlert(type, message) {
-    let node = document.createElement("DIV");
-    node.classList.add('alert');
-    if (type === 0) {
-        node.classList.add('info');
-    }
-    node.innerHTML = "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\"><i class=\"fas fa-times\"></i></span>" + message;
-    document.querySelector('.container').insertBefore(node, document.querySelector(".card"));
-}
+// function addAlert(type, message) {
+//     let node = document.createElement("DIV");
+//     node.classList.add('alert');
+//     if (type === 0) {
+//         node.classList.add('info');
+//     }
+//     node.innerHTML = "<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\"><i class=\"fas fa-times\"></i></span>" + message;
+//     document.querySelector('.container').insertBefore(node, document.querySelector(".card"));
+// }

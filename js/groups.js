@@ -38,7 +38,9 @@ groupDeleteModals.forEach(groupDeleteModal => {
 });
 
 function deleteMember(id) {
-    let params = `deleteMemberId=${id}`;
+    let groupid = (document.getElementById("delete-modal-trigger-" + id).parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.id).split('-').pop();
+    // console.log(groupName);
+    let params = `deleteMemberId=${id}&groupid=${groupid}`;
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {

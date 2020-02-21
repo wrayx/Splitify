@@ -39,14 +39,11 @@ if (checkParams(array('name', 'members')) === true) {
 
         header('Location: ../groups.php?create=success');
     }
-} else if (checkParams(array('deleteMemberId')) === true) {
+} else if (checkParams(array('deleteMemberId', 'groupid')) === true) {
     echo "deleteMemberId:" . $_POST['deleteMemberId'];
-    $groupName = explode("_", h($_POST['deleteMemberId']))[0];
+    $groupid = $_POST['groupid'];
     $memberid = explode("_", h($_POST['deleteMemberId']))[1];
-    var_dump($db->getGroupId($groupName));
-    var_dump((int)$memberid);
-    $db->deleteGroupMember((int)$memberid, $db->getGroupId($groupName));
-    echo "ok";
+    $db->deleteGroupMember((int)$memberid, $groupid);
 } else if (checkParams(array('deleteGroupId')) === true) {
     echo "deleteGroupId " . $_POST['deleteGroupId'];
     var_dump($_POST['deleteGroupId']);

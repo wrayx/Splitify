@@ -8,10 +8,10 @@ function checkParams($parameters)
     foreach ($parameters as $parameter) {
         // some field is empty
         if (empty($_POST[$parameter])) {
-            return false;
+            header("Location: ../bills.php?error=param-missing");
+            exit;
         }
     }
-    return true;
 }
 
 
@@ -19,17 +19,22 @@ function checkStr($params)
 {
     foreach ($params as $param) {
         // input is not alpha numerical
-        if (!ctype_alnum($_POST[$param])) {
-            return false;
+        if (! preg_match('/^[a-zA-Z\s]+$/', $param)) {
+            header("Location: ../bills.php?error=param-invalid");
+            exit;
         }
     }
-    return true;
 }
 
 
-if (checkParams(array('name', 'amount', 'group', 'paid'))) {
-    if (!checkStr(array('name')) || !is_numeric($_POST['amount'])) {
-        echo 'param-invalid';
+if (isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['group'])) {
+    checkParams(array('name', 'amount', 'group'));
+    if (!is_numeric($_POST['amount'])){
+        header("Location: ../bills.php?error=amount-invalid");
+        exit;
+    }
+    elseif (!preg_match('/^[a-zA-Z0-9\s]+$/', $_POST['name'])){
+        header("Location: ../bills.php?error=name-invalid");
         exit;
     }
     $name = h($_POST['name']);
@@ -42,13 +47,17 @@ if (checkParams(array('name', 'amount', 'group', 'paid'))) {
         $parent = $db->getBillId($name);
         $db->paySplitBill($db->getSplitBillid($parent, $userid));
     }
-} elseif (checkParams(array('deleteId')) === true) {
+    header('Location: ../bills.php');
+} elseif (isset($_POST['deleteId'])) {
+    checkParams(array('deleteId'));
     $id = h($_POST['deleteId']);
     $db->deleteBill($id);
-} elseif (checkParams(array('paySplitBillId')) === true) {
+} elseif (checkParams(array('paySplitBillId'))) {
+    checkParams(array('paySplitBillId'));
     $id = h($_POST['paySplitBillId']);
     $db->paySplitBill($id);
 } else {
-    echo 'param-missing';
+//    echo 'param-missing';
+    header("Location: ../bills.php?error=param-missing");
     exit;
 }
