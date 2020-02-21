@@ -18,11 +18,13 @@ function checkParams($parameters)
     foreach ($parameters as $parameter) {
         // some field is empty
         if (empty($_POST[$parameter])) {
-            header('Location: ../account.php?error=param-' . $parameter . '-empty');
+            header('Location: ../account.php?error=param-missing');
             exit;
         }// end if statement
     }// end foreach loop
 }// end checkParams()
+
+checkParams(array('username', 'email'));
 
 if (isset($_POST['info-submit']) && isset($_POST['username']) && isset($_POST['email'])) {
     $username = $_POST['username'];
