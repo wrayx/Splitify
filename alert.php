@@ -52,5 +52,8 @@ elseif (isset($_GET['pwdchange'])){
 elseif(isset($_GET['email']) && $_GET['email'] === 'sent'){
     alertMessage(1, 'Email has been sent, please check your mail box for instructions.');
 }
+elseif (isset($_GET['changeinfo']) && $_GET['changeinfo'] === 'success'){
+    alertMessage(1, 'Your account information has been changed.');
+}
 
 ?>

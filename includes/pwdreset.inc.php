@@ -29,3 +29,14 @@ if (isset($_POST['pwd-submit'])) {
         }
     }
 }
+else if (isset($_POST['account-pwd-submit'])) {
+    checkParams(array('pwd', 're-pwd'));
+    $pwd = $_POST['pwd'];
+    $rePwd = $_POST['re-pwd'];
+    if ($pwd != $rePwd) {
+        header("Location: ../account.php?error=pwddiff");
+    } else {
+        $db->changeUserPwd($db->getUserId($email), $pwd);
+        header("Location: ../account.php?pwdchange=success");
+    }
+}
