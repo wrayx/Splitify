@@ -43,23 +43,23 @@ else if ($filename == "pwdreset")
 </head>
 
 <body>
-<header>
-    <a href="index.php" class="logo">Splitify</a>
-    <nav class="site-nav">
-        <ul class="underline-menu">
-            <li class="<?php if ($filename == "index") echo "active" ?>"><a href="index.php">Home</a></li>
-            <?php if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == true) { ?>
+    <header>
+        <a href="index.php" class="logo">Splitify</a>
+        <nav class="site-nav">
+            <ul class="underline-menu">
+                <li class="<?php if ($filename == "index") echo "active" ?>"><a href="index.php">Home</a></li>
+                <?php if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == true) { ?>
                 <li class="<?php if ($filename == "bills") echo "active" ?>"><a href="bills.php">Bills</a></li>
                 <li class="<?php if ($filename == "groups") echo "active" ?>"><a href="groups.php">Groups</a></li>
                 <li class="<?php if ($filename == "account") echo "active" ?>"><a href="account.php">Account</a></li>
                 <li><a href="includes/signout.inc.php">Sign Out</a></li>
-            <?php } else { ?>
+                <?php } else { ?>
                 <li class="<?php if ($filename == "signin") echo "active" ?>"><a href="signin.php">Sign In</a></li>
                 <li class="<?php if ($filename == "signup") echo "active" ?>"><a href="signup.php">Sign up</a></li>
-            <?php } ?>
-        </ul>
-    </nav>
-</header>
-<div class="container">
+                <?php } ?>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
 
-<?php include "alert.php";
+        <?php include "alert.php";

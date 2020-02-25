@@ -1,5 +1,5 @@
 <?php
-
+date_default_timezone_set('Europe/London');
 require_once("password.php");
 
 /**
@@ -329,14 +329,13 @@ class DB extends SQLite3
 
         $statement->execute();
         $statement->close();
-
         $billId = $this->getBillId($name);
         $groupMembers = $this->getGroupMembers($groupid);
         $groupNum = $this->getGroupMemberNum($groupid);
         $splitAmount = ((float)$amount) / $groupNum;
         foreach ($groupMembers as $member) {
             $this->createSplitBill($billId, $member, $splitAmount);
-            $this->sendBillNotification($this->getUserEmail($member), $this->getUsername($userid), $splitAmount, $createdate);
+            // $this->sendBillNotification($this->getUserEmail($member), $this->getUsername($userid), $splitAmount, $createdate);
         }
     }
 

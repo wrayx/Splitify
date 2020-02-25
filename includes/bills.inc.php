@@ -8,7 +8,7 @@ function checkParams($parameters)
     foreach ($parameters as $parameter) {
         // some field is empty
         if (empty($_POST[$parameter])) {
-            header("Location: ../bills.php?error=param-missing");
+            header("Location: ../bills.php?error=param-".$parameter."missing");
             exit;
         }
     }
@@ -29,35 +29,44 @@ function checkStr($params)
 
 if (isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['group'])) {
     checkParams(array('name', 'amount', 'group'));
-    if (!is_numeric($_POST['amount'])){
+    $name = $_POST['name'];
+    $amount = (float) $_POST['amount'];
+    $userid = (int) $db->getUserId($userInfo);
+    $group = $_POST['group'];
+    $groupid = (int) $db->getGroupId($group);
+    
+    if (!is_float($amount)){
         header("Location: ../bills.php?error=amount-invalid");
         exit;
     }
-    elseif (!preg_match('/^[a-zA-Z0-9\s]+$/', $_POST['name'])){
+    if (!preg_match('/^[a-zA-Z0-9\s]+$/', $name)){
         header("Location: ../bills.php?error=name-invalid");
         exit;
     }
-    $name = h($_POST['name']);
-    $amount = h($_POST['amount']);
-    $userid = $db->getUserId($userInfo);
-    $group = h($_POST['group']);
-    $groupid = $db->getGroupId($group);
+    
     $db->createBill($userid, $name, $amount, $groupid);
-    if (h($_POST['paid']) === 'true') {
+    if ($_POST['paid'] === 'true') {
         $parent = $db->getBillId($name);
         $db->paySplitBill($db->getSplitBillid($parent, $userid));
     }
-    header('Location: ../bills.php');
-} elseif (isset($_POST['deleteId'])) {
-    checkParams(array('deleteId'));
-    $id = h($_POST['deleteId']);
-    $db->deleteBill($id);
-} elseif (isset($_POST['paySplitBillId'])) {
-    checkParams(array('paySplitBillId'));
-    $id = h($_POST['paySplitBillId']);
-    $db->paySplitBill($id);
+    header("Location: ../bills.php");
+    $billID = $db->getBillId($name);
+    $groupMembers = $db->getGroupMembers($groupid);
+    $groupNum = $db->getGroupMemberNum($groupid);
+    $splitAmount = ($amount) / $groupNum;
+    foreach ($groupMembers as $member) {
+        $db->sendBillNotification($db->getUserEmail($member), $db->getUsername($userid), $splitAmount, $createdate);
+    }
+} elseif (isset($_POST['billID'])) {
+    checkParams(array('billID'));
+    $id = $_POST['billID'];
+    $db->deleteBill((int)$id);
+    header("Location: ../bills.php?deletebill=success");
+} elseif (isset($_POST['splitBillID'])) {
+    checkParams(array('splitBillID'));
+    $id = $_POST['splitBillID'];
+    $db->paySplitBill((int)$id);
+    header("Location: ../bills.php?confirmbill=success");
 } else {
-//    echo 'param-missing';
-    header("Location: ../bills.php?error=param-missing");
-    exit;
+    header("Location: ../bills.php");
 }
