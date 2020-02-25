@@ -28,7 +28,10 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                         <div class="selector"><span id="input-group">Choose a Group</span><i
                                     class="fas fa-angle-down"></i>
                             <ul class="dropdown">
-                                <?php foreach ($groups as $group): ?>
+                                <?php
+                                if (sizeof($groups) == 0)
+                                    echo "<li>Create a Group First</li>";
+                                foreach ($groups as $group): ?>
                                     <li class="group-options"><?php echo $db->getGroupName($group); ?></li>
                                 <?php endforeach; ?>
                             </ul>

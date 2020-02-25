@@ -149,6 +149,10 @@ button {
   margin: 150px 350px 400px 350px;
   min-height: 47vh;
 
+  .landing-form {
+    margin: 0 200px;
+  }
+
   .card {
     position: relative;
     margin-top: 0px;
@@ -677,7 +681,7 @@ input:focus ~ .bar:after {
     }
 
     li {
-      z-index: 1;
+      //z-index: 1;
       position: relative;
       background: #fff;
       padding: 20px;

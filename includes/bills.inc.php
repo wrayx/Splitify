@@ -52,7 +52,7 @@ if (isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['group'])) 
     checkParams(array('deleteId'));
     $id = h($_POST['deleteId']);
     $db->deleteBill($id);
-} elseif (checkParams(array('paySplitBillId'))) {
+} elseif (isset($_POST['paySplitBillId'])) {
     checkParams(array('paySplitBillId'));
     $id = h($_POST['paySplitBillId']);
     $db->paySplitBill($id);

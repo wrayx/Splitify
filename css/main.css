@@ -36,6 +36,8 @@ button {
 .container {
   margin: 150px 350px 400px 350px;
   min-height: 47vh; }
+  .container .landing-form {
+    margin: 0 200px; }
   .container .card {
     position: relative;
     margin-top: 0px;
@@ -468,7 +470,6 @@ input:focus ~ .bar:after {
       border-left: 6px solid transparent;
       transform: rotate(-45deg); }
     .selector .dropdown li {
-      z-index: 1;
       position: relative;
       background: #fff;
       padding: 20px;
