@@ -1,5 +1,5 @@
 <?php
-require_once('inc.php');
+require_once 'inc.php';
 function checkParams($parameters)
 {
     foreach ($parameters as $parameter) {
@@ -7,9 +7,9 @@ function checkParams($parameters)
         if (empty($_POST[$parameter])) {
             header('Location: ../index.php?error=param-missing');
             exit;
-        }// end if statement
-    }// end foreach loop
-}// end checkParams()
+        } // end if statement
+    } // end foreach loop
+} // end checkParams()
 
 if (isset($_POST['pwd-submit'])) {
     checkParams(array('pwd', 're-pwd', 'selector', 'token'));
@@ -28,15 +28,21 @@ if (isset($_POST['pwd-submit'])) {
             header("Location: ../pwdrecover.php?pwdchange=failed");
         }
     }
-}
-else if (isset($_POST['account-pwd-submit'])) {
-    checkParams(array('pwd', 're-pwd'));
+} else if (isset($_POST['account-pwd-submit'])) {
+    checkParams(array('old-pwd', 'pwd', 're-pwd'));
+    session_start();
+    $userInfo = $_SESSION["userInfo"];
+    $oldPwd = $_POST['old-pwd'];
+    if (!$db->authenticateUser($userInfo, $oldPwd)) {
+        header("Location: ../account.php?pwdchange=failed");
+        exit();
+    }
     $pwd = $_POST['pwd'];
     $rePwd = $_POST['re-pwd'];
     if ($pwd != $rePwd) {
         header("Location: ../account.php?error=pwddiff");
     } else {
-        $db->changeUserPwd($db->getUserId($email), $pwd);
+        $db->changeUserPwd($db->getUserId($userInfo), $pwd);
         header("Location: ../account.php?pwdchange=success");
     }
 }

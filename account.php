@@ -34,7 +34,7 @@ include "header.php";
         <label>Old Password</label>
     </div>
     <div class="group account-group">
-        <input type="text" name="pwd" required>
+        <input type="password" name="pwd" required>
         <span class="highlight"></span>
         <span class="bar"></span>
         <label>New Password</label>

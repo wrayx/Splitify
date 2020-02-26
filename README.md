@@ -2,7 +2,13 @@
 
 All the alert messages are managed by `alert.php` and all the access right and website title are managed in `header.php`.
 
+Info type alert
+
 ![alert](/assets/alert.png)
+
+Error type alert
+
+![alert2](/assets/alert2.png)
 
 ## index.php
 
