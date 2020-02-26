@@ -127,7 +127,19 @@ button span {
 }
 
 .container .landing-form {
-  margin: 0 200px;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  vertical-align: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 
 .container .no-info {
@@ -367,10 +379,6 @@ header {
   color: white;
   -webkit-transition: 0.3s cubic-bezier(0.165, 0.84, 0.34, 1);
   transition: 0.3s cubic-bezier(0.165, 0.84, 0.34, 1);
-}
-
-.landing-title {
-  margin: 0 150px 0 200px;
 }
 
 /* form starting stylings */

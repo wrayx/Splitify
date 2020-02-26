@@ -1,8 +1,12 @@
 <?php
 include "header.php";
 ?>
-    <h1 class="landing-title"><?php echo $title; ?></h1>
+
+<div class="landing-form">
     <form action="includes/pwdrecover.inc.php" method="POST">
+        <div class="group">
+            <h1><?php echo $title; ?></h1>
+        </div>
         <div class="group first-group">
             <input type="text" name="email" required>
             <span class="highlight"></span>
@@ -19,6 +23,7 @@ include "header.php";
             </button>
         </div>
     </form>
+</div>
 <?php
 include "footer.php";
 ?>

@@ -19,17 +19,25 @@ else if ($filename == "bills") {
 } else if ($filename == "groups") {
     $title = "Group";
     checkSignIn();
-} else if ($filename == "signin")
+} else if ($filename == "signin") {
     $title = "Sign In";
-else if ($filename == "signup")
+    checkSignOut();
+}
+else if ($filename == "signup") {
     $title = "Sign up";
+    checkSignOut();
+}
 else if ($filename == "account") {
     $title = "Account";
     checkSignIn();
-} else if ($filename == "pwdrecover")
+} else if ($filename == "pwdrecover") {
     $title = "Recover Password";
-else if ($filename == "pwdreset")
+    checkSignOut();
+}
+else if ($filename == "pwdreset") {
     $title = "Reset Password";
+    checkSignOut();
+}
 ?>
 
 <!DOCTYPE html>

@@ -153,7 +153,13 @@ button {
   min-height: 47vh;
 
   .landing-form {
-    margin: 0 200px;
+    // margin: 0 200px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    vertical-align: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
   .no-info {
     text-align: center;
@@ -375,10 +381,6 @@ header {
   }
 }
 
-.landing-title {
-  margin: 0 150px 0 200px;
-}
-
 /* form starting stylings */
 .group,
 .group-light {
@@ -388,8 +390,6 @@ header {
   &.account-group {
     margin: 0 550px 45px 0;
   }
-
-  //   padding: 40px 0px;
 }
 
 .first-group {

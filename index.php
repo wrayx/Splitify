@@ -59,7 +59,7 @@ if (count($userBills) != 0):
     </tbody>
 </table>
 <?php elseif (count($payeeBills) == 0 && count($userBills) == 0): ?>
-<div class="no-info">No Infomation Available</div>
+<div class="no-info">No Information Available</div>
 <?php endif; ?>
 <script src="js/index.js"></script>
 <?php } else { ?>

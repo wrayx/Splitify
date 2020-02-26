@@ -21,3 +21,10 @@ function checkSignIn()
         header("Location: signin.php?error=permdenied");
     }
 }
+
+function checkSignOut()
+{
+    if (isset($_SESSION["signedInToxxx.com"]) && isset($_SESSION["userInfo"])) {
+        header("Location: index.php");
+    }
+}

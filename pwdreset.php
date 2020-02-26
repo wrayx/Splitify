@@ -1,8 +1,11 @@
 <?php
 include "header.php";
 ?>
-    <h1 class="landing-title"><?php echo $title; ?></h1>
+<div class="landing-form">
     <form action="includes/pwdreset.inc.php" method="POST">
+        <div class="group">
+            <h1><?php echo $title; ?></h1>
+        </div>
         <input type="hidden" name="selector" value="<?php echo $_GET['selector']; ?>">
         <input type="hidden" name="token" value="<?php echo $_GET['token']; ?>">
         <div class="group first-group">
@@ -23,6 +26,7 @@ include "header.php";
             </button>
         </div>
     </form>
+</div>
 <?php
 include "footer.php";
 ?>
