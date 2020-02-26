@@ -1,29 +1,81 @@
-## Index
+# Website Structure
+
+All the alert messages are managed by `alert.php` and all the access right and website title are managed in `header.php`.
+
+![alert](/assets/alert.png)
+
+## index.php
 
 Index page displays user infomation including username and email address.
 
-Then the first part of overview displays the percentage of the bill completion that was created by current user.
+**First part** of overview displays the percentage of the bill completion that was created by current user.
 e.g. bill shared by 4, if 1 has paid the bill then the percentage will be raised to 25%. Click on the icon on the right will direct user to the bills page and user will be able to see the individuals that haven't complete the payment and settings to the bill.
 
-The second part of Overview displays the bills waiting for current user to complete. Click on the table row will direct user to the bills page to complete the payment.
+**Second part** of Overview displays the bills waiting for current user to complete. Click on the table row will direct user to the bills page to complete the payment.
 
-## Bills
+![index](/assets/index.png)
+
+## bills.php
 
 This page is the main manegement panel for bills.
 
-First card on the page is used to create new bill. User can enter
+**First card** on the page is used to create new bill. User can enter
 
 - Bill name (only alphabetical, numbers and spaces are allowed)
 - Amount
 - Group to share with
 - Choose wether the current user has already paid the bill
 
+![bills-input](/assets/bills-input.png)
+
 Once the bill has been created, there will be an email notification send to each user.
 
-[email-notification pic]
+![bills-email-noti](/assets/bills-email-noti.png)
 
-Second card is used to display the unpaid bills
+**Second card** is used to display the unpaid bills
 
-## Groups
+- Bill name
+- Payee that is waiting for the payment
+- Date the bill's creation
+- Amount user need to pay
+- Button direct user to complete the bill
+  - A modal will fall down to simulate the payment process
 
-## Account
+**Third part** displays the pending payments that was created by the current user. User will be able to delete the bill and confirm the bill if the payment has already been completed personally via other methods.
+
+- Bill name
+- Payer : user that haven't complete the payment
+- Bill creation Date
+- Amount after splitted
+- button the confirm the bill that has already been complete via other way
+
+![bills](/assets/bills.png)
+
+## history.php
+
+History payment made by the current user
+
+## groups.php
+
+**First part** used to create group.
+
+- Input name
+- Valid members username or email
+
+![groups-input](/assets/groups-input.png)
+
+**Second part** The remaining cards are the groups that includes the current user. User can remove the member and delete group at anytime, this will not affect the bills that has already been created and shared.
+
+![groups](/assets/groups.png)
+
+## account.php
+
+**First part** displays user infomation
+![account-info](/assets/account-info.png)
+**Second part** user will be able to change their
+
+- username
+- email address
+- password
+
+![account-change](/assets/account-change.png)
