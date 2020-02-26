@@ -1,5 +1,5 @@
 <?php
-include('inc.php');
+include 'inc.php';
 session_start();
 $userInfo = $_SESSION['userInfo'];
 
@@ -17,15 +17,15 @@ function checkParams($parameters)
 if (isset($_POST['billID'])) {
     checkParams(array('billID'));
     $id = $_POST['billID'];
-    $db->deleteBill((int)$id);
+    $db->deleteBill((int) $id);
     header("Location: ../bills.php?deletebill=success");
     exit();
-} 
+}
 if (isset($_POST['splitBillID'])) {
     checkParams(array('splitBillID'));
-    $id = $_POST['splitBillID'];    
+    $id = $_POST['splitBillID'];
     header("Location: ../bills.php?confirmbill=success");
-    $db->paySplitBill((int)$id);
+    $db->paySplitBill((int) $id);
     exit();
 }
 
