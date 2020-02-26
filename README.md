@@ -55,6 +55,8 @@ Once the bill has been created, there will be an email notification send to each
 
 History payment made by the current user
 
+![history](/assets/history.png)
+
 ## groups.php
 
 **First part** used to create group.
@@ -79,3 +81,12 @@ History payment made by the current user
 - password
 
 ![account-change](/assets/account-change.png)
+
+## pwd_recover.php and pwd_reset.php
+
+Those two pages are used to help user to reset their password. User will be authenticate by recieving an email with url to reset password. The url will be verified by selector and token stored in our database, but can expired in few minutes time.
+![recover-pwd](/assets/recover-pwd.png)
+
+Email recieved by user
+
+![pwd-reset-email](/assets/pwd-reset-email.png)
