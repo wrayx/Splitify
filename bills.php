@@ -51,6 +51,10 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
     </div>
 </div>
 <!-- first section bills to pay -->
+<?php 
+$userBills = $db->getUserSplitBills($userid);
+if (count($userBills) != 0):
+?>
 <div class="card">
     <div class="face face1 blue">
         <div class="content">
@@ -75,7 +79,6 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                 <table>
                     <tbody>
                         <?php
-                        $userBills = $db->getUserSplitBills($userid);
                         $type = "pay";
                         foreach ($userBills as $userBill):
                             $splitBillName = $db->getBillName($db->getSplitBillParent($userBill));
@@ -113,7 +116,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                             to <?php echo $splitBillPayee; ?></div>
                         <p><b>Payment:</b> <?php echo $splitBillName; ?></p><br>
                         <p><b>Amount:</b> $<?php echo $splitBillAmount; ?></p><br>
-                        <form action="includes/bills.inc.php" method="post">
+                        <form action="includes/delbills.inc.php" method="post">
                             <input type="hidden" name="splitBillID" value="<?php echo $userBill; ?>">
                             <button type="submit" class="action green"
                                 id="<?php echo modalId($type, "proceed", $userBill); ?>">Pay
@@ -129,7 +132,12 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
         </div>
     </div>
 </div>
+<?php endif; ?>
 <!--        pending payments waiting for others to pay-->
+<?php 
+$payeeBills = $db->getUserBills($userid);
+if (count($payeeBills) != 0):
+?>
 <div class="card">
     <div class="face face1 blue">
         <div class="content">
@@ -154,7 +162,6 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                 <table>
                     <tbody>
                         <?php
-                        $payeeBills = $db->getUserBills($userid);
                         //                            var_dump($payeeBills);
                         foreach ($payeeBills as $payeeBill):
                             $billName = $db->getBillName($payeeBill);
@@ -212,7 +219,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                         <p><b>Payment:</b> <?php echo $billName; ?></p><br>
                         <p><b>Payer:</b> <?php echo $childBillPayer; ?></p><br>
                         <p><b>Amount:</b> $<?php echo $childBillAmount; ?></p><br>
-                        <form action="includes/bills.inc.php" method="POST">
+                        <form action="includes/delbills.inc.php" method="POST">
                             <input type="hidden" name="splitBillID" value="<?php echo $childBill; ?>">
                             <button type="submit" class="action green"
                                 id="<?php echo modalId("confirm", "proceed", $childBill); ?>">
@@ -236,7 +243,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                         <p><b>Total Amount:</b>
                             $<?php echo number_format($db->getBillAmount($payeeBill), 2, '.', ''); ?></p>
                         <br>
-                        <form action="includes/bills.inc.php" method="POST">
+                        <form action="includes/delbills.inc.php" method="POST">
                             <input type="hidden" name="billID" value="<?php echo $payeeBill; ?>">
                             <button type="submit" class="action red"
                                 id="<?php echo modalId("delete", "proceed", $payeeBill); ?>">Delete
@@ -252,6 +259,7 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
         </div>
     </div>
 </div>
+<?php endif; ?>
 <a class="btn-draw" href="history.php"><span>History</span></a>
 <script src="js/bills.js" type="module"></script>
 <?php

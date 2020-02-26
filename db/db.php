@@ -262,7 +262,6 @@ class DB extends SQLite3
     public function deleteGroup($id)
     {
         $members = $this->getGroupMembers($id);
-//        var_dump($members);
         foreach ($members as $member) {
             $this->deleteGroupMember($member, $id);
         }
@@ -616,11 +615,10 @@ class DB extends SQLite3
         $result = $statement->execute();
         $row = $result->fetchArray();
         $billPercentage = $row['status'];
-        $statement->close();
+        // $statement->close();
 
         $billNum = $this->getBillNum($parent);
         $billPercentage = $billPercentage + floor(100 / $billNum);
-//        echo $billPercentage;
 
         $sql = 'UPDATE bills
                 SET status = :status
@@ -629,7 +627,7 @@ class DB extends SQLite3
         $statement->bindValue(':status', $billPercentage);
         $statement->bindValue(':id', $parent);
         $statement->execute();
-        $statement->close();
+        // $statement->close();
 
         $sql = 'UPDATE splitbills
                 SET status = :status

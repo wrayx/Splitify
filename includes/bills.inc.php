@@ -9,7 +9,7 @@ function checkParams($parameters)
         // some field is empty
         if (empty($_POST[$parameter])) {
             header("Location: ../bills.php?error=param-".$parameter."missing");
-            exit;
+            exit();
         }
     }
 }
@@ -21,7 +21,7 @@ function checkStr($params)
         // input is not alpha numerical
         if (! preg_match('/^[a-zA-Z\s]+$/', $param)) {
             header("Location: ../bills.php?error=param-invalid");
-            exit;
+            exit();
         }
     }
 }
@@ -35,7 +35,7 @@ if (isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['group'])) 
     $group = $_POST['group'];
     $groupid = (int) $db->getGroupId($group);
     
-    if (!is_float($amount)){
+    if (!is_float($amount) || $amount == 0.0){
         header("Location: ../bills.php?error=amount-invalid");
         exit;
     }
@@ -57,16 +57,9 @@ if (isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['group'])) 
     foreach ($groupMembers as $member) {
         $db->sendBillNotification($db->getUserEmail($member), $db->getUsername($userid), $splitAmount, $createdate);
     }
-} elseif (isset($_POST['billID'])) {
-    checkParams(array('billID'));
-    $id = $_POST['billID'];
-    $db->deleteBill((int)$id);
-    header("Location: ../bills.php?deletebill=success");
-} elseif (isset($_POST['splitBillID'])) {
-    checkParams(array('splitBillID'));
-    $id = $_POST['splitBillID'];
-    $db->paySplitBill((int)$id);
-    header("Location: ../bills.php?confirmbill=success");
-} else {
+    exit();
+} 
+else {
     header("Location: ../bills.php");
+    exit();
 }

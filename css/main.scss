@@ -155,6 +155,11 @@ button {
   .landing-form {
     margin: 0 200px;
   }
+  .no-info {
+    text-align: center;
+    margin: 50px;
+    // color: $grey-light;
+  }
 
   .card {
     position: relative;
@@ -1046,9 +1051,9 @@ footer {
       transition: background 0.3s;
     }
 
-    &:after {
-      // checkmark
-    }
+    // &:after {
+    // checkmark
+    // }
   }
 
   input[type="checkbox"] {

@@ -27,7 +27,10 @@ function optionChange(e) {
   selector.firstElementChild.innerHTML = optionText;
   document
     .getElementById("input-group-name")
-    .setAttribute("value", document.querySelector("#input-group").textContent);
+    .setAttribute(
+      "value",
+      document.querySelector("#input-group").textContent.trim()
+    );
 }
 
 function displayDropdown() {
