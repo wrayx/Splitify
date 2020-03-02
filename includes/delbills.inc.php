@@ -24,7 +24,7 @@ if (isset($_POST['billID'])) {
 if (isset($_POST['splitBillID'])) {
     checkParams(array('splitBillID'));
     $id = $_POST['splitBillID'];
-    var_dump((int) $id);
+    // var_dump((int) $id);
     header("Location: ../bills.php?confirmbill=success");
     $db->paySplitBill((int) $id);
     exit();

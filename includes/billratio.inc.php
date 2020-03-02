@@ -8,38 +8,30 @@ function checkParams($parameters)
     foreach ($parameters as $parameter) {
         // some field is empty
         if (empty($_POST[$parameter])) {
-            header("Location: ../bills.php?create=ratio&error=param-".$parameter."missing");
+            header("Location: ../bills.php?create=ratio&error=param-missing");
             exit();
         }
     }
 }
 
 
-function checkStr($params)
-{
-    foreach ($params as $param) {
-        // input is not alpha numerical
-        if (! preg_match('/^[a-zA-Z\s]+$/', $param)) {
-            header("Location: ../bills.php?error=param-invalid");
-            exit();
-        }
-    }
-}
-
-
-if (isset($_POST['billid']) && isset($_POST['memberID']) && isset($_POST['memberRatio'])) {
-    checkParams(array('billid', 'memberID', 'memberRatio'));
+if (isset($_POST['billid']) && isset($_POST['memberid']) && isset($_POST['memberratio'])) {
+    checkParams(array('billid', 'memberid', 'memberratio'));
     $parent = $_POST['billid'];
-    $members = $_POST['memberID'];
-    $membersRatio = $_POST['memberRatio'];
-    for ($i = 0; i < sizeof($members); $i++){
-        $splitAmount = ($membersRatio[$i]/array_sum($membersRatio))*$db->getBillAmount($parent);
-        $db->createSplitBill($parent, $members[$i], $splitAmount);
+    $members = $_POST['memberid'];
+    $membersRatio = $_POST['memberratio'];
+    for ($i = 0; $i < sizeof($membersRatio); $i++){
+        // var_dump($db->getBillAmount($parent));
+        $splitAmount = ($membersRatio[$i]/array_sum($membersRatio))*$db->getBillAmount($parent);  
+        // var_dump($splitAmount); 
+        $db->createSplitBill((int)$parent, (int)$members[$i], $splitAmount);
+        $db->sendBillNotification($db->getUserEmail((int)$members[$i]), $db->getUsername((int)$members[$i]), $splitAmount, $db->getBillDate($parent));
     }
-    header('Location: ../bill.php');
+    header('Location: ../bills.php');
     exit();
 } 
 elseif (isset($_POST['name']) && isset($_POST['amount']) && isset($_POST['group'])){
+    checkParams(array('name', 'amount', 'group'));
     $name = $_POST['name'];
     $amount = (float) $_POST['amount'];
     $userid = (int) $db->getUserId($userInfo);

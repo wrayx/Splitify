@@ -222,13 +222,16 @@ button {
           max-width: 60px;
         }
 
-        h3 {
+        div {
           margin: 10px 0 0;
           padding: 0;
           color: #fff;
           text-align: center;
-          font-size: 1.5em;
+          font-size: 1.6em;
           font-weight: 700;
+          i {
+            margin-left: 9px;
+          }
         }
       }
 
@@ -559,36 +562,30 @@ input:focus ~ .bar:after {
 
 .button {
   background: transparent;
-  //height: 60px;
-  //width: 150px;
-  //text-align: center;
-  //position: relative;
-  //margin: 10px 120px;
   border: none;
-  //border-bottom: 1px solid $prim-color;
-  //transition: $prim-time;
-  //font-family: $prim-font;
   font-size: 18px;
   margin: 0px 60px 50px 130px;
   font-family: $prim-font;
   @include btn-draw($prim-color, black, 1px, 20px 25px);
 
-  //.text {
-  //  font-size: 18px;
-  //  font-family: $prim-font;
-  //  color: #71dfbe;
-  //  margin: 10px;
-  //}
-
   &:hover,
   &:focus {
-    //background-color: $prim-color;
-    //box-shadow: inset 0 0 0 2em $prim-color;
-    //box-shadow: inset 0 -60px 0 0 $prim-color;
     outline: none;
-    //.text {
-    //  color: $grey-black;
-    //}
+  }
+}
+.change-stats-btn {
+  font-family: $prim-font;
+  float: right;
+  padding: 10px;
+  background-color: $grey-black;
+  border-radius: 4px;
+  margin-left: 20px;
+  position: absolute;
+  &:hover,
+  &:focus {
+    outline: none;
+    color: $prim-color;
+    background-color: white;
   }
 }
 

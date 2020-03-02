@@ -6,128 +6,131 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
 <div class="card">
     <div class="face face1 green">
         <div class="content">
-            <h3>Add a Bill <a href="bills.php?create=ratio">Change to Bill with Ratio</a></h3>
+            <div>Add a Bill
+                <?php if (isset($_GET['create']) && $_GET['create'] == "ratio"): ?>
+                <a class="change-stats-btn" href="bills.php">Spread Evenly<i class="fas fa-chevron-right"></i></a>
+            </div>
+            <?php else: ?>
+            <a class="change-stats-btn" href="bills.php?create=ratio">Specify Ratio<i
+                    class="fas fa-chevron-right"></i></a>
         </div>
+        <?php endif; ?>
     </div>
-    <div class="face face2">
-        <div class="content">
-            <?php if ($_GET['create'] == "ratio" && isset($_GET['group'])): 
+</div>
+<div class="face face2">
+    <div class="content">
+        <?php if ($_GET['create'] == "ratio" && isset($_GET['group'])): 
                 $billID = $_GET['billid'];
                 $groupID = $_GET['group'];
                 $billName = $db->getBillName($billID);
                 $amount = $db->getBillAmount($billID);
                 $groupName = $db->getGroupName($groupID);
                 $members = $db->getGroupMembers($groupID);
-                // echo '';
                 ?>
-            <form id="bill-ratio-form" action="includes/billratio.inc.php" method="POST">
-                <input type="hidden" name="billid" value="<?php echo $billID; ?>">
-                <div class="group">
-                    <span class="form-entry">
-                        <span class="form-info">Bill Name</span> <?php echo $billName; ?>
-                    </span>
-                </div>
-                <div class="group">
-                    <span class="form-entry">
-                        <span class="form-info">Amount</span>$<?php echo number_format($amount, 2, '.', ''); ?></span>
-                </div>
-                <div class="group">
-                    <span class="form-entry">
-                        <span class="form-info">Group Chosen</span><?php echo $groupName; ?></span>
-                </div>
-                <?php foreach ($members as $member): ?>
-                <div class="group">
-                    <input type="hidden" name="memberID[]" value="<?php echo $member; ?>">
-                    <input type="text" aria-label="bill name" name="memberRatio[]" required>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Ratio For <?php echo $db->getUsername($member); ?></label>
-                </div>
-                <?php endforeach; ?>
-                <div class="group">
-                    <button class="button" type="submit" id="bill-submit" aria-label="submit">
-                        <span class="text">Submit</span>
-                    </button>
-                </div>
-            </form>
-            <!-- <?php  ?> -->
-            <?php elseif ($_GET['create'] == "ratio"): ?>
-            <a href="bills.php">BACK</a>
-            <form id="bill-ratio-form" action="includes/billratio.inc.php" method="POST">
-                <div class="group">
-                    <input type="text" aria-label="bill name" name="name" id="name" required>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Name</label>
-                </div>
-                <div class="group">
-                    <input type="text" name="amount" aria-label="bill amount" id="amount" required>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Amount</label>
-                </div>
-                <input aria-label="group choice" type="hidden" name="group" id="input-group-name">
-                <div class="group">
-                    <div class="selector"><span id="input-group">Choose a Group</span><i class="fas fa-angle-down"></i>
-                        <ul class="dropdown">
-                            <?php
-                                if (sizeof($groups) == 0)
-                                    echo "<li>Create a Group First</li>";
-                                foreach ($groups as $group): ?>
-                            <li class="group-options"><?php echo $db->getGroupName($group); ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                </div>
-                <div class="group">
-                    <button class="button" type="submit" id="bill-submit" aria-label="submit">
-                        <span class="text">Continue</span>
-                    </button>
-                </div>
-            </form>
-            <?php else: ?>
+        <form id="bill-ratio-form" action="includes/billratio.inc.php" method="POST">
+            <input type="hidden" name="billid" value="<?php echo $billID; ?>">
             <div class="group">
-                <a href="bills.php?create=ratio">Bill with Ratio</a>
+                <span class="form-entry">
+                    <span class="form-info">Bill Name</span> <?php echo $billName; ?>
+                </span>
             </div>
-            <form id="bill-form" action="includes/bills.inc.php" method="POST">
-                <div class="group">
-                    <input type="text" aria-label="bill name" name="name" id="name" required>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Name</label>
-                </div>
-                <div class="group">
-                    <input type="text" name="amount" aria-label="bill amount" id="amount" required>
-                    <span class="highlight"></span>
-                    <span class="bar"></span>
-                    <label>Amount</label>
-                </div>
-                <div class="group">
-                    <div class="selector"><span id="input-group">Choose a Group</span><i class="fas fa-angle-down"></i>
-                        <ul class="dropdown">
-                            <?php
+            <div class="group">
+                <span class="form-entry">
+                    <span class="form-info">Amount</span>$<?php echo number_format($amount, 2, '.', ''); ?></span>
+            </div>
+            <div class="group">
+                <span class="form-entry">
+                    <span class="form-info">Group Chosen</span><?php echo $groupName; ?></span>
+            </div>
+            <?php foreach ($members as $member): ?>
+            <div class="group">
+                <input type="hidden" name="memberid[]" value="<?php echo $member; ?>">
+                <input type="text" aria-label="bill name" name="memberratio[]" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Ratio For <?php echo $db->getUsername($member); ?></label>
+            </div>
+            <?php endforeach; ?>
+            <div class="group">
+                <button class="button" type="submit" id="bill-submit" aria-label="submit">
+                    <span class="text">Submit</span>
+                </button>
+            </div>
+        </form>
+        <!-- <?php  ?> -->
+        <?php elseif ($_GET['create'] == "ratio"): ?>
+        <form id="bill-ratio-form" action="includes/billratio.inc.php" method="POST">
+            <div class="group">
+                <input type="text" aria-label="bill name" name="name" id="name" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Name</label>
+            </div>
+            <div class="group">
+                <input type="text" name="amount" aria-label="bill amount" id="amount" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Amount</label>
+            </div>
+            <input aria-label="group choice" type="hidden" name="group" id="input-group-name">
+            <div class="group">
+                <div class="selector"><span id="input-group">Choose a Group</span><i class="fas fa-angle-down"></i>
+                    <ul class="dropdown">
+                        <?php
                                 if (sizeof($groups) == 0)
                                     echo "<li>Create a Group First</li>";
                                 foreach ($groups as $group): ?>
-                            <li class="group-options"><?php echo $db->getGroupName($group); ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
+                        <li class="group-options"><?php echo $db->getGroupName($group); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
                 </div>
-                <input aria-label="group choice" type="hidden" name="group" id="input-group-name">
-                <div class="group">
-                    <div class="md-checkbox">
-                        <input id="bill-self-paid" type="checkbox" name="paid">
-                        <label for="bill-self-paid">I've paid my part.</label><br>
-                    </div>
-                    <button class="button" type="submit" id="bill-submit" aria-label="submit">
-                        <span class="text">Submit</span>
-                    </button>
+            </div>
+            <div class="group">
+                <button class="button" type="submit" id="bill-submit" aria-label="submit">
+                    <span class="text">Continue</span>
+                </button>
+            </div>
+        </form>
+        <?php else: ?>
+        <form id="bill-form" action="includes/bills.inc.php" method="POST">
+            <div class="group">
+                <input type="text" aria-label="bill name" name="name" id="name" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Name</label>
+            </div>
+            <div class="group">
+                <input type="text" name="amount" aria-label="bill amount" id="amount" required>
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>Amount</label>
+            </div>
+            <div class="group">
+                <div class="selector"><span id="input-group">Choose a Group</span><i class="fas fa-angle-down"></i>
+                    <ul class="dropdown">
+                        <?php
+                                if (sizeof($groups) == 0)
+                                    echo "<li>Create a Group First</li>";
+                                foreach ($groups as $group): ?>
+                        <li class="group-options"><?php echo h($db->getGroupName($group)); ?></li>
+                        <?php endforeach; ?>
+                    </ul>
                 </div>
-            </form>
-            <?php endif; ?>
-        </div>
+            </div>
+            <input aria-label="group choice" type="hidden" name="group" id="input-group-name">
+            <div class="group">
+                <div class="md-checkbox">
+                    <input id="bill-self-paid" type="checkbox" name="paid">
+                    <label for="bill-self-paid">I've paid my part.</label><br>
+                </div>
+                <button class="button" type="submit" id="bill-submit" aria-label="submit">
+                    <span class="text">Submit</span>
+                </button>
+            </div>
+        </form>
+        <?php endif; ?>
     </div>
+</div>
 </div>
 <!-- first section bills to pay -->
 <?php 
@@ -137,7 +140,7 @@ if (count($userBills) != 0):
 <div class="card">
     <div class="face face1 blue">
         <div class="content">
-            <h3>Bills to pay</h3>
+            <div>Bills to pay</div>
         </div>
     </div>
     <div class="face face2">
@@ -220,7 +223,7 @@ if (count($payeeBills) != 0):
 <div class="card">
     <div class="face face1 blue">
         <div class="content">
-            <h3>Pending Payments</h3>
+            <div>Pending Payments</div>
         </div>
     </div>
     <div class="face face2">
@@ -255,7 +258,7 @@ if (count($payeeBills) != 0):
                         <tr id="splitebill-row-<?php echo $childBill; ?>">
                             <?php if ($billNum === $i): ?>
                             <td rowspan="<?php echo $billNum; ?>" id="bill-cell-<?php echo $payeeBill ?>">
-                                <h3><?php echo $billName ?></h3>
+                                <div><?php echo $billName ?></div>
                                 <button class="button-sm del del-btn"
                                     id="<?php echo modalId("delete", "trigger", $payeeBill) ?>">
                                     Delete
@@ -295,9 +298,9 @@ if (count($payeeBills) != 0):
                                 class="fas fa-times"></i></span>
                         <!--                            <p>Make a Payment</p><br>-->
                         <div class="modal-header">Please Confirm the Pending Payment</div>
-                        <p><b>Payment:</b> <?php echo $billName; ?></p><br>
-                        <p><b>Payer:</b> <?php echo $childBillPayer; ?></p><br>
-                        <p><b>Amount:</b> $<?php echo $childBillAmount; ?></p><br>
+                        <p><b>Payment:</b> <?php echo h($billName); ?></p><br>
+                        <p><b>Payer:</b> <?php echo h($childBillPayer); ?></p><br>
+                        <p><b>Amount:</b> $<?php echo h($childBillAmount); ?></p><br>
                         <form action="includes/delbills.inc.php" method="POST">
                             <input type="hidden" name="splitBillID" value="<?php echo $childBill; ?>">
                             <button type="submit" class="action green"

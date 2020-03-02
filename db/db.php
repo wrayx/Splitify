@@ -638,7 +638,7 @@ class DB extends SQLite3
         // $statement->close();
 
         $billNum = $this->getBillNum($parent);
-        $billPercentage = $billPercentage + floor($this->getSplitBillAmount($id) / $this->getBillAmount($parent) * 100);
+        $billPercentage += floor($this->getSplitBillAmount($id) / $this->getBillAmount($parent) * 100);
         // var_dump($billPercentage);
 
         $sql = 'UPDATE bills

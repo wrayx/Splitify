@@ -7,10 +7,12 @@ const selectorTrigger = document.querySelector("#input-group");
 const selector = document.querySelector(".selector");
 if (selectorTrigger != null) {
   for (let i = 0; i < groupOptions.length; i++) {
-    groupOptions[i].addEventListener("click", e => {
-      optionChange(e);
-      hideDropdown();
-    });
+    if (groupOptions[i] != null) {
+      groupOptions[i].addEventListener("click", e => {
+        optionChange(e);
+        hideDropdown();
+      });
+    }
   }
 
   // dropdown.addEventListener("mouseout", hideDropdown);

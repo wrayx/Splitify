@@ -199,13 +199,17 @@ button span {
   max-width: 60px;
 }
 
-.container .card .face.face1 .content h3 {
+.container .card .face.face1 .content div {
   margin: 10px 0 0;
   padding: 0;
   color: #fff;
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.6em;
   font-weight: 700;
+}
+
+.container .card .face.face1 .content div i {
+  margin-left: 9px;
 }
 
 .container .card .face.face2 {
@@ -647,6 +651,22 @@ input:focus ~ .bar:after {
 
 .button:hover, .button:focus {
   outline: none;
+}
+
+.change-stats-btn {
+  font-family: "Saira", sans-serif;
+  float: right;
+  padding: 10px;
+  background-color: #12171b;
+  border-radius: 4px;
+  margin-left: 20px;
+  position: absolute;
+}
+
+.change-stats-btn:hover, .change-stats-btn:focus {
+  outline: none;
+  color: #4dd599;
+  background-color: white;
 }
 
 .button-sm {

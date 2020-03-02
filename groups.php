@@ -5,7 +5,7 @@ $groups = $db->getGroups($userid);
 <div class="card">
     <div class="face face1">
         <div class="content">
-            <h3>Create a Group</h3>
+            <div>Create a Group</div>
         </div>
     </div>
     <div class="face face2">
@@ -39,9 +39,9 @@ $groups = $db->getGroups($userid);
 <div class="card" id="group-card-<?php echo $group; ?>">
     <div class="face face1 blue">
         <div class="content">
-            <h3><?php
+            <div><?php
                     $groupName = $db->getGroupName($group);
-                    echo $groupName; ?></h3>
+                    echo $groupName; ?></div>
         </div>
     </div>
     <div class="face face2">
