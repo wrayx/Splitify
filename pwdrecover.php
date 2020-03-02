@@ -8,7 +8,7 @@ include "header.php";
             <h1><?php echo $title; ?></h1>
         </div>
         <div class="group first-group">
-            <input type="text" name="email" required>
+            <input type="text" name="email" aria-label="email" required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label>E-mail</label>
@@ -18,7 +18,7 @@ include "header.php";
             Please follow the instructions in the Email.
         </div>
         <div class="group">
-            <button class="button fill" name="pwd-submit" type="submit">
+            <button class="button fill" name="pwd-submit" aria-label="confirm" type="submit">
                 <span class="text">Confirm</span>
             </button>
         </div>

@@ -9,13 +9,13 @@ include "header.php";
         <input type="hidden" name="selector" value="<?php echo $_GET['selector']; ?>">
         <input type="hidden" name="token" value="<?php echo $_GET['token']; ?>">
         <div class="group first-group">
-            <input type="password" id="pwd" name="pwd" required>
+            <input type="password" id="pwd" name="pwd" aria-label="password" required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label for="pwd">New Password</label>
         </div>
         <div class="group first-group">
-            <input type="password" id="re-pwd" name="re-pwd" required>
+            <input type="password" id="re-pwd" aria-label="repeat password" name="re-pwd" required>
             <span class="highlight"></span>
             <span class="bar"></span>
             <label for="re-pwd">Repeat Password</label>

@@ -12,13 +12,13 @@ $groups = $db->getGroups($userid);
         <div class="content">
             <form action="includes/groups.inc.php" method="POST" id="group-form">
                 <div class="group">
-                    <input type="text" name="name" id="group-name" required>
+                    <input type="text" name="name" id="group-name" aria-label="group name" required>
                     <span class="highlight"></span>
                     <span class="bar"></span>
                     <label>Name</label>
                 </div>
                 <div class="group">
-                    <input type="text" name="members[]" class="member" required>
+                    <input type="text" name="members[]" class="member" aria-label="member email or username" required>
                     <span class="highlight"></span>
                     <span class="bar"></span>
                     <label>Member's username or email</label>
@@ -27,7 +27,7 @@ $groups = $db->getGroups($userid);
                     <span id="add-member-input"><i class="fas fa-user-plus"></i></span>
                 </div>
                 <div class="group">
-                    <button class="button" name="submit" type="submit">
+                    <button class="button" name="submit" aria-label="submit" type="submit">
                         <span class="text">Submit</span>
                     </button>
                 </div>

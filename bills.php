@@ -13,13 +13,13 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
         <div class="content">
             <form id="bill-form" action="includes/bills.inc.php" method="POST">
                 <div class="group">
-                    <input type="text" name="name" id="name" required>
+                    <input type="text" aria-label="bill name" name="name" id="name" required>
                     <span class="highlight"></span>
                     <span class="bar"></span>
                     <label>Name</label>
                 </div>
                 <div class="group">
-                    <input type="text" name="amount" id="amount" required>
+                    <input type="text" name="amount" aria-label="bill amount" id="amount" required>
                     <span class="highlight"></span>
                     <span class="bar"></span>
                     <label>Amount</label>
@@ -36,13 +36,13 @@ if (isset($_SESSION["signedInToxxx.com"]) && $_SESSION["signedInToxxx.com"] == t
                         </ul>
                     </div>
                 </div>
-                <input type="hidden" name="group" id="input-group-name">
+                <input aria-label="group choice" type="hidden" name="group" id="input-group-name">
                 <div class="group">
                     <div class="md-checkbox">
                         <input id="bill-self-paid" type="checkbox" name="paid">
                         <label for="bill-self-paid">I've paid my part.</label><br>
                     </div>
-                    <button class="button" type="submit" id="bill-submit">
+                    <button class="button" type="submit" id="bill-submit" aria-label="submit">
                         <span class="text">Submit</span>
                     </button>
                 </div>

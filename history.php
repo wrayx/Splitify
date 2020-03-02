@@ -36,7 +36,7 @@ include "header.php";
 <?php else: ?>
 <div class="no-info">No Infomation Available</div>
 <?php endif; ?>
-<script src="js/index.js"></script>
+<!-- <script src="js/index.js"></script> -->
 <?php
 include "footer.php";
 ?>
