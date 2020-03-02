@@ -312,16 +312,16 @@ class DB extends SQLite3
 
     public function createBill($userid, $name, $amount, $groupid)
     {
-        $sql = 'INSERT INTO bills(name, amount, createdate, payee, num, status)
-                VALUES (:name, :amount, :createdate, :userid, :num, :status)';
+        $sql = 'INSERT INTO bills(name, amount, date, payee, num, status)
+                VALUES (:name, :amount, :date, :userid, :num, :status)';
 
         $numPayers = $this->getGroupMemberNum($groupid);
-        $createdate = date('d/m/Y h:m:s');
+        $date = date('d/m/Y h:m:s');
 
         $statement = $this->prepare($sql);
         $statement->bindValue(':name', $name);
         $statement->bindValue(':amount', (float)$amount);
-        $statement->bindValue(':createdate', $createdate);
+        $statement->bindValue(':date', $date);
         $statement->bindValue(':num', $numPayers);
         $statement->bindValue(':userid', $userid);
         $statement->bindValue(':status', 0);
@@ -334,8 +334,28 @@ class DB extends SQLite3
         $splitAmount = ((float)$amount) / $groupNum;
         foreach ($groupMembers as $member) {
             $this->createSplitBill($billId, $member, $splitAmount);
-            // $this->sendBillNotification($this->getUserEmail($member), $this->getUsername($userid), $splitAmount, $createdate);
+            // $this->sendBillNotification($this->getUserEmail($member), $this->getUsername($userid), $splitAmount, $date);
         }
+    }
+
+    public function createOnlyBill($userid, $name, $amount, $groupid)
+    {
+        $sql = 'INSERT INTO bills(name, amount, date, payee, num, status)
+                VALUES (:name, :amount, :date, :userid, :num, :status)';
+
+        $numPayers = $this->getGroupMemberNum($groupid);
+        $date = date('d/m/Y h:m:s');
+
+        $statement = $this->prepare($sql);
+        $statement->bindValue(':name', $name);
+        $statement->bindValue(':amount', (float)$amount);
+        $statement->bindValue(':date', $date);
+        $statement->bindValue(':num', $numPayers);
+        $statement->bindValue(':userid', $userid);
+        $statement->bindValue(':status', 0);
+
+        $statement->execute();
+        $statement->close();
     }
 
     public function getGroupMemberNum($groupId)
@@ -477,7 +497,7 @@ class DB extends SQLite3
 
     public function getBillDate($id)
     {
-        return $this->getBillData('createdate', $id);
+        return $this->getBillData('date', $id);
     }
 
     public function getBillPercentage($id)
@@ -618,23 +638,25 @@ class DB extends SQLite3
         // $statement->close();
 
         $billNum = $this->getBillNum($parent);
-        $billPercentage = $billPercentage + floor(100 / $billNum);
+        $billPercentage = $billPercentage + floor($this->getSplitBillAmount($id) / $this->getBillAmount($parent) * 100);
+        // var_dump($billPercentage);
 
         $sql = 'UPDATE bills
-                SET status = :status
+                SET status = :statu
                 WHERE id = :id';
         $statement = $this->prepare($sql);
-        $statement->bindValue(':status', $billPercentage);
+        $statement->bindValue(':statu', (int) $billPercentage);
         $statement->bindValue(':id', $parent);
+        // var_dump($id);
         $statement->execute();
-        // $statement->close();
+        $statement->close();
 
         $sql = 'UPDATE splitbills
-                SET status = :status
+                SET status = :statu
                 WHERE id = :id';
         $statement = $this->prepare($sql);
-        $statement->bindValue(':status', 1);
-        $statement->bindValue(':id', $id);
+        $statement->bindValue(':statu', 1);
+        $statement->bindValue(':id', (int) $id);
         $statement->execute();
         $statement->close();
 

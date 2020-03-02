@@ -5,16 +5,18 @@ const dropdown = document.querySelector(".dropdown");
 const angle = document.querySelector(".fa-angle-down");
 const selectorTrigger = document.querySelector("#input-group");
 const selector = document.querySelector(".selector");
-for (let i = 0; i < groupOptions.length; i++) {
-  groupOptions[i].addEventListener("click", e => {
-    optionChange(e);
-    hideDropdown();
-  });
-}
-// dropdown.addEventListener("mouseout", hideDropdown);
-selectorTrigger.addEventListener("click", displayDropdown);
-angle.addEventListener("click", displayDropdown);
+if (selectorTrigger != null) {
+  for (let i = 0; i < groupOptions.length; i++) {
+    groupOptions[i].addEventListener("click", e => {
+      optionChange(e);
+      hideDropdown();
+    });
+  }
 
+  // dropdown.addEventListener("mouseout", hideDropdown);
+  selectorTrigger.addEventListener("click", displayDropdown);
+  angle.addEventListener("click", displayDropdown);
+}
 // window.addEventListener("click", hideDropdown, true);
 
 function optionChange(e) {
