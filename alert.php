@@ -29,6 +29,8 @@ if (isset($_GET['error'])) {
         alertMessage(0, 'The name wasn\'t valid (only alpha numerical and spaces are allowed).');
     } elseif ($_GET['error'] === 'permdenied') {
         alertMessage(0, 'Please sign in to view the page.');
+    } elseif ($_GET['error'] == 'usernameexsit'){
+        alertMessage(0, 'Username already exist try again');
     }
 } elseif (isset($_GET['signup']) && $_GET['signup'] === 'success') {
     alertMessage(1, 'Sign up successful. You can sign in now.');

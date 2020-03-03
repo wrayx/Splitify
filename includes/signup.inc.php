@@ -41,7 +41,10 @@ else if ((!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > $emailM
 } else if (!preg_match("/^[a-zA-Z0-9]*$/", $username) || strlen($username) > $usernameMaxLength) {
     // username not valid, send back email
     header('Location: ../signup.php?error=username-not-valid&useremail=' . $email);
-} else {
+} else if ($db->getUserId($username) != null || $db->getUserId($email) != null){
+    header('Location: ../signup.php?error=usernameexsit');
+}
+else {
     $res = $db->createUser($username, $email, $pwd);
     if ($res) {
         header('Location: ../signin.php?signup=success');
